@@ -3,12 +3,12 @@ import BaseEntity from './baseEntity.js';
 export default class sala extends BaseEntity {
     #salId;
     #salNome;
-    #usuId;
+    #usuario;
 
-    constructor(salId, salNome, usuId) {
+    constructor(salId, salNome, usuario) {
         this.#salId = salId;
         this.#salNome = salNome;
-        this.#usuId = usuId;
+        this.#usuario = usuario;
     }
 
     get salId() {
@@ -27,11 +27,11 @@ export default class sala extends BaseEntity {
         this.#salNome = value;
     }
 
-    get usuId() {
-        return this.#usuId;
+    get usuario() {
+        return this.#usuario;
     }
 
-    set usuId(value) {
-        this.#usuId = value;
+    set usuario(value) {
+        this.#usuario = value;
     }
 }
