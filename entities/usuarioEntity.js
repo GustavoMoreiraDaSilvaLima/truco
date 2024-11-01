@@ -7,6 +7,7 @@ export default class usuario extends BaseEntity {
     #usuSenha;
   
     constructor(usuId, usuNome, usuEmail, usuSenha) {
+      super();
       this.#usuId = usuId;
       this.#usuNome = usuNome;
       this.#usuEmail = usuEmail;

@@ -30,6 +30,30 @@ export default class UsuarioController {
         }
     }
 
+    async gravar(req, res) {
+        try {
+            let { nome, email, senha } = req.body;
+            if (nome && email && senha) {
+
+                let entidade = new UsuarioEntity(0, nome, email, senha);
+
+                let repo = new UsuarioRepository();
+                let result = await repo.gravar(entidade);
+
+                if (result)
+                    res.status(201).json({ msg: "Usuário gravado com sucesso!" });
+                else
+                    throw new Error("Erro ao inserir o usuário no banco de dados");
+            }
+            else {
+                res.status(400).json({ msg: "Parâmetros não informados corretamente!" });
+            }
+        }
+        catch (ex) {
+            res.status(500).json({ msg: ex.message });
+        }
+    }
+
     async alterarParcialmente(req, res) {
         try {
             let { id, nome, email, senha } = req.body;
@@ -100,30 +124,4 @@ export default class UsuarioController {
             res.status(500).json({ msg: ex.message });
         }
     }
-
-    async gravar(req, res) {
-
-        try {
-            let { nome, email, senha } = req.body;
-            if (nome && email && senha) {
-
-                let entidade = new UsuarioEntity(0, email, nome, senha);
-
-                let repo = new UsuarioRepository();
-                let result = await repo.gravar(entidade);
-
-                if (result)
-                    res.status(201).json({ msg: "Usuário gravado com sucesso!" });
-                else
-                    throw new Error("Erro ao inserir o usuário no banco de dados");
-            }
-            else {
-                res.status(400).json({ msg: "Parâmetros não informados corretamente!" });
-            }
-        }
-        catch (ex) {
-            res.status(500).json({ msg: ex.message });
-        }
-    }
-
 }

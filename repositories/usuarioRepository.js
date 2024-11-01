@@ -19,9 +19,16 @@ export default class usuarioRepository extends BaseRepository {
         return this.toMap(row[0]);
     }
 
+    async gravar(entidade) {
+        let sql = "insert into tb_usuario (usu_nome, usu_email, usu_senha) values (?, ?, ?)";
+        let valores = [entidade.usuNome, entidade.usuEmail, entidade.usuSenha];
+        let result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        return result;
+    }
+
     async alterar(entidade) {
-        let sql = "update tb_usuario set usu_nome = ?, usu_email = ?, usu_senha = ? where usu_id = ?";
-        let valores = [entidade.nome, entidade.email, entidade.senha, entidade.id];
+        let sql = "update tb_usuario set usu_nome = ?, usu_email = ?, usu_senha = ? where usu_id = ?;";
+        let valores = [entidade.usuNome, entidade.usuEmail, entidade.usuSenha, entidade.usuId];
         let result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }
@@ -30,10 +37,10 @@ export default class usuarioRepository extends BaseRepository {
 
         let sql = `update tb_usuario set usu_nome = coalesce(?, usu_nome),
                                          usu_email = coalesce(?, usu_email),
-                                         usu_senha = coalesce(?, usu_senha),
+                                         usu_senha = coalesce(?, usu_senha)
                     where usu_id = ?`;
 
-        let valores = [entidade.nome, entidade.email, entidade.senha, entidade.id];
+        let valores = [entidade.usuNome, entidade.usuEmail, entidade.usuSenha, entidade.usuId];
 
         let result = await this.db.ExecutaComandoNonQuery(sql, valores);
 
@@ -54,10 +61,10 @@ export default class usuarioRepository extends BaseRepository {
             for (let i = 0; i < rows.length; i++) {
                 let row = rows[i];
                 let usuario = new usuarioEntity();
-                usuario.id = row["usu_id"];
-                usuario.nome = row["usu_nome"];
-                usuario.email = row["usu_email"];
-                usuario.senha = row["usu_senha"];
+                usuario.usuId = row["usu_id"];
+                usuario.usuNome = row["usu_nome"];
+                usuario.usuEmail = row["usu_email"];
+                usuario.usuSenha = row["usu_senha"];
 
                 lista.push(usuario);
             }
@@ -66,10 +73,10 @@ export default class usuarioRepository extends BaseRepository {
         }
         else if (rows) {
             let usuario = new usuarioEntity();
-            usuario.id = rows["usu_id"];
-            usuario.nome = rows["usu_nome"];
-            usuario.email = rows["usu_email"];
-            usuario.senha = rows["usu_senha"];
+            usuario.usuId = rows["usu_id"];
+            usuario.usuNome = rows["usu_nome"];
+            usuario.usuEmail = rows["usu_email"];
+            usuario.usuSenha = rows["usu_senha"];
 
             return usuario;
         }
