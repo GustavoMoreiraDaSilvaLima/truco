@@ -2,17 +2,19 @@ import BaseEntity from './baseEntity.js';
 
 export default class usuario extends BaseEntity {
     #parId;
-    #parDentradaparDtsaida;
-    #usuId;
-    #salId;
-    #eqpId;
+    #dtEntrada
+    #dtSaida;
+    #usuario;
+    #sala;
+    #equipe;
 
-    constructor(parId, parDentradaparDtsaida, usuId, salId, eqpId) {
+    constructor(parId, dtEntrada, dtSaida, usuario, sala, equipe) {
         this.#parId = parId;
-        this.#parDentradaparDtsaida = parDentradaparDtsaida;
-        this.#usuId = usuId;
-        this.#salId = salId;
-        this.#eqpId = eqpId;
+        this.#dtEntrada = dtEntrada;
+        this.#dtSaida = dtSaida;
+        this.#usuario = usuario;
+        this.#sala = sala;
+        this.#equipe = equipe;
     }
 
     get parId() {
@@ -23,35 +25,43 @@ export default class usuario extends BaseEntity {
         this.#parId = value;
     }
 
-    get parDentradaparDtsaida() {
-        return this.#parDentradaparDtsaida;
+    get dtEntrada() {
+        return this.#dtEntrada;
     }
 
-    set parDentradaparDtsaida(value) {
-        this.#parDentradaparDtsaida = value;
+    set dtEntrada(value) {
+        this.#dtEntrada = value;
     }
 
-    get usuId() {
-        return this.#usuId;
+    get dtSaida() {
+        return this.#dtSaida;
     }
 
-    set usuId(value) {
-        this.#usuId = value;
+    set dtSaida(value) {
+        this.#dtSaida = value;
     }
 
-    get salId() {
-        return this.#salId;
+    get usuario() {
+        return this.#usuario;
     }
 
-    set salId(value) {
-        this.#salId = value;
+    set usuario(value) {
+        this.#usuario = value;
     }
 
-    get eqpId() {
-        return this.#eqpId;
+    get sala() {
+        return this.#sala;
     }
 
-    set eqpId(value) {
-        this.#eqpId = value;
+    set sala(value) {
+        this.#sala = value;
+    }
+
+    get equipe() {
+        return this.#equipe;
+    }
+
+    set equipe(value) {
+        this.#equipe = value;
     }
 }

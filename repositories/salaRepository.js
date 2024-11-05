@@ -23,14 +23,14 @@ export default class salaRepository extends BaseRepository {
 
     async gravar(entidade) {
         let sql = "insert into tb_sala (sal_nome, usu_id) values (?, ?)";
-        let valores = [entidade.salNome, entidade.usuario.id];
+        let valores = [entidade.salNome, entidade.usuario.usuId];
         let result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }
 
     async alterar(entidade) {
         let sql = "update tb_sala set sal_nome = ?, usu_id = ? where sal_id = ?;";
-        let valores = [entidade.salNome, entidade.usuario.id, entidade.salId];
+        let valores = [entidade.salNome, entidade.usuario.usuId, entidade.salId];
         let result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }
@@ -39,7 +39,7 @@ export default class salaRepository extends BaseRepository {
         let sql = `update tb_sala set sal_nome = coalesce(?, sal_nome),
                                          usu_id = coalesce(?, usu_id)
                     where sal_id = ?`;
-        let valores = [entidade.salNome, entidade.usuario.id]
+        let valores = [entidade.salNome, entidade.usuario.usuId]
         let result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }
@@ -67,6 +67,7 @@ export default class salaRepository extends BaseRepository {
                 sala.usuario.usuId = row["usu_id"];
                 sala.usuario.usuNome = row["usu_nome"];
                 sala.usuario.usuEmail = row["usu_email"];
+                sala.usuario.usuSenha = row["usu_senha"];
 
                 lista.push(sala);
             }
@@ -79,6 +80,7 @@ export default class salaRepository extends BaseRepository {
             sala.usuario.usuId = rows["usu_id"];
             sala.usuario.usuNome = rows["usu_nome"];
             sala.usuario.usuEmail = rows["usu_email"];
+            sala.usuario.usuSenha = row["usu_senha"];
 
             return sala;
         } else { 

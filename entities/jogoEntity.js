@@ -4,13 +4,13 @@ export default class sala extends BaseEntity {
     #jogId;
     #jogDtinicio;
     #jogDtfim;
-    #salId;
+    #sala;
 
-    constructor(jogId, jogDtinicio, jogDtfim, salId) {
+    constructor(jogId, jogDtinicio, jogDtfim, sala) {
         this.#jogId = jogId;
         this.#jogDtinicio = jogDtinicio;
         this.#jogDtfim = jogDtfim;
-        this.#salId = salId;
+        this.#sala = sala;
     }
 
     get jogId() {
@@ -37,11 +37,11 @@ export default class sala extends BaseEntity {
         this.#jogDtfim = value;
     }
 
-    get salId() {
-        return this.#salId;
+    get sala() {
+        return this.#sala;
     }
 
-    set salId(value) {
-        this.#salId = value;
+    set sala(value) {
+        this.#sala = value;
     }
 }

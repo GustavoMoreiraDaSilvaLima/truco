@@ -1,0 +1,115 @@
+import participanteEntity from '../entities/participanteEntity.js';
+import BaseRepository from './baseRepository.js';
+import usuarioRepository from './usuarioRepository.js';
+import salaRepository from './salaRepository.js';
+import equipeRepository from './equipeRepository.js';
+
+export default class participanteRepository extends BaseRepository {
+
+    constructor(db) {
+        super(db);
+    }
+
+    async listar() {
+        let sql = `select * from tb_participante as par 
+                                inner join tb_usuario as usu on par.usu_id = usu.usu_id 
+                                inner join tb_sala as sal on par.sal_id = sal.sal_id
+                                inner join tb_equipe as eqp on par.eqp_id = eqp.eqp_id;`;
+
+        let rows = await this.db.ExecutaComando(sql);
+        return this.toMap(rows);
+    }
+
+    async obter(id) {
+        let sql = "select * from tb_participante where par_id = ?";
+        let valores = [id];
+        let row = await this.db.ExecutaComando(sql, valores);
+        return this.toMap(row[0]);
+    }
+
+    async gravar(entidade) {
+        let sql = "insert into tb_participante (par_dtentrada, par_dtsaida, usu_id, sal_id, eqp_id) values (?, ?, ?, ?, ?);";
+        let valores = [entidade.dtEntrada, entidade.dtSaida, entidade.usuario.id, entidade.sala.salId, entidade.equipe.eqpId];
+        let result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        return result;
+    }
+
+    async alterar(entidade) {
+        let sql = "update tb_participante set par_dtentrada = ?, par_dtsaida = ?, usu_id = ?, sal_id = ?, eqp_id = ? where par_id = ?;";
+        let valores = [entidade.dtEntrada, entidade.dtSaida, entidade.usuario.id, entidade.sala.salId, entidade.equipe.eqpId, entidade.parId];
+        let result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        return result;
+    }
+
+    async alterarParcialmente(entidade) {
+        let sql = `update tb_participante set par_dtentrada = coalesce(?, par_dtentrada),
+                                         par_dtsaida = coalesce(?, par_dtsaida),
+                                         usu_id = coalesce(?, usu_id),
+                                         sal_id = coalesce(?, sal_id),
+                                         eqp_id = coalesce(?, eqp_id)
+                    where par_id = ?`;
+        let valores = [entidade.dtEntrada, entidade.dtSaida, entidade.usuario.id, entidade.sala.salId, entidade.equipe.eqpId, entidade.parId]
+        let result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        return result;
+    }
+
+    async delete(id) {
+        let sql = "delete from tb_participante where par_id = ?";
+
+        let valores = [id];
+
+        let result = await this.db.ExecutaComandoNonQuery(sql, valores);
+
+        return result;
+    }
+
+    toMap(rows) {
+
+        if (rows && typeof rows.length == "number") {
+            let lista = [];
+            for (let i = 0; i < rows.length; i++) {
+                let row = rows[i];
+                let participante = new participanteEntity()
+                participante.parId = row["par_id"];
+                participante.dtEntrada = row["par_dtentrada"];
+                participante.dtSaida = row["par_dtsaida"];
+                participante.usuario = new usuarioRepository();
+                participante.usuario.usuId = row["usu_id"];
+                participante.usuario.usuNome = row["usu_nome"];
+                participante.usuario.usuEmail = row["usu_email"];
+                participante.usuario.usuSenha = row["usu_senha"];
+                participante.sala = new salaRepository();
+                participante.sala.salId = row["sal_id"];
+                participante.sala.salNome = row["sal_nome"];
+                participante.sala.usuario.usuId = row["usu_id"];
+                participante.equipe = new equipeRepository();
+                participante.equipe.eqpId = row["eqp_id"];
+                participante.equipe.eqpDescricao = row["eqp_descricao"];
+
+                lista.push(participante);
+            }
+            return lista;
+        } else if (rows) {
+            let participante = new participanteEntity();
+                participante.parId = row["par_id"];
+                participante.dtEntrada = row["par_dtentrada"];
+                participante.dtSaida = row["par_dtsaida"];
+                participante.usuario = new usuarioRepository();
+                participante.usuario.usuId = row["usu_id"];
+                participante.usuario.usuNome = row["usu_nome"];
+                participante.usuario.usuEmail = row["usu_email"];
+                participante.usuario.usuSenha = row["usu_senha"];
+                participante.sala = new salaRepository();
+                participante.sala.salId = row["sal_id"];
+                participante.sala.salNome = row["sal_nome"];
+                participante.sala.usuario.usuId = row["usu_id"];
+                participante.equipe = new equipeRepository();
+                participante.equipe.eqpId = row["eqp_id"];
+                participante.equipe.eqpDescricao = row["eqp_descricao"];
+
+            return participante;
+        } else {
+            return null;
+        }
+    }
+};
