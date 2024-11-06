@@ -1,11 +1,13 @@
 import express from 'express'
 import UsuarioController from '../controllers/usuarioController.js';
+import authMiddleware from '../middlewares/authMidleware.js';
 
 const router = express.Router();
 
+const auth = new authMiddleware();
 let ctrl = new UsuarioController();
 
-router.get("/", (req, res) => {
+router.get("/",auth.validar, (req, res) => {
     // #swagger.tags = ['Usuário']
     // #swagger.summary = 'Endpoint para retornar todos os usuários'
     ctrl.listar(req, res);
