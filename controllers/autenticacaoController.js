@@ -10,10 +10,10 @@ export default class AutenticacaoController {
             const { email, senha } = req.body
             if (email && senha) {
                 const repo = new UsuarioRepository();
-                const usuario = await repo.validarAcesso(email, senha);
+                let usuario = await repo.validarAcesso(email, senha);
                 if (usuario) {
                     const auth = new authMiddleware();
-                    const token = auth.gerarToken(usuario.id,usuario.nome, usuario.email);
+                    let token = auth.gerarToken(usuario.usuId,usuario.usuNome, usuario.usuEmail);
                     res.cookie("token", token, {
                         httpOnly: true
                     })
