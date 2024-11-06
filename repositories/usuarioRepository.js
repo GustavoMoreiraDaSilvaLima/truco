@@ -19,6 +19,13 @@ export default class usuarioRepository extends BaseRepository {
         return this.toMap(row[0]);
     }
 
+    async validarAcesso(email, senha){
+        let sql = "select * from tb_usuario where usu_email = ? and usu_senha = ?";
+        let valores = [email, senha]; 
+        let row = await this.db.ExecutaComando(sql,valores)
+        return this.toMap(row[0]);
+    }
+
     async gravar(entidade) {
         let sql = "insert into tb_usuario (usu_nome, usu_email, usu_senha) values (?, ?, ?)";
         let valores = [entidade.usuNome, entidade.usuEmail, entidade.usuSenha];

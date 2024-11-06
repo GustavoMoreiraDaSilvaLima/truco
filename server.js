@@ -2,6 +2,7 @@ import express from 'express';
 import swaggerUi from 'swagger-ui-express'
 import routerUsuarios from './routes/usuarioRoute.js';
 import routerSalas from './routes/salaRoute.js';
+import routerAutenticacao from './routes/autenticacaoRoute.js';
 
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
@@ -16,6 +17,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(outputJson));
 //rotas
 app.use("/usuarios", routerUsuarios);
 app.use("/salas", routerSalas);
+app.use("/login",routerAutenticacao);
 
 app.listen(5000, function () {
     console.log("servidor web em funcionamento!");
