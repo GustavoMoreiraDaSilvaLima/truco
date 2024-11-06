@@ -3,22 +3,20 @@ import BaseEntity from "./baseEntity";
 export default class mao extends BaseEntity {
     #maoId;
     #maoOrdem;
-    #maoCodigo;
-    #baralho;
+    #maoCodigoBaralho;
     #maoTrucada;
     #maoValor;
-    #jogId;
-    #eqpVencedora;
+    #jogo;
+    #equipe;
 
-    constructor(maoId, maoOrdem, maoCodigo, baralho, maoTrucada, maoValor, jogId, eqpVencedora) {
+    constructor(maoId, maoOrdem, maoCodigoBaralho, maoTrucada, maoValor, jogo, equipe) {
         this.#maoId = maoId;
         this.#maoOrdem = maoOrdem;
-        this.#maoCodigo = maoCodigo;
-        this.#baralho = baralho;
+        this.#maoCodigoBaralho = maoCodigoBaralho;
         this.#maoTrucada = maoTrucada;
         this.#maoValor = maoValor;
-        this.#jogId = jogId;
-        this.#eqpVencedora = eqpVencedora;
+        this.#jogo = jogo;
+        this.#equipe = equipe;
     }
 
     get maoId() {
@@ -37,20 +35,12 @@ export default class mao extends BaseEntity {
         this.#maoOrdem = value;
     }
 
-    get maoCodigo() {
-        return this.#maoCodigo;
+    get maoCodigoBaralho() {
+        return this.#maoCodigoBaralho;
     }
 
-    set maoCodigo(value) {
-        this.#maoCodigo = value;
-    }
-
-    get baralho() {
-        return this.#baralho;
-    }
-
-    set baralho(value) {
-        this.#baralho = value;
+    set maoCodigoBaralho(value) {
+        this.#maoCodigoBaralho = value;
     }
 
     get maoTrucada() {
@@ -69,19 +59,19 @@ export default class mao extends BaseEntity {
         this.#maoValor = value;
     }
 
-    get jogId() {
-        return this.#jogId;
+    get jogo() {
+        return this.#jogo;
     }
 
-    set jogId(value) {
-        this.#jogId = value;
+    set jogo(value) {
+        this.#jogo = value;
     }
 
-    get eqpVencedora() {
-        return this.#eqpVencedora;
+    get equipe() {
+        return this.#equipe;
     }
 
-    set eqpVencedora(value) {
-        this.#eqpVencedora = value;
+    set equipe(value) {
+        this.#equipe = value;
     }
 }
