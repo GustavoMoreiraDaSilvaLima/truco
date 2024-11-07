@@ -7,18 +7,18 @@ export default class carta extends BaseEntity {
     #carValor;
     #carNaipe;
     #carVira;
-    #parId;
-    #maoId;
+    #participante;
+    #mao;
 
-    constructor(carId, carCodigo, carImagem, carValor, carNaipe, carVira, parId, maoId) {
+    constructor(carId, carCodigo, carImagem, carValor, carNaipe, carVira, participante, mao) {
         this.#carId = carId;
         this.#carCodigo = carCodigo;
         this.#carImagem = carImagem;
         this.#carValor = carValor;
         this.#carNaipe = carNaipe;
         this.#carVira = carVira;
-        this.#parId = parId;
-        this.#maoId = maoId;
+        this.#participante = participante;
+        this.#mao = mao;
     }
 
     get carId() {
@@ -69,19 +69,19 @@ export default class carta extends BaseEntity {
         this.#carVira = value;
     }
 
-    get parId() {
-        return this.#parId;
+    get participante() {
+        return this.#participante;
     }
 
-    set parId(value) {
-        this.#parId = value;
+    set participante(value) {
+        this.#participante = value;
     }
 
-    get maoId() {
-        return this.#maoId;
+    get mao() {
+        return this.#mao;
     }
 
-    set maoId(value) {
-        this.#maoId = value;
+    set mao(value) {
+        this.#mao = value;
     }
 }
