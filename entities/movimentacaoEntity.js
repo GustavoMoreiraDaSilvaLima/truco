@@ -5,18 +5,18 @@ export default class movimentacao extends BaseEntity {
     #movOrdem;
     #movCorreu;
     #movTrucou;
-    #carId;
-    #rodId;
-    #parId;
+    #carta;
+    #rodada;
+    #participante;
 
-    constructor(movId, movOrdem, movCorreu, movTrucou, carId, rodId, parId) {
+    constructor(movId, movOrdem, movCorreu, movTrucou, carta, rodada, participante) {
         this.#movId = movId;
         this.#movOrdem = movOrdem;
         this.#movCorreu = movCorreu;
         this.#movTrucou = movTrucou;
-        this.#carId = carId;
-        this.#rodId = rodId;
-        this.#parId = parId;
+        this.#carta = carta;
+        this.#rodada = rodada;
+        this.#participante = participante;
     }
 
     get movId() {
@@ -51,27 +51,27 @@ export default class movimentacao extends BaseEntity {
         this.#movTrucou = value;
     }
 
-    get carId() {
-        return this.#carId;
+    get carta() {
+        return this.#carta;
     }
 
-    set carId(value) {
-        this.#carId = value;
+    set carta(value) {
+        this.#carta = value;
     }
 
-    get rodId() {
-        return this.#rodId;
+    get rodada() {
+        return this.#rodada;
     }
 
-    set rodId(value) {
-        this.#rodId = value;
+    set rodada(value) {
+        this.#rodada = value;
     }
 
-    get parId() {
-        return this.#parId;
+    get participante() {
+        return this.#participante;
     }
 
-    set parId(value) {
-        this.#parId = value;
+    set participante(value) {
+        this.#participante = value;
     }
 }

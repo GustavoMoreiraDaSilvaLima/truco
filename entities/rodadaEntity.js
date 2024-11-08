@@ -2,13 +2,13 @@ import BaseEntity from "./baseEntity";
 
 export default class rodada extends BaseEntity {
     #rodId;
-    #maoId;
-    #eqpVencedora;
+    #mao;
+    #equipe;
 
-    constructor(rodId, maoId, eqpVencedora) {
+    constructor(rodId, mao, equipe) {
         this.#rodId = rodId;
-        this.#maoId = maoId;
-        this.#eqpVencedora = eqpVencedora;
+        this.#mao = mao;
+        this.#equipe = equipe;
     }
 
     get rodId() {
@@ -19,19 +19,19 @@ export default class rodada extends BaseEntity {
         this.#rodId = value;
     }
 
-    get maoId() {
-        return this.#maoId;
+    get mao() {
+        return this.#mao;
     }
 
-    set maoId(value) {
-        this.#maoId = value;
+    set mao(value) {
+        this.#mao = value;
     }
 
-    get eqpVencedora() {
-        return this.#eqpVencedora;
+    get equipe() {
+        return this.#equipe;
     }
 
-    set eqpVencedora(value) {
-        this.#eqpVencedora = value;
+    set equipe(value) {
+        this.#equipe = value;
     }
 }
