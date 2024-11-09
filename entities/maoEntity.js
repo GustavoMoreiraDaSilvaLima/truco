@@ -1,6 +1,6 @@
-import BaseEntity from "./baseEntity";
+import BaseEntity from "./baseEntity.js";
 
-export default class mao extends BaseEntity {
+export default class maoEntity extends BaseEntity {
     #maoId;
     #maoOrdem;
     #maoCodigoBaralho;

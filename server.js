@@ -3,6 +3,8 @@ import swaggerUi from 'swagger-ui-express'
 import routerUsuarios from './routes/usuarioRoute.js';
 import routerSalas from './routes/salaRoute.js';
 import routerAutenticacao from './routes/autenticacaoRoute.js';
+import maoRoute from './routes/maoRoute.js';
+import jogoRoute from './routes/jogoRoute.js';
 import cookieParser from 'cookie-parser';
 import { createRequire } from "module";
 
@@ -20,6 +22,8 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(outputJson));
 app.use("/usuarios", routerUsuarios);
 app.use("/salas", routerSalas);
 app.use("/login",routerAutenticacao);
+app.use("/mao", maoRoute);
+app.use("/jogo", jogoRoute);
 
 app.listen(5000, function () {
     console.log("servidor web em funcionamento!");
