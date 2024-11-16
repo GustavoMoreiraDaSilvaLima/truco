@@ -6,7 +6,11 @@ export default class LoginSerive {
             if (email && senha) {
                 let http = new HttpClient();
                 let response = await http.post('/login', { email: email, senha: senha });
-                console.log(response);
+                if (response.status === 200) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
