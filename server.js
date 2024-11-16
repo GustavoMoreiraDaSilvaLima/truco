@@ -7,6 +7,7 @@ import routerParticipante from './routes/participanteRoute.js';
 import routerMovimentacao from './routes/movimentacaoRoute.js';
 import routerMao from './routes/maoRoute.js';
 import routerJogo from './routes/jogoRoute.js';
+import routerEquipe from './routes/equipeRoute.js';
 import routerAutenticacao from './routes/autenticacaoRoute.js';
 
 
@@ -34,6 +35,7 @@ app.use("/jogo", routerJogo);
 app.use("/rodada", routerRodada);
 app.use("/participante", routerParticipante);
 app.use("/movimentacao", routerMovimentacao);
+app.use("/equipe", routerEquipe);
 
 app.listen(5000, function () {
     console.log("servidor web em funcionamento!");
