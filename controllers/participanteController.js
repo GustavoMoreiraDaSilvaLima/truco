@@ -33,8 +33,8 @@ export default class ParticipanteController {
 
     async gravar(req, res) {
         try {
-            let { dtEntrada, dtsaida, sala, equipe, usuario } = req.body;
-            if (sala && sala.salId > 0 && equipe && equipe.eqpId > 0) {
+            let { dtEntrada, dtSaida, sala, equipe, usuario } = req.body;
+            if (sala && sala.salId > 0 && equipe && equipe.eqpId > 0 && usuario && usuario.usuId > 0) {
                 let entidade = new participanteEntity(0, dtEntrada, dtSaida, new usuarioEntity(usuario.usuId), new salaEntity(sala.salId), new equipeEntity(equipe.eqpId));
 
                 let repo = new participanteRepository();
@@ -56,7 +56,7 @@ export default class ParticipanteController {
     async alterar(req, res) {
         try {
             let { parId, dtEntrada, dtSaida, sala, equipe, usuario } = req.body;
-            if (parId && dtEntrada && dtsaida && sala && sala && sala.salId > 0 && equipe && equipe.eqpId > 0 && usuario && usuario.usuId > 0) {
+            if (parId && dtEntrada && dtSaida && sala && sala && sala.salId > 0 && equipe && equipe.eqpId > 0 && usuario && usuario.usuId > 0) {
                 let entidade = new participanteEntity(parId, dtEntrada, dtSaida, new usuarioEntity(usuario.usuId), new salaEntity(sala.salId), new equipeEntity(equipe.eqpId));
                 let repo = new participanteRepository();
                 if (await repo.obter(parId)) {
@@ -112,12 +112,12 @@ export default class ParticipanteController {
 
     async deletar(req, res) {
         try {
-            let { id } = req.params.id;
+            let { id } = req.params;
             let participante = new participanteRepository();
             if (await participante.obter(id)) {
                 let result = await participante.delete(id);
                 if (result) {
-                    res.status(200).json(result);
+                    res.status(200).json({ msg: "participante excluído(a) com sucesso" });
                 } else {
                     throw new Error({ msg: "participante não encontrada para exclusão" });
                 };

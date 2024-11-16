@@ -906,7 +906,7 @@
                   "dtEntrada": {
                     "example": "any"
                   },
-                  "dtsaida": {
+                  "dtSaida": {
                     "example": "any"
                   },
                   "sala": {
