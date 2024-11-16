@@ -28,6 +28,12 @@ router.put('/', (req, res) => {
     ctrl.alterar(req, res);
 });
 
+router.patch("/", (req, res) => {
+    //#swagger.tags = ['participante']
+    //#swagger.summary = 'Realiza a alteração parcial do participante'
+    ctrl.alterarParcialmente(req, res);
+});
+
 router.delete('/:id', (req, res) => {
     // #swagger.tags = ['participante']
     // #swagger.summary = 'Deletar um participante'
