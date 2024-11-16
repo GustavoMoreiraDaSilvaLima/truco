@@ -19,7 +19,7 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     // #swagger.tags = ['participante']
     // #swagger.summary = 'Cadastra um participante'
-    ctrl.criar(req, res);
+    ctrl.gravar(req, res);
 });
 
 router.put('/', (req, res) => {

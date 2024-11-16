@@ -62,7 +62,7 @@ export default class EquipeController {
                 let equipeEntidade = new EquipeEntity(id, descricao);
 
                 let equipeRepo = new EquipeRepository();
-                let result = await equipeRepo.alteracaoParcial(equipeEntidade);
+                let result = await equipeRepo.alterarParcialmente(equipeEntidade);
 
                 if (result == false)
                     throw new Error("Erro ao executar a atualização no banco de dados")
