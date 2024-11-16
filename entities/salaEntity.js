@@ -6,6 +6,7 @@ export default class sala extends BaseEntity {
     #usuario;
 
     constructor(salId, salNome, usuario) {
+        super();
         this.#salId = salId;
         this.#salNome = salNome;
         this.#usuario = usuario;

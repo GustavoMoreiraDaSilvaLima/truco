@@ -1,6 +1,6 @@
 import HttpClient from "../http/http.client";
 
-export default class LoginSerive {
+export default class LoginService {
     async login(email, senha) {
         try {
             if (email && senha) {

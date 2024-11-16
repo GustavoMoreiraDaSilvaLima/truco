@@ -1,6 +1,7 @@
 import { League_Spartan } from "next/font/google";
 import '@/public/css/fontawesome-free/css/all.min.css';
 import '@/public/css/sb-admin-2.min.css';
+import './globals.css';
 
 const league = League_Spartan({ subsets: ["latin"] });
 
