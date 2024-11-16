@@ -1,4 +1,4 @@
-import BaseEntity from "./baseEntity";
+import BaseEntity from "./baseEntity.js";
 
 export default class rodada extends BaseEntity {
     #rodId;
