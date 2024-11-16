@@ -12,12 +12,14 @@ import routerAutenticacao from './routes/autenticacaoRoute.js';
 
 import cookieParser from 'cookie-parser';
 import { createRequire } from "module";
+import cors from 'cors';
 
 const require = createRequire(import.meta.url);
 const outputJson = require("./swagger-output.json");
 
 const app = express();
-
+app.use(express.urlencoded({ extended: true }));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
 
