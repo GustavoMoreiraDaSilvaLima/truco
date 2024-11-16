@@ -13,6 +13,17 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => [
     //#swagger.tags = ['Sala']
     //#swagger.summary = 'Cadastra um sala'
+    /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/salaModel"
+                    }  
+                }
+            }
+        } 
+    */
     ctrl.gravar(req, res)
 ]);
 router.delete("/:id", (req, res) => {
@@ -28,11 +39,33 @@ router.get("/:id", (req, res) => {
 router.put("/", (req, res) => {
     //#swagger.tags = ['Sala']
     //#swagger.summary = 'Altera um sala'
+     /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/salaModel"
+                    }  
+                }
+            }
+        } 
+    */
     ctrl.alterar(req, res);
 });
 router.patch("/", (req, res) => {
     //#swagger.tags = ['Sala']
     //#swagger.summary = 'Realiza a alteração parcial do sala'
+     /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/salaModel"
+                    }  
+                }
+            }
+        } 
+    */
     ctrl.alterarParcialmente(req, res);
 });
 

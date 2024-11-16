@@ -9,10 +9,10 @@ export default class Database {
     constructor() {
 
         this.#conexao = mysql.createPool({
-            host: '132.226.245.178', //endereço do nosso banco de dados na nuvem
-            database: 'ATIVIDADE_10442325039', //a database de cada um de vocês possui a nomenclatura DB_(RA)
-            user: '10442325039', // usuario e senha de cada um de vocês é o RA
-            password: '10442325039',
+            host: '127.0.0.1', //endereço do nosso banco de dados na nuvem
+            database: 'db_aula', //a database de cada um de vocês possui a nomenclatura DB_(RA)
+            user: 'root', // usuario e senha de cada um de vocês é o RA
+            password: '',
         });
     }
 

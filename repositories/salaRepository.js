@@ -1,4 +1,5 @@
 import salaEntity from '../entities/salaEntity.js';
+import usuarioEntity from '../entities/usuarioEntity.js';
 import BaseRepository from './baseRepository.js';
 import usuarioRepository from './usuarioRepository.js';
 
@@ -15,7 +16,7 @@ export default class salaRepository extends BaseRepository {
     }
 
     async obter(id) {
-        let sql = "select * from tb_sala where sal_id = ?";
+        let sql = "select * from tb_sala as sal inner join tb_usuario as usu on sal.usu_id = usu.usu_id where sal_id = ?";
         let valores = [id];
         let row = await this.db.ExecutaComando(sql, valores);
         return this.toMap(row[0]);
@@ -39,7 +40,7 @@ export default class salaRepository extends BaseRepository {
         let sql = `update tb_sala set sal_nome = coalesce(?, sal_nome),
                                          usu_id = coalesce(?, usu_id)
                     where sal_id = ?`;
-        let valores = [entidade.salNome, entidade.usuario.usuId]
+        let valores = [entidade.salNome, entidade.usuario ? entidade.usuario.usuId : null, entidade.salId];
         let result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }
@@ -63,7 +64,7 @@ export default class salaRepository extends BaseRepository {
                 let sala = new salaEntity()
                 sala.salId = row["sal_id"];
                 sala.salNome = row["sal_nome"];
-                sala.usuario = new usuarioRepository();
+                sala.usuario = new usuarioEntity();
                 sala.usuario.usuId = row["usu_id"];
                 sala.usuario.usuNome = row["usu_nome"];
                 sala.usuario.usuEmail = row["usu_email"];
@@ -76,11 +77,11 @@ export default class salaRepository extends BaseRepository {
             let sala = new salaEntity();
             sala.salId = rows["sal_id"];
             sala.salNome = rows["sal_nome"];
-            sala.usuario = new usuarioRepository();
+            sala.usuario = new usuarioEntity();
             sala.usuario.usuId = rows["usu_id"];
             sala.usuario.usuNome = rows["usu_nome"];
             sala.usuario.usuEmail = rows["usu_email"];
-            sala.usuario.usuSenha = row["usu_senha"];
+            sala.usuario.usuSenha = rows["usu_senha"];
 
             return sala;
         } else { 

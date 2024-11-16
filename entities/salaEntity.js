@@ -1,6 +1,6 @@
 import BaseEntity from './baseEntity.js';
 
-export default class sala extends BaseEntity {
+export default class salaEntity extends BaseEntity {
     #salId;
     #salNome;
     #usuario;

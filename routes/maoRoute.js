@@ -2,32 +2,32 @@ import express from 'express';
 import maoController from '../controllers/maoController.js';
 
 const router = express.Router();
-const controller = new maoController();
+let ctrl = new maoController();
 
 router.get('/', (req, res) => {
     // #swagger.tags = ['Mão']
     // #swagger.summary = 'Endpoint para retornar todas as mãos'
-    controller.listar(req, res);
+    ctrl.listar(req, res);
 });
 router.get('/:id', (req, res) => {
     // #swagger.tags = ['Mão']
     // #swagger.summary = 'Retorna uma mão baseado em um código'
-    controller.obter(req, res);
+    ctrl.obter(req, res);
 });
 router.post('/', (req, res) => {
     // #swagger.tags = ['Mão']
     // #swagger.summary = 'Cadastra uma mão'
-    controller.gravar(req, res);
+    ctrl.gravar(req, res);
 });
 router.put('/', (req, res) => {
     // #swagger.tags = ['Mão']
     // #swagger.summary = 'Altera uma mão'
-    controller.alterar(req, res);
+    ctrl.alterar(req, res);
 });
 router.delete('/:id', (req, res) => {
     // #swagger.tags = ['Mão']
     // #swagger.summary = 'Deletar uma mão'
-    controller.deletar(req, res);
+    ctrl.deletar(req, res);
 });
 
 export default router;

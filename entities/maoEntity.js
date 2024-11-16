@@ -1,6 +1,6 @@
 import BaseEntity from "./baseEntity.js";
 
-export default class maoEntity extends BaseEntity {
+export default class maoEntityEntity extends BaseEntity {
     #maoId;
     #maoOrdem;
     #maoCodigoBaralho;
@@ -10,6 +10,7 @@ export default class maoEntity extends BaseEntity {
     #equipe;
 
     constructor(maoId, maoOrdem, maoCodigoBaralho, maoTrucada, maoValor, jogo, equipe) {
+        super();
         this.#maoId = maoId;
         this.#maoOrdem = maoOrdem;
         this.#maoCodigoBaralho = maoCodigoBaralho;

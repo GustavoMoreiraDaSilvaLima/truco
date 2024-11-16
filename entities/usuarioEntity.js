@@ -1,6 +1,6 @@
 import BaseEntity from './baseEntity.js';
 
-export default class usuario extends BaseEntity {
+export default class usuarioEntity extends BaseEntity {
     #usuId;
     #usuNome;
     #usuEmail;

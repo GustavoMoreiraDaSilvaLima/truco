@@ -37,12 +37,12 @@ export default class equipeRepository extends BaseRepository {
     async alterarParcialmente(entidade) {
         let sql = `update tb_equipe set eqp_descricao = coalesce(?, eqp_descricao)
                     where eqp_id = ?`;
-        let valores = [entidade.eqpDescricao, entidade.eqpId.id]
+        let valores = [entidade.eqpDescricao, entidade.eqpId]
         let result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }
 
-    async delete(id) {
+    async deletar(id) {
         let sql = "delete from tb_equipe where eqp_id = ?";
 
         let valores = [id];
@@ -67,8 +67,8 @@ export default class equipeRepository extends BaseRepository {
             return lista;
         } else if (rows) {
             let equipe = new equipeEntity();
-            equipe.eqpId = row["eqp_id"];
-            equipe.eqpDescricao = row["eqp_descricao"];
+            equipe.eqpId = rows["eqp_id"];
+            equipe.eqpDescricao = rows["eqp_descricao"];
 
             return equipe;
         } else {
