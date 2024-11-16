@@ -7,7 +7,8 @@ export default class LoginService {
                 let http = new HttpClient();
                 let response = await http.post('/login', { email: email, senha: senha });
                 if (response.status === 200) {
-                    return true;
+                    const usuario = response.json();
+                    return usuario;
                 } else {
                     return false;
                 }

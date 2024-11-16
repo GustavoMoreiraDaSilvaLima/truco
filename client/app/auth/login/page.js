@@ -1,10 +1,11 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import LoginService from "@/app/service/login.service";
 import CadastrarService from "@/app/service/cadastrar.service";
 import ToastNotification, { showSuccessToast } from "@/app/components/toasts/index";
 import { showErrorToast } from "@/app/components/toasts/index";
+import UserContext from "@/app/context/user.context";
 
 export default function Login() {
     const router = useRouter();
@@ -14,6 +15,8 @@ export default function Login() {
     const [isLoading, setIsLoading] = useState(false);
     const [isRegister, setIsRegister] = useState(false);
     const [error, setError] = useState({});
+
+    const { setUser } = useContext(UserContext);
 
     function validar() {
         const novoErro = {};
@@ -77,7 +80,9 @@ export default function Login() {
                 const sLogin = new LoginService();
                 const login = await sLogin.login(email, senha);
                 if (login) {
-                    router.push("/"); // Redireciona após login bem-sucedido
+                    localStorage.setItem('usuario', JSON.stringify(login.usuario));
+                    setUser(login.usuario);
+                    router.push("/");
                     limpar();
                 } else {
                     showErrorToast("Credenciais inválidas");
@@ -178,7 +183,7 @@ export default function Login() {
                             <div className="d-flex justify-content-end mb-2">
                                 <button
                                     className="btn btn-link"
-                                    onClick={() =>  trocarEstado} // Alterna para tela de cadastro
+                                    onClick={() => trocarEstado} // Alterna para tela de cadastro
                                 >
                                     Crie sua conta
                                 </button>

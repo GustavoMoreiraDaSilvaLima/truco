@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Modal = ({ isOpen, toggleModal, title, children }) => {
+const Modal = ({ isOpen, toggleModal, title, children, salvar }) => {
     return (
         <>
             {/* Modal Backdrop - Camada clara de fundo */}
@@ -10,7 +10,7 @@ const Modal = ({ isOpen, toggleModal, title, children }) => {
             <div
                 className={`modal fade ${isOpen ? 'show' : ''}`}
                 id="exampleModal"
-                tabindex="-1"
+                tabIndex={-1}
                 role="dialog"
                 aria-labelledby="exampleModalLabel"
                 aria-hidden={!isOpen}
@@ -45,9 +45,11 @@ const Modal = ({ isOpen, toggleModal, title, children }) => {
                             <button
                                 type="button"
                                 className="btn btn-primary"
-                                onClick={toggleModal}
+                                onClick={
+                                    salvar
+                                }
                             >
-                                Salvar alterações
+                                Salvar
                             </button>
                         </div>
                     </div>

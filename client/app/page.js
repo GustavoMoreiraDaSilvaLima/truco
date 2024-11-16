@@ -1,25 +1,72 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import HomeService from "@/app/service/home.service";
 import Modal from "./components/modal";
+import UserContext from "./context/user.context";
+import { showErrorToast } from "./components/toasts";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
+    const [nome, setNome] = useState("");
     const [salas, setSalas] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [erro, setErro] = useState({});
+
+    const router = useRouter();
+
+    const { user } = useContext(UserContext);
 
     const toggleModal = () => setIsModalOpen(prevState => !prevState);
     const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
-    useEffect(() => {
+    async function getSalas() {
         const sHome = new HomeService();
-        const getSalas = async () => {
-            const salas = await sHome.salas();
-            setSalas(salas);
-            console.log(salas);
-        };
-        getSalas();
+        const salas = await sHome.salas();
+        setSalas(salas);
+    }
+
+    useEffect(() => {
+        getSalas(); // Carrega as salas ao iniciar o componente
     }, []);
+
+    function validar() {
+        let erros = {};
+
+        if (!nome) {
+            erros.nome = "*Informe o nome da sala";
+        }
+
+        setErro(erros);
+        return Object.keys(erros).length === 0;
+    }
+
+    function limpar() {
+        setNome("");
+        setErro({});
+    }
+
+    async function criarSala() {
+        if (validar()) {
+            let sHome = new HomeService();
+            const salaCriada = await sHome.criarSala(nome, user.usuId);
+            if (salaCriada) {
+                limpar();
+                getSalas();
+                setIsModalOpen(false); // Fecha o modal
+            }
+        }
+    }
+
+    async function logout() {
+        let sHome = new HomeService();
+        const salaCriada = await sHome.logout();
+        if (salaCriada) {
+            router.push("/auth/login");
+        } else {
+            showErrorToast("Erro ao sair");
+        }
+    }
 
     return (
         <div className="container">
@@ -31,17 +78,20 @@ export default function Home() {
 
                 <div className="col-auto">
                     <div className="dropdown">
-                        <img
-                            src="/img/download.jpg"
-                            alt="Avatar"
-                            className="rounded-circle"
-                            style={{ width: "50px", height: "50px", cursor: "pointer" }}
-                            onClick={toggleDropdown}
-                        />
+                        <div >
+                            <span className="text-white me-2 mr-2">{user?.usuNome}</span>
+                            <img
+                                src="/img/download.jpg"
+                                alt="Avatar"
+                                className="rounded-circle"
+                                style={{ width: "50px", height: "50px", cursor: "pointer" }}
+                                onClick={toggleDropdown}
+                            />
+                        </div>
                         {dropdownOpen && (
                             <ul className="dropdown-menu show" aria-labelledby="dropdownMenuButton">
                                 <li>
-                                    <button className="dropdown-item" onClick={() => alert("Saindo...")}>Sair</button>
+                                    <button className="dropdown-item" onClick={logout}>Sair</button>
                                 </li>
                             </ul>
                         )}
@@ -85,8 +135,10 @@ export default function Home() {
                 isOpen={isModalOpen}
                 toggleModal={toggleModal}
                 title="Criar Nova Sala"
+                salvar={criarSala}
             >
-                <p>Conteúdo do Modal - Aqui você pode criar uma nova sala.</p>
+                <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} className="form-control mb-3" placeholder="Nome da Sala" />
+                {erro.nome && <p className="text-danger">{erro.nome}</p>}
             </Modal>
         </div>
     );
