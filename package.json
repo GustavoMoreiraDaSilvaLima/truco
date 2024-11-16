@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "",
-    "start":  "node swagger.js"
+    "start": "node swagger.js"
   },
   "keywords": [],
   "author": "",
