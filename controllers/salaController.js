@@ -32,8 +32,8 @@ export default class SalaController {
     async gravar(req, res) {
         try {
             let { nome, usuario } = req.body;
-            if (nome && usuario && usuario.usuId > 0) {
-                let entidade = new salaEntity(0, nome, new usuarioEntity(usuario.usuId));
+            if (nome && usuario && usuario.id > 0) {
+                let entidade = new salaEntity(0, nome, new usuarioEntity(usuario.id));
 
                 let repo = new salaRepository();
                 let result = await repo.gravar(entidade);
@@ -54,8 +54,8 @@ export default class SalaController {
     async alterar(req, res) {
         try {
             let { id, nome, usuario } = req.body;
-            if (id && nome && usuario && usuario.usuId > 0) {
-                let entidade = new salaEntity(id, nome, new usuarioEntity(usuario.usuId));
+            if (id && nome && usuario && usuario.id > 0) {
+                let entidade = new salaEntity(id, nome, new usuarioEntity(usuario.id));
                 let repo = new salaRepository();
                 if (await repo.obter(id)) {
                     let result = await repo.alterar(entidade);
@@ -81,11 +81,11 @@ export default class SalaController {
         try {
             let { id, nome, usuario } = req.body;
 
-            if (id && (nome || (usuario && usuario.usuId > 0))) {
-                let salaEntidade = new salaEntity(id, nome, new usuarioEntity(usuario.usuId));
+            if (id && (nome || (usuario && usuario.id > 0))) {
+                let salaEntidade = new salaEntity(id, nome);
 
-                if (usuario && usuario.usuId > 0) {
-                    salaEntidade.usuario = new usuarioEntity(usuario.usuId);
+                if (usuario && usuario.id > 0) {
+                    salaEntidade.usuario = new usuarioEntity(usuario.id);
                 }
 
                 let salaRepo = new salaRepository();
@@ -104,12 +104,12 @@ export default class SalaController {
 
     async deletar(req, res) {
         try {
-            let { id } = req.params.id;
-            let sala = new salaRepository();
+            let { id } = req.params;
+            let sala =  new salaRepository();
             if (await sala.obter(id)) {
                 let result = await sala.delete(id);
                 if (result) {
-                    res.status(200).json(result);
+                    res.status(200).json({ msg: "Sala deletada!" });
                 } else {
                     throw new Error({ msg: "Sala não encontrada para exclusão" });
                 };
