@@ -1,6 +1,6 @@
 import BaseEntity from './baseEntity.js';
 
-export default class usuario extends BaseEntity {
+export default class usuarioEntity extends BaseEntity {
     #parId;
     #dtEntrada
     #dtSaida;
@@ -9,6 +9,7 @@ export default class usuario extends BaseEntity {
     #equipe;
 
     constructor(parId, dtEntrada, dtSaida, usuario, sala, equipe) {
+        super();
         this.#parId = parId;
         this.#dtEntrada = dtEntrada;
         this.#dtSaida = dtSaida;

@@ -1,12 +1,13 @@
 import BaseEntity from './baseEntity.js';
 
-export default class JogoEntity extends BaseEntity {
+export default class JogoEntityEntity extends BaseEntity {
     #jogId;
     #jogDtinicio;
     #jogDtfim;
     #sala;
 
     constructor(jogId, jogDtinicio, jogDtfim, sala) {
+        super();
         this.#jogId = jogId;
         this.#jogDtinicio = jogDtinicio;
         this.#jogDtfim = jogDtfim;

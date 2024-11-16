@@ -1,4 +1,6 @@
 import swaggerAutogen from "swagger-autogen";
+import salaEntity from "./entities/salaEntity.js";
+import usuarioEntity from "./entities/usuarioEntity.js";
 
 const doc = {
     info: {
@@ -6,6 +8,44 @@ const doc = {
         description: "API criada utilizando o padrão REST na disciplina de Programação Fullstack 2"
     },
     host: 'localhost:5000',
+    components: {
+        schemas: {
+            salaModel: new salaEntity(0, "Sala 1", new usuarioEntity(1)).toJSON(),
+        },
+        '@schemas': {
+            salaModel: {
+                type: 'object',
+                properties: {
+                    id: {
+                        type: "integer",
+                        required: true,
+                        example: "0"
+                    },
+                    nome: {
+                        type: "string",
+                        required: true,
+                        example: "Sala 1"
+                    },
+                    usuario: {
+                        type: "object",
+                        properties: {
+                            id: {
+                                type: "integer",
+                                required: true,
+                                example: "0"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        securitySchemes:{
+            bearerAuth: {
+                type: 'http',
+                scheme: 'bearer'
+            }
+        }
+    }
 }
 
 const outputJson = "./swagger-output.json";

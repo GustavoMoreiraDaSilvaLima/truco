@@ -206,7 +206,7 @@
         }
       }
     },
-    "/salas/": {
+    "/sala/": {
       "get": {
         "tags": [
           "Sala"
@@ -240,18 +240,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "salNome": {
-                    "example": "any"
-                  },
-                  "usuario": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/salaModel"
               }
             }
           }
@@ -278,21 +271,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "salId": {
-                    "example": "any"
-                  },
-                  "salNome": {
-                    "example": "any"
-                  },
-                  "usuario": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/salaModel"
               }
             }
           }
@@ -313,28 +296,18 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "salId": {
-                    "example": "any"
-                  },
-                  "salNome": {
-                    "example": "any"
-                  },
-                  "usuario": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/salaModel"
               }
             }
           }
         }
       }
     },
-    "/salas/{id}": {
+    "/sala/{id}": {
       "delete": {
         "tags": [
           "Sala"
@@ -1166,6 +1139,41 @@
             "description": "Internal Server Error"
           }
         }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "salaModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "required": true,
+            "example": "0"
+          },
+          "nome": {
+            "type": "string",
+            "required": true,
+            "example": "Sala 1"
+          },
+          "usuario": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "required": true,
+                "example": "0"
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }

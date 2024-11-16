@@ -1,11 +1,12 @@
 import BaseEntity from "./baseEntity.js";
 
-export default class rodada extends BaseEntity {
+export default class rodadaEntity extends BaseEntity {
     #rodId;
     #mao;
     #equipe;
 
     constructor(rodId, mao, equipe) {
+        super();
         this.#rodId = rodId;
         this.#mao = mao;
         this.#equipe = equipe;

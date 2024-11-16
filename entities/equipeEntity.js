@@ -1,10 +1,11 @@
 import BaseEntity from './baseEntity.js';
 
-export default class equipe extends BaseEntity{
+export default class equipeEntity extends BaseEntity{
     #eqpId;
     #eqpDescricao;
   
     constructor(eqpId, eqpDescricao) {
+      super();
       this.#eqpId = eqpId;
       this.#eqpDescricao = eqpDescricao;
     }

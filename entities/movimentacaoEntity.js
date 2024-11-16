@@ -1,6 +1,6 @@
 import BaseEntity from "./baseEntity.js";
 
-export default class movimentacao extends BaseEntity {
+export default class movimentacaoEntity extends BaseEntity {
     #movId;
     #movOrdem;
     #movCorreu;
@@ -10,6 +10,7 @@ export default class movimentacao extends BaseEntity {
     #participante;
 
     constructor(movId, movOrdem, movCorreu, movTrucou, carta, rodada, participante) {
+        super();
         this.#movId = movId;
         this.#movOrdem = movOrdem;
         this.#movCorreu = movCorreu;

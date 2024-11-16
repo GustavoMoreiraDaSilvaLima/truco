@@ -1,6 +1,6 @@
 import BaseEntity from "./baseEntity.js";
 
-export default class carta extends BaseEntity {
+export default class cartaEntity extends BaseEntity {
     #carId;
     #carCodigo;
     #carImagem;
@@ -11,6 +11,7 @@ export default class carta extends BaseEntity {
     #mao;
 
     constructor(carId, carCodigo, carImagem, carValor, carNaipe, carVira, participante, mao) {
+        super();
         this.#carId = carId;
         this.#carCodigo = carCodigo;
         this.#carImagem = carImagem;

@@ -1,7 +1,7 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express'
 import routerUsuarios from './routes/usuarioRoute.js';
-import routerSalas from './routes/salaRoute.js';
+import routerSala from './routes/salaRoute.js';
 import routerRodada from './routes/rodadaRoute.js';
 import routerParticipante from './routes/participanteRoute.js';
 import routerMovimentacao from './routes/movimentacaoRoute.js';
@@ -25,7 +25,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(outputJson));
 
 //rotas
 app.use("/usuarios", routerUsuarios);
-app.use("/salas", routerSalas);
+app.use("/sala", routerSala);
 app.use("/login",routerAutenticacao);
 app.use("/mao", routerMao);
 app.use("/jogo", routerJogo);
