@@ -81,10 +81,10 @@ export default class ParticipanteController {
 
     async alterarParcialmente(req, res) {
         try {
-            let { parId, dtEntrada, dtsaida, sala, equipe, usuario } = req.body;
+            let { parId, dtEntrada, dtSaida, sala, equipe, usuario } = req.body;
 
-            if (parId && (dtEntrada || dtsaida || (sala && sala.salId > 0) || (equipe && equipe.eqpId > 0) || (usuario && usuario.usuId > 0))) {
-                let participanteEntidade = new participanteEntity(parId, dtEntrada, dtsaida, new usuarioEntity(usuario.usuId), new salaEntity(sala.salId), new equipeEntity(equipe.eqpId));
+            if (parId && (dtEntrada || dtSaida || (sala && sala.salId > 0) || (equipe && equipe.eqpId > 0) || (usuario && usuario.usuId > 0))) {
+                let participanteEntidade = new participanteEntity(parId, dtEntrada, dtSaida);
 
                 if (sala && sala.salId > 0) {
                     participanteEntidade.sala = new salaEntity(sala.salId);

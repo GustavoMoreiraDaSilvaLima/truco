@@ -51,7 +51,7 @@ export default class participanteRepository extends BaseRepository {
                                          sal_id = coalesce(?, sal_id),
                                          eqp_id = coalesce(?, eqp_id)
                     where par_id = ?`;
-        let valores = [entidade.dtEntrada, entidade.dtSaida, entidade.usuario.id, entidade.sala.salId, entidade.equipe.eqpId, entidade.parId]
+        let valores = [entidade.dtEntrada, entidade.dtSaida, entidade.usuario ? entidade.usuario.usuId : null, entidade.sala ? entidade.sala.salId : null, entidade.equipe ? entidade.equipe.eqpId : null, entidade.parId]
         let result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }

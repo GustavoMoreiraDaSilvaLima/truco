@@ -973,6 +973,50 @@
             }
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "participante"
+        ],
+        "summary": "Realiza a alteração parcial do participante",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "parId": {
+                    "example": "any"
+                  },
+                  "dtEntrada": {
+                    "example": "any"
+                  },
+                  "dtSaida": {
+                    "example": "any"
+                  },
+                  "sala": {
+                    "example": "any"
+                  },
+                  "equipe": {
+                    "example": "any"
+                  },
+                  "usuario": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/participante/{id}": {
