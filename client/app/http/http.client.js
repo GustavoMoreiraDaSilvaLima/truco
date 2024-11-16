@@ -10,6 +10,7 @@ export default class HttpClient {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include' 
         });
     }
 
@@ -20,6 +21,7 @@ export default class HttpClient {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
+            credentials: 'include' 
         });
     }
 
@@ -30,6 +32,7 @@ export default class HttpClient {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
+            credentials: 'include' 
         });
     }
 
@@ -39,6 +42,7 @@ export default class HttpClient {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include' 
         });
     }
 }

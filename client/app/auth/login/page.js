@@ -40,7 +40,7 @@ export default function Login() {
                 const sLogin = new LoginSerive();
                 const login = await sLogin.login(email, senha);
                 if (login) {
-                    router.push("/admin");
+                    router.push("/");
                     limpar();
                 } else {
                     showErrorToast("Credenciais inválidas");
