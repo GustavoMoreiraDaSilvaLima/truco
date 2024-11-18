@@ -32,9 +32,14 @@ export default class HomeService {
 
     async logout() {
         try {
-            Cookies.remove('token', { path: '/' });
-            localStorage.removeItem('usuario');
-            return true;
+            let http = new HttpClient();
+            let response = await http.get('/login/logout');
+            if(response.status === 200) {
+                localStorage.removeItem('usuario');
+                return response.json();
+            }
+            
+            return false;
         } catch (e) {
             console.error(e);
         }
