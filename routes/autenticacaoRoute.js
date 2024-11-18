@@ -10,4 +10,9 @@ router.post("/",(req,res)=>{
     ctrl.token(req,res);
 })
 
+router.get("/logout",(req,res)=>{
+    // #swagger.tags = ['Autenticacao']
+    ctrl.logout(req,res);
+})
+
 export default router;

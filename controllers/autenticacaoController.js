@@ -31,5 +31,18 @@ export default class AutenticacaoController {
         } catch (error) {
             res.status(500).json({ msg: error.message })
         }
+
+
     }
+
+    async logout(req, res) {
+        try {
+            res.clearCookie("token");
+            res.status(200).json({ msg: "Logout realizado com sucesso!" })
+        }catch (error) {
+            res.status(500).json({ msg: error.message })
+        }
+    }
+
+
 }
