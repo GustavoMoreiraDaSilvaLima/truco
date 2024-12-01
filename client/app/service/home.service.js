@@ -30,18 +30,5 @@ export default class HomeService {
         }
     }
 
-    async logout() {
-        try {
-            let http = new HttpClient();
-            let response = await http.get('/login/logout');
-            if(response.status === 200) {
-                localStorage.removeItem('usuario');
-                return response.json();
-            }
-            
-            return false;
-        } catch (e) {
-            console.error(e);
-        }
-    }
+
 }

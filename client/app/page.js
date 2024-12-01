@@ -3,8 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import HomeService from "@/app/service/home.service";
 import Modal from "./components/modal";
 import UserContext from "./context/user.context";
-import { showErrorToast } from "./components/toasts";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -13,7 +12,7 @@ export default function Home() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [erro, setErro] = useState({});
 
-    const router = useRouter();
+    
 
     const { user } = useContext(UserContext);
 
@@ -58,15 +57,7 @@ export default function Home() {
         }
     }
 
-    async function logout() {
-        let sHome = new HomeService();
-        const salaCriada = await sHome.logout();
-        if (salaCriada) {
-            router.push("/auth/login");
-        } else {
-            showErrorToast("Erro ao sair");
-        }
-    }
+
 
     return (
         <div className="container">
@@ -91,7 +82,7 @@ export default function Home() {
                         {dropdownOpen && (
                             <ul className="dropdown-menu show" aria-labelledby="dropdownMenuButton">
                                 <li>
-                                    <button className="dropdown-item" onClick={logout}>Sair</button>
+                                    <Link className="dropdown-item" href="auth/login/logout">Sair</Link>
                                 </li>
                             </ul>
                         )}
