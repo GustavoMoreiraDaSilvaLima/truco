@@ -82,7 +82,7 @@ export default function Login() {
                 if (login) {
                     localStorage.setItem('usuario', JSON.stringify(login.usuario));
                     setUser(login.usuario);
-                    router.push("/");
+                    router.push("/sala");
                     limpar();
                 } else {
                     showErrorToast("Credenciais inválidas");

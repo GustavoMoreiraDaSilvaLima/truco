@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
         <body className={league.className}>
           {children}
           <script src="/js/jquery.min.js"></script>
-          <script src="/js/sb-admin-2.min"></script>
+          <script src="/js/sb-admin-2.min.js"></script>
         </body>
       </html>
     </UserProvider>
