@@ -7,11 +7,11 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
 
 
-    let usuario = null;
-    const [user, setUser] = useState(usuario);
+
+    const [user, setUser] = useState(null);
     useEffect(()=>{
         if(localStorage.getItem('usuario') != null){
-            usuario = JSON.parse(localStorage.getItem("usuario"));
+            const usuario = JSON.parse(localStorage.getItem("usuario"));
             setUser(usuario);
         }
     },[]);

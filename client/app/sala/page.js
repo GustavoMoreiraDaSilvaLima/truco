@@ -114,7 +114,7 @@ export default function Home() {
                             <div className="card shadow-sm hover-shadow">
                                 <div className="card-body">
                                     <h5 className="card-title text-truncate">#{sala.salId} - {sala.salNome}</h5>
-                                    <button className="btn btn-success w-100 mt-3">Entrar</button>
+                                    <Link href={`/sala/${sala.salId}`} className="btn btn-success w-100 mt-3">Entrar</Link>
                                 </div>
                             </div>
                         </div>
