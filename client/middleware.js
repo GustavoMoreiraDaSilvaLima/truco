@@ -6,12 +6,12 @@ export function middleware(request) {
 
     if (!token) {
         return NextResponse.redirect(new URL('/auth/login', request.url));
+    } else{
+        return NextResponse.next();
     }
-
-    return NextResponse.next();
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-    matcher: '/',
+    matcher: ['/sala/:path', '/sala']
 }

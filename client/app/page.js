@@ -1,136 +1,84 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
-import HomeService from "@/app/service/home.service";
-import Modal from "./components/modal";
-import UserContext from "./context/user.context";
+
 import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+import UserContext from "./context/user.context";
+
+
+
 
 export default function Home() {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [nome, setNome] = useState("");
-    const [salas, setSalas] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [erro, setErro] = useState({});
 
-    
-
-    const { user } = useContext(UserContext);
-
-    const toggleModal = () => setIsModalOpen(prevState => !prevState);
-    const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
-
-    async function getSalas() {
-        const sHome = new HomeService();
-        const salas = await sHome.salas();
-        setSalas(salas);
-    }
+    const { user, setUser } = useContext(UserContext);
+    const {UsuarioCarregao, setUsuarioCarregao} = useState(null);
+    console.log(user);
 
     useEffect(() => {
-        getSalas(); // Carrega as salas ao iniciar o componente
+        
     }, []);
 
-    function validar() {
-        let erros = {};
-
-        if (!nome) {
-            erros.nome = "*Informe o nome da sala";
-        }
-
-        setErro(erros);
-        return Object.keys(erros).length === 0;
-    }
-
-    function limpar() {
-        setNome("");
-        setErro({});
-    }
-
-    async function criarSala() {
-        if (validar()) {
-            let sHome = new HomeService();
-            const salaCriada = await sHome.criarSala(nome, user.usuId);
-            if (salaCriada) {
-                limpar();
-                getSalas();
-                setIsModalOpen(false); // Fecha o modal
-            }
-        }
-    }
-
-
-
     return (
-        <div className="container">
-            {/* Cabeçalho */}
-            <div className="row justify-content-between bg-primary align-items-center p-3 rounded-3 shadow">
-                <div className="col text-center">
-                    <h1 className="font-weight-bold text-white">TRUCADA FOFA</h1>
-                </div>
-
-                <div className="col-auto">
-                    <div className="dropdown">
-                        <div >
-                            <span className="text-white me-2 mr-2">{user?.usuNome}</span>
-                            <img
-                                src="/img/download.jpg"
-                                alt="Avatar"
-                                className="rounded-circle"
-                                style={{ width: "50px", height: "50px", cursor: "pointer" }}
-                                onClick={toggleDropdown}
-                            />
-                        </div>
-                        {dropdownOpen && (
-                            <ul className="dropdown-menu show" aria-labelledby="dropdownMenuButton">
-                                <li>
-                                    <Link className="dropdown-item" href="auth/login/logout">Sair</Link>
-                                </li>
-                            </ul>
-                        )}
-                    </div>
-                </div>
-            </div>
-
-            {/* Título e Botão Criar Sala */}
-            <div className="row justify-content-between align-items-center my-4">
-                <div className="col text-center">
-                    <h3 className="font-weight-bold text-white">Salas Disponíveis</h3>
+        <>
+            <header className="mt-5">
+                <div className="container">
+                    <h1>Truco FIPP</h1>
+                    <nav>
+                        <ul>
+                            <li><a href="#sobre">Sobre</a></li>
+                            <li><a href="#regras">Regras</a></li>
+                            <li><a href="#torneios">Torneios</a></li>
+                            <li><a href="#contato">Contato</a></li>
+                        </ul>
+                    </nav>
                 </div>
                 <div className="col-auto">
-                    <button className="btn btn-primary" onClick={toggleModal}>
-                        Criar Sala
-                    </button>
+                    {user ?
+                        <>
+                            <h5>Olá {user.usuNome}</h5>
+                            <Link className='btn btn-danger' href='/auth/login/logout'>Sair</Link>
+                        </> :
+                        <>
+                            <h5>Entre ou Registre-se agora</h5>
+                            <Link className= 'btn btn-primary' href='/auth/login'>Login</Link>
+                        </>
+                    }
+
                 </div>
-            </div>
-
-            {/* Exibição das Salas */}
-            <div className="row justify-content-center">
-                {salas.length === 0 ? (
-                    <div className="col-12 text-center">
-                        <p className="text-white">Nenhuma sala disponível no momento.</p>
+            </header>
+            <main>
+                <section id="sobre">
+                    <div className="container">
+                        <h2>Sobre o Truco FIPP</h2>
+                        <p>O Truco FIPP é uma tradição que une alunos, ex-alunos e entusiastas da Faculdade de Informática de Presidente Prudente. Combinando estratégia, diversão e espírito competitivo, nossos eventos são conhecidos por criar memórias inesquecíveis.</p>
                     </div>
-                ) : (
-                    salas.map((sala) => (
-                        <div key={sala.salId} className="col-12 col-md-4 mb-4">
-                            <div className="card shadow-sm hover-shadow">
-                                <div className="card-body">
-                                    <h5 className="card-title text-truncate">#{sala.salId} - {sala.salNome}</h5>
-                                    <button className="btn btn-success w-100 mt-3">Entrar</button>
-                                </div>
-                            </div>
-                        </div>
-                    ))
-                )}
-            </div>
+                </section>
 
-            <Modal
-                isOpen={isModalOpen}
-                toggleModal={toggleModal}
-                title="Criar Nova Sala"
-                salvar={criarSala}
-            >
-                <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} className="form-control mb-3" placeholder="Nome da Sala" />
-                {erro.nome && <p className="text-danger">{erro.nome}</p>}
-            </Modal>
-        </div>
+                <section id="regras">
+                    <div className="container">
+                        <h2>Regras do Truco</h2>
+                        <p>O jogo segue as regras clássicas do truco paulista, com algumas variações regionais. Conheça as principais:</p>
+                        <ul>
+                            <li>Baralho reduzido (4 a 7, Q, J, K e A).</li>
+                            <li>Pontuação até 12 pontos.</li>
+                            <li>Truco, Seis, Nove e Doze fazem parte do jogo estratégico.</li>
+                            <li>Manilhas definidas pelo "vira".</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section id="torneios">
+                    <div className="container">
+                        <h2>Torneios</h2>
+                        <p>Os torneios de Truco FIPP são realizados anualmente e atraem jogadores de todo o estado. Inscreva-se e mostre suas habilidades na mesa!</p>
+                        <a href="#" className="btn">Saiba mais</a>
+                    </div>
+                </section>
+            </main>
+            <footer>
+                <div className="container">
+                    <p>&copy; 2024 Truco FIPP. Todos os direitos reservados.</p>
+                </div>
+            </footer>
+        </>
     );
 }
