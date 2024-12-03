@@ -1,67 +1,24 @@
 "use client";
-import { useContext, useEffect, useState } from "react";
-import HomeService from "@/app/service/home.service";
-import Modal from "../../components/modal";
+import { useContext, useEffect, useRef, useState } from "react";
 import UserContext from "../../context/user.context";
-import Link from "next/link";
+import { io } from 'socket.io-client';
+import React from "react";
 
-export default function Home() {
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [nome, setNome] = useState("");
-    const [salas, setSalas] = useState([]);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [erro, setErro] = useState({});
-
-    
-
+export default function Home({ params }) {
+    const socket = io('http://localhost:4000');
+    const { id } = React.use(params)
     const { user } = useContext(UserContext);
 
-    const toggleModal = () => setIsModalOpen(prevState => !prevState);
-    const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
-    async function getSalas() {
-        const sHome = new HomeService();
-        const salas = await sHome.salas();
-        setSalas(salas);
-    }
-
+    console.log(id);
     useEffect(() => {
-        getSalas(); // Carrega as salas ao iniciar o componente
-    }, []);
-
-    function validar() {
-        let erros = {};
-
-        if (!nome) {
-            erros.nome = "*Informe o nome da sala";
-        }
-
-        setErro(erros);
-        return Object.keys(erros).length === 0;
-    }
-
-    function limpar() {
-        setNome("");
-        setErro({});
-    }
-
-    async function criarSala() {
-        if (validar()) {
-            let sHome = new HomeService();
-            const salaCriada = await sHome.criarSala(nome, user.usuId);
-            if (salaCriada) {
-                limpar();
-                getSalas();
-                setIsModalOpen(false); // Fecha o modal
-            }
-        }
-    }
+    }, [])
 
 
 
     return (
-      <div>
-        <h1>Local onde fica o jogo</h1>
+        <div>
+            <h1>Local onde fica o jogo</h1>
         </div>
     );
 }

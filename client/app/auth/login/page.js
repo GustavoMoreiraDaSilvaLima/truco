@@ -6,6 +6,7 @@ import CadastrarService from "@/app/service/cadastrar.service";
 import ToastNotification, { showSuccessToast } from "@/app/components/toasts/index";
 import { showErrorToast } from "@/app/components/toasts/index";
 import UserContext from "@/app/context/user.context";
+import Link from "next/link";
 
 export default function Login() {
     const router = useRouter();
