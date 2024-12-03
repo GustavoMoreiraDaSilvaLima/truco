@@ -31,7 +31,7 @@ export default function Home() {
                         <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
                             <ul className="navbar-nav mx-auto mb-2 mb-lg-0">
                                 <li className="nav-item">
-                                    <Link className="nav-link" href="#">Home</Link>
+                                    <Link className="nav-link" href="/">Home</Link>
                                 </li>
                                 {user ? (
                                     <li className="nav-item">
