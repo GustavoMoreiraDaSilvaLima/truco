@@ -50,7 +50,7 @@ export default function Login() {
     }
 
     function trocarEstado() {
-        setIsRegister(!isRegister);
+            setIsRegister(!isRegister);
         limpar();
     }
 
@@ -183,7 +183,7 @@ export default function Login() {
                             <div className="d-flex justify-content-end mb-2">
                                 <button
                                     className="btn btn-link"
-                                    onClick={() => trocarEstado} // Alterna para tela de cadastro
+                                    onClick={() => trocarEstado()} // Alterna para tela de cadastro
                                 >
                                     Crie sua conta
                                 </button>
