@@ -99,11 +99,9 @@ export default function Login() {
 
     return (
         <div className="login-box container d-flex justify-content-center align-items-center vh-100">
-            <div className="card card-outline card-primary" style={{ maxWidth: "400px", width: "100%" }}>
+            <div className="card card-outline card" style={{ maxWidth: "400px", width: "100%" }}>
                 <div className="card-header text-center">
-                    <a className="link-dark text-center link-offset-2 link-opacity-100 link-opacity-50-hover">
-                        <h1 className="mb-0"><b>TRUCADA</b> FOFA</h1>
-                    </a>
+                    <h1 className="mb-0 text-success font-weight-bold">TRUCADA FOFA</h1>
                 </div>
                 <div className="card-body login-card-body">
                     <p className="login-box-msg text-center">
@@ -193,7 +191,7 @@ export default function Login() {
 
                     <div className="d-flex justify-content-center">
                         <button
-                            className="btn btn-primary w-100"
+                            className="btn btn-success w-100 "
                             onClick={isRegister ? CriarUsuario : login}
                             disabled={isLoading || !email || !senha}
                         >
