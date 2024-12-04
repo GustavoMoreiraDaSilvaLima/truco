@@ -914,27 +914,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "dtEntrada": {
-                    "example": "any"
-                  },
-                  "dtSaida": {
-                    "example": "any"
-                  },
-                  "sala": {
-                    "example": "any"
-                  },
-                  "equipe": {
-                    "example": "any"
-                  },
-                  "usuario": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/participanteModel"
               }
             }
           }
@@ -961,30 +945,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "parId": {
-                    "example": "any"
-                  },
-                  "dtEntrada": {
-                    "example": "any"
-                  },
-                  "dtSaida": {
-                    "example": "any"
-                  },
-                  "sala": {
-                    "example": "any"
-                  },
-                  "equipe": {
-                    "example": "any"
-                  },
-                  "usuario": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/participanteModel"
               }
             }
           }
@@ -1005,30 +970,11 @@
           }
         },
         "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "parId": {
-                    "example": "any"
-                  },
-                  "dtEntrada": {
-                    "example": "any"
-                  },
-                  "dtSaida": {
-                    "example": "any"
-                  },
-                  "sala": {
-                    "example": "any"
-                  },
-                  "equipe": {
-                    "example": "any"
-                  },
-                  "usuario": {
-                    "example": "any"
-                  }
-                }
+                "$ref": "#/components/schemas/participanteModel"
               }
             }
           }
@@ -1430,6 +1376,51 @@
             "type": "object",
             "properties": {
               "id": {
+                "type": "integer",
+                "required": true,
+                "example": "0"
+              }
+            }
+          }
+        }
+      },
+      "participanteModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "required": true,
+            "example": "0"
+          },
+          "dtEntrada": {
+            "type": "string",
+            "required": true,
+            "example": "data"
+          },
+          "sala": {
+            "type": "object",
+            "properties": {
+              "salId": {
+                "type": "integer",
+                "required": true,
+                "example": "0"
+              }
+            }
+          },
+          "equipe": {
+            "type": "object",
+            "properties": {
+              "eqpId": {
+                "type": "integer",
+                "required": true,
+                "example": "0"
+              }
+            }
+          },
+          "usuario": {
+            "type": "object",
+            "properties": {
+              "usuId": {
                 "type": "integer",
                 "required": true,
                 "example": "0"

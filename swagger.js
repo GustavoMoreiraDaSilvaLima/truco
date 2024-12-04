@@ -1,6 +1,7 @@
 import swaggerAutogen from "swagger-autogen";
 import salaEntity from "./entities/salaEntity.js";
 import usuarioEntity from "./entities/usuarioEntity.js";
+import participanteEntity from "./entities/participanteEntity.js";
 
 const doc = {
     info: {
@@ -11,6 +12,7 @@ const doc = {
     components: {
         schemas: {
             salaModel: new salaEntity(0, "Sala 1", new usuarioEntity(1)).toJSON(),
+            participanteModel: new participanteEntity(0, "", "", new usuarioEntity(1), new salaEntity(1)).toJSON(),
         },
         '@schemas': {
             salaModel: {
@@ -30,6 +32,51 @@ const doc = {
                         type: "object",
                         properties: {
                             id: {
+                                type: "integer",
+                                required: true,
+                                example: "0"
+                            }
+                        }
+                    }
+                }
+            },
+            participanteModel: {
+                type: 'object',
+                properties: {
+                    id: {
+                        type: "integer",
+                        required: true,
+                        example: "0"
+                    },
+                    dtEntrada: {
+                        type: "string",
+                        required: true,
+                        example: "data"
+                    },
+                    sala: {
+                        type: "object",
+                        properties: {
+                            salId: {
+                                type: "integer",
+                                required: true,
+                                example: "0"
+                            }
+                        }
+                    },
+                    equipe: {
+                        type: "object",
+                        properties: {
+                            eqpId: {
+                                type: "integer",
+                                required: true,
+                                example: "0"
+                            }
+                        }
+                    },
+                    usuario: {
+                        type: "object",
+                        properties: {
+                            usuId: {
                                 type: "integer",
                                 required: true,
                                 example: "0"

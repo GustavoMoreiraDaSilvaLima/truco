@@ -19,18 +19,51 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     // #swagger.tags = ['participante']
     // #swagger.summary = 'Cadastra um participante'
+        /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/participanteModel"
+                    }  
+                }
+            }
+        } 
+    */
     ctrl.gravar(req, res);
 });
 
 router.put('/', (req, res) => {
     // #swagger.tags = ['participante']
     // #swagger.summary = 'Altera um participante'
+            /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/participanteModel"
+                    }  
+                }
+            }
+        } 
+    */
     ctrl.alterar(req, res);
 });
 
 router.patch("/", (req, res) => {
     //#swagger.tags = ['participante']
     //#swagger.summary = 'Realiza a alteração parcial do participante'
+            /*  #swagger.requestBody = {
+            required: true,
+            content: {
+                "application/json": {
+                    schema: {
+                        $ref: "#/components/schemas/participanteModel"
+                    }  
+                }
+            }
+        } 
+    */
     ctrl.alterarParcialmente(req, res);
 });
 

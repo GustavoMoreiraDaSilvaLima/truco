@@ -33,9 +33,9 @@ export default class ParticipanteController {
 
     async gravar(req, res) {
         try {
-            let { dtEntrada, dtSaida, sala, equipe, usuario } = req.body;
+            let { dtEntrada, sala, equipe, usuario } = req.body;
             if (sala && sala.salId > 0 && equipe && equipe.eqpId > 0 && usuario && usuario.usuId > 0) {
-                let entidade = new participanteEntity(0, dtEntrada, dtSaida, new usuarioEntity(usuario.usuId), new salaEntity(sala.salId), new equipeEntity(equipe.eqpId));
+                let entidade = new participanteEntity(0, dtEntrada, "", new usuarioEntity(usuario.usuId), new salaEntity(sala.salId), new equipeEntity(equipe.eqpId));
 
                 let repo = new participanteRepository();
                 let result = await repo.gravar(entidade);

@@ -31,8 +31,8 @@ export default class participanteRepository extends BaseRepository {
     }
 
     async gravar(entidade) {
-        let sql = "insert into tb_participante (par_dtentrada, par_dtsaida, usu_id, sal_id, eqp_id) values (?, ?, ?, ?, ?);";
-        let valores = [entidade.dtEntrada, entidade.dtSaida, entidade.usuario.usuId, entidade.sala.salId, entidade.equipe.eqpId];
+        let sql = "insert into tb_participante (par_dtentrada, usu_id, sal_id, eqp_id) values (NOW(), ?, ?, ?);";
+        let valores = [entidade.usuario.usuId, entidade.sala.salId, entidade.equipe ? entidade.equipe.eqpId : null];
         let result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }

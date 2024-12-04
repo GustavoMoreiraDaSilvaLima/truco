@@ -1,6 +1,6 @@
 import BaseEntity from './baseEntity.js';
 
-export default class usuarioEntity extends BaseEntity {
+export default class participanteEntity extends BaseEntity {
     #parId;
     #dtEntrada
     #dtSaida;
