@@ -66,6 +66,14 @@ export default class participanteRepository extends BaseRepository {
         return result;
     }
 
+
+
+    async obterQuantidadePorSala(Id){
+        let sql = "select count(*) as total from tb_participante where sal_id = ?";
+        let valores = [Id];
+        let row = await this.db.ExecutaComando(sql, valores);
+        return row[0].total;
+    }
     toMap(rows) {
 
         if (rows && typeof rows.length == "number") {

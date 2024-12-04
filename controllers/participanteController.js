@@ -128,4 +128,23 @@ export default class ParticipanteController {
             res.status(500).json({ msg: ex.message });
         }
     }
+
+    async ValidarParticipante(Objeto){
+        try{
+            let participante = new participanteRepository();
+            let result = await participante.obterQuantidadePorSala(Objeto.Sala);
+            if(result< 4){
+                let participanteEntidade = new participanteEntity(0,0,0, new usuarioEntity(Objeto.IdUsuario), new salaEntity(Objeto.Sala),0);
+                let result = await participante.gravar(participanteEntidade);
+                if(result){
+                    return true;
+                }else{
+                    return false;
+                }
+            }
+        }catch(error){
+            console.log(error.msg);
+            return false;
+        }
+    }
 }
