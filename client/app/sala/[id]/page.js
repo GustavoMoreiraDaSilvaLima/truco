@@ -1,17 +1,23 @@
 "use client";
 import { useContext, useEffect, useRef, useState } from "react";
 import UserContext from "../../context/user.context";
-import { io } from 'socket.io-client';
+
 import React from "react";
+import HttpSocket from "@/app/http/http.socket";
 
 export default function Home({ params }) {
-    const socket = io('http://localhost:4000');
+    const socket = new HttpSocket();
     const { id } = React.use(params)
     const { user } = useContext(UserContext);
 
-
+    console.log(user);
+   
     console.log(id);
     useEffect(() => {
+        if(user){
+            console.log(user.usuId);
+            socket.init(id, user.usuId); 
+        }
     }, [])
 
 
