@@ -37,9 +37,16 @@ export default class participanteRepository extends BaseRepository {
         return result;
     }
 
+    async sair(id) {
+        let sql = "update tb_participante set par_dtsaida = NOW() where par_id = ?;";
+        let valores = [id];
+        let result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        return result;
+    }
+
     async alterar(entidade) {
         let sql = "update tb_participante set par_dtentrada = ?, par_dtsaida = ?, usu_id = ?, sal_id = ?, eqp_id = ? where par_id = ?;";
-        let valores = [entidade.dtEntrada, entidade.dtSaida, entidade.usuario.usuId, entidade.sala.salId, entidade.equipe.eqpId, entidade.parId];
+        let valores = [entidade.dtEntrada ? entidade.dtEntrada : null, entidade.dtSaida ? entidade.dtSaida : null, entidade.usuario.usuId, entidade.sala.salId, entidade.equipe.eqpId, entidade.parId];
         let result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }

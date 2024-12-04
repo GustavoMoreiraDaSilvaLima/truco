@@ -43,7 +43,7 @@ const doc = {
             participanteModel: {
                 type: 'object',
                 properties: {
-                    id: {
+                    parId: {
                         type: "integer",
                         required: true,
                         example: "0"
@@ -51,7 +51,12 @@ const doc = {
                     dtEntrada: {
                         type: "string",
                         required: true,
-                        example: "data"
+                        example: ""
+                    },
+                    dtSaida: {
+                        type: "string",
+                        required: true,
+                        example: ""
                     },
                     sala: {
                         type: "object",
