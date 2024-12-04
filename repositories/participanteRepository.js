@@ -37,9 +37,9 @@ export default class participanteRepository extends BaseRepository {
         return result;
     }
 
-    async sair(id) {
-        let sql = "update tb_participante set par_dtsaida = NOW() where par_id = ?;";
-        let valores = [id];
+    async sair(id, sala) {
+        let sql = "update tb_participante set par_dtsaida = NOW() where usu_id = ? and sal_id = ?;";
+        let valores = [id, sala];
         let result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }
@@ -76,10 +76,17 @@ export default class participanteRepository extends BaseRepository {
 
 
     async obterQuantidadePorSala(Id){
-        let sql = "select count(*) as total from tb_participante where sal_id = ?";
+        let sql = "select count(*) as total from tb_participante where sal_id = ? and par_dtsaida is null; ";
         let valores = [Id];
         let row = await this.db.ExecutaComando(sql, valores);
         return row[0].total;
+    }
+
+    async obterParticipanteSala(user, sala){
+        let sql = "select * from tb_participante where usu_id = ? and sal_id = ? and par_dtsaida is null; ";
+        let valores = [user, sala];
+        let row = await this.db.ExecutaComando(sql, valores);
+        return this.toMap(row[0]);
     }
     toMap(rows) {
 

@@ -27,16 +27,27 @@ export default function socket(io) {
                 if (IdSala && IdSala > 0 && IdUsuario && IdUsuario > 0) {
                     Participantes.ValidarParticipante(objeto)
                         .then((r) => {
-                            if (r) {
-                                io.to(IdSala).emit('RespostaEntrar', {ok: true, Id: IdUsuario, Nome: NomeUsuario , msg: 'Participante inserido!'});
-                            } else {
-                                io.to(IdSala).emit('RespostaEntrar', {ok: false, Id: IdUsuario, Nome: NomeUsuario, msg: 'Sala cheia, não é possivel entrar!' });
+                            if (r == 201) {
+                                io.to(IdSala).emit('RespostaEntrar', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: 'Participante inserido!' });
+                            } else if(r == 200){
+                                io.to(IdSala).emit('RespostaEntrar', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: 'Participante Reconectando' });
+                            }else{
+                                io.to(IdSala).emit('RespostaEntrar', { ok: false, Id: IdUsuario, Nome: NomeUsuario, msg: 'Sala cheia, não é possivel entrar!' });
                             }
                         }
                         )
                         .catch(e => console.log(e));
 
                 }
+            })
+            socket.on('disconnect', () => {
+                Participantes.RemoverParticipante(objeto).then(r => {
+                    if(r){
+                        io.to(IdSala).emit('RespostaSair', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: 'Participante Saiu!' });
+                    }
+                }).catch(e => {
+                    console.log(e)
+                });
             })
 
             console.log('Nome:', IdUsuario + ' ' + 'Sala:', IdSala);

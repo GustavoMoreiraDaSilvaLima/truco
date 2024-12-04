@@ -129,22 +129,40 @@ export default class ParticipanteController {
         }
     }
 
-    async ValidarParticipante(Objeto){
-        try{
+    async ValidarParticipante(Objeto) {
+        try {
             let participante = new participanteRepository();
             let result = await participante.obterQuantidadePorSala(Objeto.Sala);
-            if(result< 4){
-                let participanteEntidade = new participanteEntity(0,0,0, new usuarioEntity(Objeto.IdUsuario), new salaEntity(Objeto.Sala),0);
-                let result = await participante.gravar(participanteEntidade);
-                if(result){
-                    return true;
-                }else{
-                    return false;
+            if (result < 4) {
+                if (!(await participante.obterParticipanteSala(Objeto.IdUsuario, Objeto.Sala))) {
+                    let participanteEntidade = new participanteEntity(0, 0, 0, new usuarioEntity(Objeto.IdUsuario), new salaEntity(Objeto.Sala), 0);
+                    let result = await participante.gravar(participanteEntidade);
+                    if (result) {
+                        return 201;
+                    }
+
                 }
+                return 200;
+
             }
-        }catch(error){
+        } catch (error) {
             console.log(error.msg);
+            return 500;
+        }
+    }
+
+    async RemoverParticipante(Objeto) {
+        try {
+            const participante = new participanteRepository();
+            let result = await participante.sair(Objeto.IdUsuario, Objeto.Sala);
+            if (result) {
+                return 200;
+            }
+            return false
+        } catch (e) {
+            console.log(e.msg);
             return false;
         }
+
     }
 }
