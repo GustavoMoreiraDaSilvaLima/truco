@@ -81,14 +81,14 @@ export default class participanteRepository extends BaseRepository {
     }
 
     async obterParticipanteSala(user, sala){
-        let sql = "select * from tb_participante where usu_id = ? and sal_id = ? and par_dtsaida is null; ";
+        let sql = "select * from tb_participante where usu_id = ? and sal_id = ? and par_dtsaida is not null; ";
         let valores = [user, sala];
         let row = await this.db.ExecutaComando(sql, valores);
         return this.toMap(row[0]);
     }
 
     async obterEquipeSala(sala){
-        let sql = `select * from tb_participante where sal_id = ? and par_dtsaida is null and eqp_id <> null;`;
+        let sql = `select * from tb_participante p INNER JOIN tb_usuario u ON u.usu_id = p.usu_id where p.sal_id = 6 and p.par_dtsaida is null and p.eqp_id IS NOT  null;`;
         let valores = [sala];
         let row = await this.db.ExecutaComando(sql, valores);
         return this.toMap(row);
