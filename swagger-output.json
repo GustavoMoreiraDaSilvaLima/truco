@@ -1355,6 +1355,36 @@
           }
         }
       }
+    },
+    "/equipe/sala/{id}": {
+      "get": {
+        "tags": [
+          "Equipe"
+        ],
+        "summary": "Retorna um equipe baseado em um código",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "components": {

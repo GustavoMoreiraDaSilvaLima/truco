@@ -15,4 +15,19 @@ export default class EquipeService {
             console.error(e);
         }
     }
+
+
+    async ListarParticipantesSala(sala){
+        try {
+            let http = new HttpClient();
+            let response = await http.get(`/equipe/sala/${sala}`);
+            if (response.status === 200) {
+                return response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }

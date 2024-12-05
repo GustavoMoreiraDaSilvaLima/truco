@@ -6,33 +6,48 @@ export default function Equipe({ funcao, idSala }) {
 
 
     const [lista, setLista] = useState([]);
+    const [participantes, setParticipantes] = useState([]);
+
     async function BuscarEquipes() {
         let sEquipe = new EquipeService();
         let equipes = await sEquipe.ListarEquipe();
-        console.log(equipes)
         setLista(equipes);
-        console.log(lista);
     }
 
+    async function BuscarParticipantes() {
+        let sEquipe = new EquipeService();
+        let participante = await sEquipe.ListarParticipantesSala(idSala);
+        setParticipantes(participante);
+    }
     useEffect(() => {
         BuscarEquipes();
+        BuscarParticipantes();
     }, [])
 
     return (
         <div>
             <h1>Equipes</h1>
             <div>
-                {lista ? lista.map((value, index) => (
+                {lista.map((equipe, index) => (
                     <div key={index}>
-                        <h1>{value.eqpDescricao}</h1>
-                        
-                        <button onClick={() => funcao(value.eqpId, idSala)}></button>
-                    </div>)) : (
-                    <div>
-                        <h1>Ocorreu um erro Interno no serivdor</h1>
-                    </div>)}
-
+                        <h2>{equipe.eqpDescricao}</h2>
+                        <h3>Participantes:</h3>
+                        {participantes
+                            .filter(
+                                (participante) =>
+                                    participante.equipe && participante.equipe.eqpId === equipe.eqpId
+                            )
+                            .map((participante, idx) => (
+                                <div key={idx}>
+                                    <p>{participante.usuario.usuNome}</p>
+                                </div>
+                            ))}
+                        <button onClick={() => funcao(equipe.eqpId, idSala)}>
+                            Entrar na Equipe
+                        </button>
+                    </div>
+                ))}
             </div>
         </div>
-    )
+    );
 }
