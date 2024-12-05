@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Loading from "@/app/components/loading";
 import Chat from "@/app/components/chat";
 import Link from "next/link";
+import Equipe from "@/app/components/Equipe";
 
 export default function Home({ params }) {
 
@@ -18,6 +19,7 @@ export default function Home({ params }) {
 
 
     const [loading, setLoading] = useState(true);
+    const [partida, setPartida] = useState(false);
     const [chat, setChat] = useState([]);
     const route = useRouter();
     const [MensagemSaida, setMensagemSaida] = useState("Carregando");
@@ -28,11 +30,10 @@ export default function Home({ params }) {
             socket.current.emit('entrar');
             socket.current.on('RespostaEntrar', (dados) => {
                 if (dados.ok) {
-                    setLoading(true);
+                    setLoading(false);
                     setChat(chat => [...chat, `O jogador ${dados.Nome} ${dados.msg}`]);
                 } else {
                     setMensagemSaida(`Sala cheia, não é possivel entrar!`);
-                    setLoading(false);
                     setTimeout(() => {
                         route.push('/sala')
                     }, 1500);
@@ -45,12 +46,16 @@ export default function Home({ params }) {
                 }
             })
         } else {
-            setLoading(false);
+            setLoading(true);
             setMensagemSaida(`Infelizmente ocorreu um erro, retornando!`);
             setTimeout(() => {
                 route.push('/sala')
             }, 1500);
         }
+    }
+
+    function EntrarEquipe(){
+
     }
 
 
@@ -64,18 +69,28 @@ export default function Home({ params }) {
 
     return (
         <>
-
+            <h1>Sala: {id}</h1>
             {loading ? (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", height: "100vh", justifyContent: "Center" }}>
+                    <Loading></Loading>
+                    <h2>{MensagemSaida}</h2>
+                </div>
+            ) : !partida ?(
                 <div>
                     <Link className='btn btn-primary' href="/sala">Retornar as salas</Link>
                     <div>
                         <Chat dados={chat}></Chat>
                     </div>
+                    <div>
+                        <Equipe funcao={EntrarEquipe} idSala = {id}></Equipe>
+                    </div>
+                    <button>Pronto?</button>
                 </div>
-            ) : <div style={{ display: "flex", flexDirection: "column", alignItems: "center", height: "100vh", justifyContent: "Center" }}>
-                <Loading></Loading>
-                <h2>{MensagemSaida}</h2>
-            </div>}
+            ):(
+                <div>
+
+                </div>
+            )}
 
         </>
     );
