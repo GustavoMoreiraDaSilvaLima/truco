@@ -9,6 +9,10 @@ import routerMao from './routes/maoRoute.js';
 import routerJogo from './routes/jogoRoute.js';
 import routerEquipe from './routes/equipeRoute.js';
 import routerAutenticacao from './routes/autenticacaoRoute.js';
+import http from 'http'
+import socketInit from './socket/jogoSocket.js'
+import { Server } from 'socket.io';
+
 
 
 import cookieParser from 'cookie-parser';
@@ -19,10 +23,19 @@ const require = createRequire(import.meta.url);
 const outputJson = require("./swagger-output.json");
 
 const app = express();
+const server = http.createServer(app);
 app.use(express.urlencoded({ extended: true }));
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(cookieParser());
 app.use(express.json());
+
+const io = new Server(server, {
+    cors: {
+        origin: "http://localhost:3000"
+    }
+});
+
+socketInit(io);
 
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(outputJson));
 
@@ -37,6 +50,10 @@ app.use("/participante", routerParticipante);
 app.use("/movimentacao", routerMovimentacao);
 app.use("/equipe", routerEquipe);
 
+
+server.listen(4000, function () {
+    console.log("socket em funcionamento!");
+});
 app.listen(5000, function () {
     console.log("servidor web em funcionamento!");
-})  
+});
