@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-
+ 
 export default function Equipe({funcao, idSala}) {
     
     function BuscarEquipes(){
