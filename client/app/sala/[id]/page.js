@@ -1,4 +1,5 @@
 "use client";
+
 import { useContext, useEffect, useRef, useState } from "react";
 import UserContext from "../../context/user.context";
 
@@ -107,24 +108,26 @@ export default function Home({ params }) {
                                     <div className="card shadow-lg">
                                         <div className="card-body d-flex flex-column align-items-center justify-content-center">
                                             <h2 className="mt-2">Equipe 1</h2>
-                                            {participantes1.map((participantes) => (
-                                                <Participantes key={participantes.id} participantes={participantes} />
+                                            {participantes1.map((participante, index) => (
+                                                <Participantes key={index} participantes={participante} />
                                             ))}
                                             <button className="btn btn-info mt-2 mb-2">Entrar na Equipe 1</button>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className="col-12 col-md-5 mb-3">
                                     <div className="card shadow-lg">
                                         <div className="card-body d-flex flex-column align-items-center justify-content-center">
                                             <h2 className="mt-2">Equipe 2</h2>
-                                            {participantes2.map((participantes) => (
-                                                <Participantes key={participantes.id} participantes={participantes} />
+                                            {participantes2.map((participante, index) => (
+                                                <Participantes key={index} participantes={participante} />
                                             ))}
-                                            <button className="btn btn-info  mt-2 mb-2">Entrar na Equipe 2</button>
+                                            <button className="btn btn-info mt-2 mb-2">Entrar na Equipe 2</button>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                         </section>
                     </div>
