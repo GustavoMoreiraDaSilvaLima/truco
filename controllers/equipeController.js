@@ -38,7 +38,7 @@ export default class EquipeController {
             let participante = new participanteRepository();
             let entidade = await participante.obterEquipeSala(id);
             if (entidade) {
-                res.status(200).json(equipe);
+                res.status(200).json(entidade);
             } else {
                 res.status(404).json({ msg: "Equipe não encontrado pelo id da sala!" });
             }
