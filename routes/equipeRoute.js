@@ -31,6 +31,12 @@ router.get("/:id", (req, res) => {
     ctrl.obter(req, res);
 });
 
+router.get("/sala/:id", (req, res) => {
+    //#swagger.tags = ['Equipe']
+    //#swagger.summary = 'Retorna um equipe baseado em um código'
+    ctrl.obterEquipeSala(req, res);
+});
+
 router.put("/", (req, res) => {
     //#swagger.tags = ['Equipe']
     //#swagger.summary = 'Altera um equipe'
