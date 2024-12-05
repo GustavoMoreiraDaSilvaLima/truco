@@ -73,8 +73,6 @@ export default class participanteRepository extends BaseRepository {
         return result;
     }
 
-
-
     async obterQuantidadePorSala(Id){
         let sql = "select count(*) as total from tb_participante where sal_id = ? and par_dtsaida is null; ";
         let valores = [Id];
@@ -88,6 +86,14 @@ export default class participanteRepository extends BaseRepository {
         let row = await this.db.ExecutaComando(sql, valores);
         return this.toMap(row[0]);
     }
+
+    async obterEquipeSala(sala){
+        let sql = `select * from tb_participante where sal_id = ? and par_dtsaida is null and eqp_id <> null;`;
+        let valores = [sala];
+        let row = await this.db.ExecutaComando(sql, valores);
+        return this.toMap(row);
+    }
+
     toMap(rows) {
 
         if (rows && typeof rows.length == "number") {

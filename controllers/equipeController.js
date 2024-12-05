@@ -1,5 +1,6 @@
 import EquipeEntity from "../entities/equipeEntity.js";
 import EquipeRepository from "../repositories/equipeRepository.js";
+import participanteRepository from "../repositories/participanteRepository.js";
 export default class EquipeController {
 
     async listar(req, res) {
@@ -26,6 +27,22 @@ export default class EquipeController {
             }
         }
         catch (ex) {
+            res.status(500).json({ msg: ex.message });
+        }
+    }
+
+    async obterEquipeSala(req, res) {
+        try {
+
+            let { id } = req.params;
+            let participante = new participanteRepository();
+            let entidade = await participante.obterEquipeSala(id);
+            if (entidade) {
+                res.status(200).json(equipe);
+            } else {
+                res.status(404).json({ msg: "Equipe não encontrado pelo id da sala!" });
+            }
+        } catch (ex) {
             res.status(500).json({ msg: ex.message });
         }
     }
