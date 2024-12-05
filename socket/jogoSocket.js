@@ -28,9 +28,9 @@ export default function socket(io) {
                     Participantes.ValidarParticipante(objeto)
                         .then((r) => {
                             if (r == 201) {
-                                io.to(IdSala).emit('RespostaEntrar', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: 'Participante inserido!' });
+                                io.to(IdSala).emit('RespostaEntrar', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: ' Entrou!' });
                             } else if(r == 200){
-                                io.to(IdSala).emit('RespostaEntrar', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: 'Participante Reconectando' });
+                                io.to(IdSala).emit('RespostaEntrar', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: ' Reconectou' });
                             }else{
                                 io.to(IdSala).emit('RespostaEntrar', { ok: false, Id: IdUsuario, Nome: NomeUsuario, msg: 'Sala cheia, não é possivel entrar!' });
                             }
@@ -43,7 +43,7 @@ export default function socket(io) {
             socket.on('disconnect', () => {
                 Participantes.RemoverParticipante(objeto).then(r => {
                     if(r){
-                        io.to(IdSala).emit('RespostaSair', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: 'Participante Saiu!' });
+                        io.to(IdSala).emit('RespostaSair', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: ' Saiu!' });
                     }
                 }).catch(e => {
                     console.log(e)
