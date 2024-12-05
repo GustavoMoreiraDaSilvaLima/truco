@@ -141,4 +141,14 @@ export default class EquipeController {
             res.status(500).json({ msg: ex.message });
         }
     }
+
+    async adicionarParticipante(Objeto) {
+        try {
+            let participante = new participanteRepository();
+            
+        }
+        catch (ex) {
+            res.status(500).json({ msg: ex.message });
+        }
+    }
 }

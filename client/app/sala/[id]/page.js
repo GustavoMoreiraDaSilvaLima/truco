@@ -6,7 +6,7 @@ import React from "react";
 import HttpSocket from "@/app/http/http.socket";
 import { useRouter } from "next/navigation";
 import Loading from "@/app/components/loading";
-import Chat from "@/app/components/chat";
+import Chat from "@/app/components/Chat";
 import Link from "next/link";
 import Equipe from "@/app/components/Equipe";
 
@@ -54,8 +54,8 @@ export default function Home({ params }) {
         }
     }
 
-    function EntrarEquipe(){
-
+    function EntrarEquipe(equipeId, salaId) {
+        socket.current.emit('EntrarEquipe', { equipeId, salaId });
     }
 
 
@@ -75,18 +75,18 @@ export default function Home({ params }) {
                     <Loading></Loading>
                     <h2>{MensagemSaida}</h2>
                 </div>
-            ) : !partida ?(
+            ) : !partida ? (
                 <div>
                     <Link className='btn btn-primary' href="/sala">Retornar as salas</Link>
                     <div>
                         <Chat dados={chat}></Chat>
                     </div>
                     <div>
-                        <Equipe funcao={EntrarEquipe} idSala = {id}></Equipe>
+                        <Equipe funcao={EntrarEquipe} idSala={id}></Equipe>
                     </div>
                     <button>Pronto?</button>
                 </div>
-            ):(
+            ) : (
                 <div>
 
                 </div>

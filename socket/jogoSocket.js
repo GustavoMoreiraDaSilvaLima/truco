@@ -5,6 +5,7 @@ import participanteRepository from '../repositories/participanteRepository.js';
 import participanteEntity from '../entities/participanteEntity.js';
 import usuarioEntity from '../entities/usuarioEntity.js';
 import salaEntity from '../entities/salaEntity.js';
+import EquipeController from '../controllers/equipeController.js';
 
 export default function socket(io) {
     try {
@@ -39,6 +40,14 @@ export default function socket(io) {
                         .catch(e => console.log(e));
 
                 }
+            })
+            socket.on('EntrarEquipe', (equipeId, salaId)=>{
+                if (salaId && salaId > 0 && equipeId && equipeId > 0) {
+                    //Adiocionar um participante a uma equipe é parte da Controller de equipe
+                    let equipeControl = new EquipeController();
+                }
+
+
             })
             socket.on('disconnect', () => {
                 Participantes.RemoverParticipante(objeto).then(r => {
