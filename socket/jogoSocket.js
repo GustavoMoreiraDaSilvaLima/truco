@@ -5,6 +5,7 @@ import participanteRepository from '../repositories/participanteRepository.js';
 import participanteEntity from '../entities/participanteEntity.js';
 import usuarioEntity from '../entities/usuarioEntity.js';
 import salaEntity from '../entities/salaEntity.js';
+import EquipeController from '../controllers/equipeController.js';
 
 export default function socket(io) {
     try {
@@ -29,9 +30,9 @@ export default function socket(io) {
                         .then((r) => {
                             if (r == 201) {
                                 io.to(IdSala).emit('RespostaEntrar', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: ' Entrou!' });
-                            } else if(r == 200){
+                            } else if (r == 200) {
                                 io.to(IdSala).emit('RespostaEntrar', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: ' Reconectou' });
-                            }else{
+                            } else {
                                 io.to(IdSala).emit('RespostaEntrar', { ok: false, Id: IdUsuario, Nome: NomeUsuario, msg: 'Sala cheia, não é possivel entrar!' });
                             }
                         }
@@ -40,9 +41,24 @@ export default function socket(io) {
 
                 }
             })
+            socket.on('EntrarEquipe', (equipeId) => {
+                if (equipeId.equipeId > 0) {
+                    //Adiocionar um participante a uma equipe é parte da Controller de equipe
+                    let equipeControl = new EquipeController();
+                    equipeControl.adicionarParticipanteEquipe(objeto, equipeId.equipeId)
+                        .then((r) => {
+                            if (r == 201) {
+                                io.to(IdSala).emit('RespostaEntrarEquipe', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: ' Entrou na equipe!' });
+                            } else {
+                                io.to(IdSala).emit('RespostaEntrarEquipe', { ok: false, Id: IdUsuario, Nome: NomeUsuario, msg: 'Ocorreu um erro interno' });
+                            }
+                        })
+                }
+            })
             socket.on('disconnect', () => {
+                console.log('Disconnect')
                 Participantes.RemoverParticipante(objeto).then(r => {
-                    if(r){
+                    if (r) {
                         io.to(IdSala).emit('RespostaSair', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: ' Saiu!' });
                     }
                 }).catch(e => {

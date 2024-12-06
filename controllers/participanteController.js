@@ -143,7 +143,7 @@ export default class ParticipanteController {
 
                 }
                 return 200;
-
+   
             }
         } catch (error) {
             console.log(error.msg);
