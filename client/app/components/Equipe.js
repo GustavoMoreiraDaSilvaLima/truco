@@ -8,6 +8,7 @@ export default function Equipe({ funcao, idSala }) {
     const [lista, setLista] = useState([]);
     const [participantes, setParticipantes] = useState([]);
 
+
     async function BuscarEquipes() {
         let sEquipe = new EquipeService();
         let equipes = await sEquipe.ListarEquipe();
@@ -19,6 +20,7 @@ export default function Equipe({ funcao, idSala }) {
         let participante = await sEquipe.ListarParticipantesSala(idSala);
         setParticipantes(participante);
     }
+    
     useEffect(() => {
         BuscarEquipes();
         BuscarParticipantes();
@@ -42,7 +44,7 @@ export default function Equipe({ funcao, idSala }) {
                                     <p>{participante.usuario.usuNome}</p>
                                 </div>
                             ))}
-                        <button onClick={() => funcao(equipe.eqpId, idSala)}>
+                        <button onClick={() => funcao(equipe.eqpId)}>
                             Entrar na Equipe
                         </button>
                     </div>

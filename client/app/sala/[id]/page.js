@@ -10,7 +10,7 @@ import Chat from "@/app/components/Chat";
 import Link from "next/link";
 import Equipe from "@/app/components/Equipe";
 
-export default function Home({ params }) {
+export default function Sala({ params }) {
 
     const socket = useRef();
 
@@ -45,6 +45,12 @@ export default function Home({ params }) {
                     setChat(chat => [...chat, `O jogador ${dados.Nome} ${dados.msg}`]);
                 }
             })
+            socket.current.on('RespostaEntrarEquipe', (dados) =>{
+                if(dados.ok){
+                    setChat(chat => [...chat, `O jogador ${dados.Nome} ${dados.msg}`]);
+                    
+                }
+            })
         } else {
             setLoading(true);
             setMensagemSaida(`Infelizmente ocorreu um erro, retornando!`);
@@ -54,8 +60,8 @@ export default function Home({ params }) {
         }
     }
 
-    function EntrarEquipe(equipeId, salaId) {
-        socket.current.emit('EntrarEquipe', { equipeId, salaId });
+    function EntrarEquipe(equipeId) {
+        socket.current.emit('EntrarEquipe', { equipeId });
     }
 
 
@@ -63,6 +69,13 @@ export default function Home({ params }) {
     useEffect(() => {
         socket.current = new HttpSocket();
         entrar();
+
+        return () => {
+            if (socket.current) {
+                socket.current.disconnect(); // Desconecta do servidor
+                console.log("Socket desconectado ao sair da página");
+            }
+        };
     }, [])
 
 

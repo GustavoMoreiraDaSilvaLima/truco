@@ -1,3 +1,4 @@
+import Database from "../db/database.js";
 import EquipeEntity from "../entities/equipeEntity.js";
 import EquipeRepository from "../repositories/equipeRepository.js";
 import participanteRepository from "../repositories/participanteRepository.js";
@@ -142,13 +143,32 @@ export default class EquipeController {
         }
     }
 
-    async adicionarParticipante(Objeto) {
+    async adicionarParticipanteEquipe(Objeto, equipe) {
+        const db = new Database();
+        db.AbreTransacao();
         try {
-            let participante = new participanteRepository();
-            
+            const participanteRepo = new participanteRepository(db);
+            //Verificar equipe cheia
+            let retorno = await participanteRepo.VerificarEquipeCheia(equipe, Objeto.Sala);
+            if (retorno < 2) {
+                //Verificar se já não está na equipe selecionada            
+                retorno = await participanteRepo.AdicionarNaEquipe(equipe, Objeto.Sala, Objeto.IdUsuario);
+                if (retorno) {
+                    db.Commit();
+                    return 201;
+                } else {
+                    throw new Error("Não foi possivel inserir o participante na equipe");
+                }
+            }
+            else {
+                return 400;
+            }
+
         }
         catch (ex) {
-            res.status(500).json({ msg: ex.message });
+            db.Rollback();
+            console.log(ex.message);
+            return 500;
         }
     }
 }

@@ -7,7 +7,7 @@ export default class HttpSocket{
     }
 
     init(sala, user){
-        this.socket = io(HttpSocket.Url,{query: "Sala="+sala+"&Id="+user.usuId+"&Nome="+user.usuNome});
+        this.socket = io(HttpSocket.Url,{ query: "Sala="+sala+"&Id="+user.usuId+"&Nome="+user.usuNome});
     }
 
     on(event, callback) {
