@@ -9,6 +9,7 @@ import Loading from "@/app/components/loading";
 import Chat from "@/app/components/Chat";
 import Link from "next/link";
 import Equipe from "@/app/components/Equipe";
+import EquipeService from "@/app/service/equipe.service";
 
 export default function Sala({ params }) {
 
@@ -17,13 +18,18 @@ export default function Sala({ params }) {
     const { id } = React.use(params)
     const { user } = useContext(UserContext);
 
-
+    const [participantes, setParticipantes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [partida, setPartida] = useState(false);
     const [chat, setChat] = useState([]);
     const route = useRouter();
     const [MensagemSaida, setMensagemSaida] = useState("Carregando");
 
+    async function BuscarParticipantes() {
+        let sEquipe = new EquipeService();
+        let participante = await sEquipe.ListarParticipantesSala(id);
+        setParticipantes(participante);
+    }
     function entrar() {
         if (user) {
             socket.current.init(id, user);
@@ -45,10 +51,10 @@ export default function Sala({ params }) {
                     setChat(chat => [...chat, `O jogador ${dados.Nome} ${dados.msg}`]);
                 }
             })
-            socket.current.on('RespostaEntrarEquipe', (dados) =>{
-                if(dados.ok){
+            socket.current.on('RespostaEntrarEquipe', (dados) => {
+                if (dados.ok) {
                     setChat(chat => [...chat, `O jogador ${dados.Nome} ${dados.msg}`]);
-                    
+                    BuscarParticipantes();
                 }
             })
         } else {
@@ -67,6 +73,7 @@ export default function Sala({ params }) {
 
 
     useEffect(() => {
+        BuscarParticipantes();
         socket.current = new HttpSocket();
         entrar();
 
@@ -95,7 +102,7 @@ export default function Sala({ params }) {
                         <Chat dados={chat}></Chat>
                     </div>
                     <div>
-                        <Equipe funcao={EntrarEquipe} idSala={id}></Equipe>
+                        <Equipe funcao={EntrarEquipe} idSala={id} participantes={participantes}></Equipe>
                     </div>
                     <button>Pronto?</button>
                 </div>

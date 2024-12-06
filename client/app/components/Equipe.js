@@ -2,11 +2,11 @@ import { useEffect, useState } from "react"
 import EquipeService from "../service/equipe.service";
 
 
-export default function Equipe({ funcao, idSala }) {
+export default function Equipe({ funcao, idSala, participantes }) {
 
 
     const [lista, setLista] = useState([]);
-    const [participantes, setParticipantes] = useState([]);
+    
 
 
     async function BuscarEquipes() {
@@ -15,15 +15,10 @@ export default function Equipe({ funcao, idSala }) {
         setLista(equipes);
     }
 
-    async function BuscarParticipantes() {
-        let sEquipe = new EquipeService();
-        let participante = await sEquipe.ListarParticipantesSala(idSala);
-        setParticipantes(participante);
-    }
+
     
     useEffect(() => {
         BuscarEquipes();
-        BuscarParticipantes();
     }, [])
 
     return (
