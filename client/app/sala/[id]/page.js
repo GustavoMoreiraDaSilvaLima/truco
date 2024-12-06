@@ -51,6 +51,7 @@ export default function Sala({ params }) {
             socket.current.on('RespostaSair', (dados) => {
                 if (dados.ok) {
                     setChat(chat => [...chat, `O jogador ${dados.Nome} ${dados.msg}`]);
+                    BuscarParticipantes();
                 }
             })
             socket.current.on('RespostaEntrarEquipe', (dados) => {

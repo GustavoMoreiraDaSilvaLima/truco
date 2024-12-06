@@ -6,13 +6,17 @@ export default function Equipe({ funcao, idSala, participantes }) {
 
 
     const [lista, setLista] = useState([]);
-
+    const [Botao, setBotao] = useState(0);
 
 
     async function BuscarEquipes() {
         let sEquipe = new EquipeService();
         let equipes = await sEquipe.ListarEquipe();
         setLista(equipes);
+    }
+
+    function VerificarBotao(IdEquipe){
+        setBotao(IdEquipe);
     }
 
 
@@ -35,7 +39,7 @@ export default function Equipe({ funcao, idSala, participantes }) {
                         <div className="col-12 col-md-5 mb-3">
                             <div className="card shadow-lg">
                                 <div className="card-body d-flex flex-column align-items-center justify-content-center">
-                                    <div key={index}>
+                                    <div key={`equipe:` +equipe.eqpId}>
                                         <h2 className="mt-2">{equipe.eqpDescricao}</h2>
                                         <h3>Participantes:</h3>
                                         {participantes
@@ -45,7 +49,7 @@ export default function Equipe({ funcao, idSala, participantes }) {
                                             )
                                             .map((participante, idx) => (
                                                 <div>
-                                                    <div key={idx}>
+                                                    <div key={`participante:`+idx}>
                                                         <div className="d-flex m-4 align-items-center">
                                                             <button className="btn-sm btn-success mr-2">Confirmar</button>
                                                             <h4 className="ml-3">{participante.usuario.usuNome}</h4>
@@ -53,8 +57,11 @@ export default function Equipe({ funcao, idSala, participantes }) {
                                                     </div>
                                                 </div>
                                             ))}
-                                        <button onClick={() => funcao(equipe.eqpId)}>
-                                            Entrar na Equipe
+                                        <button disabled={Botao === equipe.eqpId} className={Botao == equipe.eqpId? "btn btn-success align-items-center text-align-center" : "btn btn-primary"} onClick={() => {
+                                            funcao(equipe.eqpId)
+                                            VerificarBotao(equipe.eqpId);
+                                        }}>
+                                            {Botao == equipe.eqpId?'Entrou': 'Entrar na Equipe'}
                                         </button>
                                     </div>
                                 </div>
