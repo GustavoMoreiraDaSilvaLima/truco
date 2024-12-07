@@ -108,6 +108,13 @@ export default class participanteRepository extends BaseRepository {
         return row[0].total;
     }
 
+    async ParticipantePreparar(Sala, usuario,atributo){
+        const sql = 'update tb_participante set par_pronto = ? where par_dtsaida is null and sal_id = ? and usu_id = ?';
+        const valores = [atributo, Sala, usuario];
+        const result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        return result;
+    }
+
     toMap(rows) {
 
         if (rows && typeof rows.length == "number") {
@@ -129,6 +136,7 @@ export default class participanteRepository extends BaseRepository {
                 participante.equipe = new equipeRepository();
                 participante.equipe.eqpId = row["eqp_id"];
                 participante.equipe.eqpDescricao = row["eqp_descricao"];
+                participante.pronto = row["par_pronto"];
 
                 lista.push(participante);
             }
@@ -149,6 +157,7 @@ export default class participanteRepository extends BaseRepository {
             participante.equipe = new equipeRepository();
             participante.equipe.eqpId = rows["eqp_id"];
             participante.equipe.eqpDescricao = rows["eqp_descricao"];
+            participante.pronto = rows["par_pronto"];
 
             return participante;
         } else {

@@ -22,8 +22,9 @@ export default function socket(io) {
                 Nome: NomeUsuario
             }
 
-
+            //Socket para linkar a sala com as requisições
             socket.join(IdSala);
+            //Socket para entrar na sala emite uma resposta de retorno
             socket.on('entrar', () => {
                 if (IdSala && IdSala > 0 && IdUsuario && IdUsuario > 0) {
                     Participantes.ValidarParticipante(objeto)
@@ -41,22 +42,47 @@ export default function socket(io) {
 
                 }
             })
+            //Socket para entrar na equipe, utiliza a controller e entra na equipe, tem resposta de retorno
             socket.on('EntrarEquipe', (equipeId) => {
                 if (equipeId.equipeId > 0) {
                     //Adiocionar um participante a uma equipe é parte da Controller de equipe
                     let equipeControl = new EquipeController();
                     equipeControl.adicionarParticipanteEquipe(objeto, equipeId.equipeId)
                         .then((r) => {
-                            if (r == 201) {
-                                io.to(IdSala).emit('RespostaEntrarEquipe', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: ' Entrou na equipe!' });
+                            if (r.status == 201) {
+                                //Emite a resposta de retorno
+                                io.to(IdSala).emit('RespostaEntrarEquipe', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: `Entrou na equipe ${r.equipe}!` });
                             } else {
                                 io.to(IdSala).emit('RespostaEntrarEquipe', { ok: false, Id: IdUsuario, Nome: NomeUsuario, msg: 'Ocorreu um erro interno' });
                             }
                         })
                 }
             })
+            //Fazer o envio de mensagem no chat!
+            socket.on('EnviarMensagem', (msg) => {
+                if (msg && msg.mensagem && msg.mensagem.length > 0) {
+                    io.to(IdSala).emit('EnviarMensagem', { Id: IdUsuario, Nome: NomeUsuario, msg: msg.mensagem, ok:true });
+                }
+            })
+            //Socket para o usuário confirmar se está pronto
+            socket.on('Pronto', (requisicao) => {
+                let participanteControl = new ParticipanteController();
+                participanteControl.Preparando(objeto, requisicao.atributo)
+                .then(r =>{
+                    if(r == 200){
+                        io.to(IdSala).emit('JogadorPronto', { Id: IdUsuario, Nome: NomeUsuario, msg: `O jogador ${NomeUsuario} ${requisicao.atributo == true? 'está pronto':'não está pronto'}`, ok:true });
+                    }else{
+                        io.to(IdSala).emit('JogadorPronto', { ok: false, Id: IdUsuario, Nome: NomeUsuario, msg: 'Ocorreu um erro interno' });
+                    }
+                }).catch(e => {
+                    console.log(e)
+                });
+            })
+
+            //Socket quando o usuário é desconectado!
             socket.on('disconnect', () => {
                 console.log('Disconnect')
+                
                 Participantes.RemoverParticipante(objeto).then(r => {
                     if (r) {
                         io.to(IdSala).emit('RespostaSair', { ok: true, Id: IdUsuario, Nome: NomeUsuario, msg: ' Saiu!' });

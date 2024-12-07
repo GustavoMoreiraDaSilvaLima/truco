@@ -3,6 +3,7 @@ import salaEntity from '../entities/salaEntity.js';
 import usuarioEntity from '../entities/usuarioEntity.js';
 import participanteEntity from '../entities/participanteEntity.js';
 import participanteRepository from '../repositories/participanteRepository.js';
+import Database from '../db/database.js';
 
 export default class ParticipanteController {
 
@@ -164,5 +165,24 @@ export default class ParticipanteController {
             return false;
         }
 
+    }
+
+    //Controle para alterar o status do participante na sala
+    async Preparando(objeto, atributo){
+        const db = new Database();
+        db.AbreTransacao();
+        try{
+            const participanteRepo = new participanteRepository(db);
+            //Metodo para dar o update e preparar o participante para a sala!
+            let result = await participanteRepo.ParticipantePreparar(objeto.Sala, objeto.IdUsuario, atributo);
+            if(result){
+                db.Commit();
+                return 200;
+            }
+        }catch(e){
+            db.Rollback();
+            console.log(e.msg);
+            return 500;
+        }
     }
 }

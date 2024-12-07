@@ -16,17 +16,24 @@ import EquipeService from "@/app/service/equipe.service";
 export default function Sala({ params }) {
 
     const socket = useRef();
+    const route = useRouter();
 
     const { id } = React.use(params)
     const { user } = useContext(UserContext);
+
+    const Mensagem = useRef();
+    const Pronto = useRef(false);
+    
 
     const [participantes, setParticipantes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [partida, setPartida] = useState(false);
     const [chat, setChat] = useState([]);
-    const route = useRouter();
+    
     const [MensagemSaida, setMensagemSaida] = useState("Carregando");
 
+
+    
     async function BuscarParticipantes() {
         let sEquipe = new EquipeService();
         let participante = await sEquipe.ListarParticipantesSala(id);
@@ -39,7 +46,7 @@ export default function Sala({ params }) {
             socket.current.on('RespostaEntrar', (dados) => {
                 if (dados.ok) {
                     setLoading(false);
-                    setChat(chat => [...chat, `O jogador ${dados.Nome} ${dados.msg}`]);
+                    setChat(chat => [...chat, `Sistema: O jogador ${dados.Nome} ${dados.msg}`]);
                 } else {
                     setMensagemSaida(`Sala cheia, não é possivel entrar!`);
                     setTimeout(() => {
@@ -50,13 +57,25 @@ export default function Sala({ params }) {
 
             socket.current.on('RespostaSair', (dados) => {
                 if (dados.ok) {
-                    setChat(chat => [...chat, `O jogador ${dados.Nome} ${dados.msg}`]);
+                    setChat(chat => [...chat, `Sistema: O jogador ${dados.Nome} ${dados.msg}`]);
                     BuscarParticipantes();
                 }
             })
             socket.current.on('RespostaEntrarEquipe', (dados) => {
                 if (dados.ok) {
-                    setChat(chat => [...chat, `O jogador ${dados.Nome} ${dados.msg}`]);
+                    setChat(chat => [...chat, `Sistema: O jogador ${dados.Nome} ${dados.msg}`]);
+                    BuscarParticipantes();
+                }
+            })
+            socket.current.on('EnviarMensagem', (dados) => {
+                if (dados.ok) {
+                    console.log(dados);
+                    setChat(chat => [...chat, `${dados.Nome}: ${dados.msg}`]);
+                }
+            })
+            socket.current.on('JogadorPronto', (dados) => {
+                if (dados.ok) {
+                    setChat(chat => [...chat, `Sistema: ${dados.msg}`]);
                     BuscarParticipantes();
                 }
             })
@@ -73,6 +92,20 @@ export default function Sala({ params }) {
         socket.current.emit('EntrarEquipe', { equipeId });
     }
 
+
+
+    function EnviarMensagem() {
+        if (Mensagem.current.value) {
+            socket.current.emit('EnviarMensagem', { mensagem: Mensagem.current.value });
+            Mensagem.current.value = '';
+        }
+    }
+
+    //Função para marcar jogador como pronto
+    function ParticipantePronto(){
+        Pronto.current = !Pronto.current;
+        socket.current.emit('Pronto',{atributo: Pronto.current});
+    }
 
 
     useEffect(() => {
@@ -97,17 +130,9 @@ export default function Sala({ params }) {
                     <Loading></Loading>
                     <h2>{MensagemSaida}</h2>
                 </div>
-            ) : !partida ? (    
-                // <div>
-                //     <Link className='btn btn-primary' href="/sala">Retornar as salas</Link>
-                //     <div>
-                //         <Chat dados={chat}></Chat>
-                //     </div>
-                //     <div>
-                //         <Equipe funcao={EntrarEquipe} idSala = {id}></Equipe>
-                //     </div>
-                //     <button>Pronto?</button>
-                // </div>
+            ) : !partida ? (
+
+
 
                 <div>
                     <div className="d-flex justify-content-between m-4">
@@ -116,7 +141,16 @@ export default function Sala({ params }) {
                     </div>
 
                     <div>
-                        <Equipe funcao={EntrarEquipe} idSala={id} participantes={participantes}></Equipe>
+                        <Equipe  funcao={EntrarEquipe} UserAtual={user} participantes={participantes} funcaoPronto={ParticipantePronto}></Equipe>
+                    </div>
+                    <div className="col-md-3 col-sm-4">
+                        <Chat dados={chat}></Chat>
+                        <div className="">
+                            <div className="input-group flex-nowrap pt-3">
+                                <input onKeyDown={(e) => { if (e.key === 'Enter') { EnviarMensagem() } }} type="text" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" htmlFor='Mensagem' placeholder="Mensagem" ref={Mensagem}></input>
+                                <button htmlFor='Mensagem' className="btn btn-primary ml-3" onClick={EnviarMensagem}>Envio</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             ) : (

@@ -81,6 +81,9 @@ CREATE TABLE `tb_participante` (
   CONSTRAINT `fk_participante_usuario` FOREIGN KEY (`usu_id`) REFERENCES `tb_usuario` (`usu_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+ALTER TABLE tb_participante
+ADD COLUMN par_pronto TINYINT(1) DEFAULT 0;
+
 CREATE TABLE `tb_rodada` (
   `rod_id` int NOT NULL AUTO_INCREMENT,
   `mao_id` int DEFAULT NULL,
