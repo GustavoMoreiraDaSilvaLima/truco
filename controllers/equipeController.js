@@ -154,14 +154,17 @@ export default class EquipeController {
                 //Verificar se já não está na equipe selecionada            
                 retorno = await participanteRepo.AdicionarNaEquipe(equipe, Objeto.Sala, Objeto.IdUsuario);
                 if (retorno) {
-                    //Recupera o nome da equipe
-                    let equipeRepo = new EquipeRepository(db);
-                    equipeRepo = await equipeRepo.obter(equipe);
-                    db.Commit();
-                    return {status: 201, equipe: equipeRepo.eqpDescricao};
-                } else {
-                    throw new Error("Não foi possivel inserir o participante na equipe");
+                    retorno = await participanteRepo.ParticipantePreparar(Objeto.Sala, Objeto.IdUsuario, false);
+                    if (retorno) {
+                        //Recupera o nome da equipe
+                        let equipeRepo = new EquipeRepository(db);
+                        equipeRepo = await equipeRepo.obter(equipe);
+                        db.Commit();
+                        return { status: 201, equipe: equipeRepo.eqpDescricao };
+                    }
                 }
+                throw new Error("Não foi possivel inserir o participante na equipe");
+
             }
             else {
                 return 400;
