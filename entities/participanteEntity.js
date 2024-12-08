@@ -7,8 +7,9 @@ export default class participanteEntity extends BaseEntity {
     #usuario;
     #sala;
     #equipe;
+    #pronto
 
-    constructor(parId, dtEntrada, dtSaida, usuario, sala, equipe) {
+    constructor(parId, dtEntrada, dtSaida, usuario, sala, equipe, pronto) {
         super();
         this.#parId = parId;
         this.#dtEntrada = dtEntrada;
@@ -16,6 +17,7 @@ export default class participanteEntity extends BaseEntity {
         this.#usuario = usuario;
         this.#sala = sala;
         this.#equipe = equipe;
+        this.#pronto = pronto;
     }
 
     get parId() {
@@ -64,5 +66,13 @@ export default class participanteEntity extends BaseEntity {
 
     set equipe(value) {
         this.#equipe = value;
+    }
+
+    get pronto() {
+        return this.#pronto;
+    }
+
+    set pronto(value) {
+        this.#pronto = value;
     }
 }
