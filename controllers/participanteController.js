@@ -8,8 +8,9 @@ import Database from '../db/database.js';
 export default class ParticipanteController {
 
     async listar(req, res) {
+        const Banco = new Database();
         try {
-            let participante = new participanteRepository();
+            let participante = new participanteRepository(Banco);
             let lista = await participante.listar();
             res.status(200).json(lista);
         } catch (ex) {
@@ -17,10 +18,23 @@ export default class ParticipanteController {
         }
     }
 
-    async obter(req, res) {
+    async listarParticipantePorPartida(req, res) {
+        const Banco = new Database();
         try {
             let id = req.params.id;
-            let participante = new participanteRepository();
+            let participante = new participanteRepository(Banco);
+            let lista = await participante.ListarPorSala(id);
+            res.status(200).json(lista);
+        } catch (ex) {
+            res.status(500).json({ erro: ex.message });
+        }
+    }
+
+    async obter(req, res) {
+        const Banco = new Database();
+        try {
+            let id = req.params.id;
+            let participante = new participanteRepository(Banco);
             let entidade = await participante.obter(id);
             if (entidade) {
                 res.status(200).json(entidade);
@@ -176,8 +190,9 @@ export default class ParticipanteController {
             //Metodo para dar o update e preparar o participante para a sala!
             let result = await participanteRepo.ParticipantePreparar(objeto.Sala, objeto.IdUsuario, atributo);
             if(result){
+                result = await participanteRepo.obterParticipantesProntos(objeto.Sala);
                 db.Commit();
-                return 200;
+                return {status: 200, jogoPronto: result===4};
             }
         }catch(e){
             db.Rollback();

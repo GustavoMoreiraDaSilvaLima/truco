@@ -1039,6 +1039,33 @@
         }
       }
     },
+    "/participante/sala/{id}": {
+      "get": {
+        "tags": [
+          "participante"
+        ],
+        "summary": "Retorna um participante baseado em uma sala",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/movimentacao/": {
       "get": {
         "tags": [

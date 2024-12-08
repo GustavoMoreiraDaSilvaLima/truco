@@ -69,8 +69,12 @@ export default function socket(io) {
                 let participanteControl = new ParticipanteController();
                 participanteControl.Preparando(objeto, requisicao.atributo)
                 .then(r =>{
-                    if(r == 200){
-                        io.to(IdSala).emit('JogadorPronto', { Id: IdUsuario, Nome: NomeUsuario, msg: `O jogador ${NomeUsuario} ${requisicao.atributo == true? 'está pronto':'não está pronto'}`, ok:true });
+                    if(r.status == 200){
+                        io.to(IdSala).emit('JogadorPronto', { Id: IdUsuario, Nome: NomeUsuario, msg: `${NomeUsuario} ${requisicao.atributo == true? 'está pronto':'não está pronto'}`, ok:true });
+                        if(r.jogoPronto){
+                            io.to(IdSala).emit('JogoPronto', { ok: true });
+                        }
+                        
                     }else{
                         io.to(IdSala).emit('JogadorPronto', { ok: false, Id: IdUsuario, Nome: NomeUsuario, msg: 'Ocorreu um erro interno' });
                     }
@@ -91,8 +95,6 @@ export default function socket(io) {
                     console.log(e)
                 });
             })
-
-            console.log('Nome:', IdUsuario + ' ' + 'Sala:', IdSala);
         })
     } catch (error) {
         console.log(error.msg);

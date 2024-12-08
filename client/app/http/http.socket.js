@@ -42,7 +42,7 @@ export default class HttpSocket{
             this.socket.disconnect();
             this.socket = null; // Opcional: limpar a referência
         } else {
-            console.error("Socket não inicializado. Chame o método init primeiro.");
+            console.log("Socket não inicializado. Chame o método init primeiro.");
         }
     }
 

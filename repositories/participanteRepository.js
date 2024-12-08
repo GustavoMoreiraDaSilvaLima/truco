@@ -20,6 +20,16 @@ export default class participanteRepository extends BaseRepository {
         return this.toMap(rows);
     }
 
+    async ListarPorSala(id) {
+        const sql = `select * from tb_participante as par 
+                                inner join tb_usuario as usu on par.usu_id = usu.usu_id 
+                                inner join tb_sala as sal on par.sal_id = sal.sal_id
+                                inner join tb_equipe as eqp on par.eqp_id = eqp.eqp_id where par.sal_id = ? and par.par_dtsaida is null and par.eqp_id is not null;`;
+        const valores = [id];
+        const rows = await this.db.ExecutaComando(sql, valores);
+        return this.toMap(rows);
+    }
+
     async obter(id) {
         let sql = `select * from tb_participante as par 
                                 inner join tb_usuario as usu on par.usu_id = usu.usu_id 
@@ -27,7 +37,7 @@ export default class participanteRepository extends BaseRepository {
                                 inner join tb_equipe as eqp on par.eqp_id = eqp.eqp_id where par_id = ?;`;
         let valores = [id];
         let row = await this.db.ExecutaComando(sql, valores);
-        return this.toMap(row[0]);  
+        return this.toMap(row[0]);
     }
 
     async gravar(entidade) {
@@ -73,46 +83,53 @@ export default class participanteRepository extends BaseRepository {
         return result;
     }
 
-    async obterQuantidadePorSala(Id){
+    async obterQuantidadePorSala(Id) {
         let sql = "select count(*) as total from tb_participante where sal_id = ? and par_dtsaida is null; ";
         let valores = [Id];
         let row = await this.db.ExecutaComando(sql, valores);
         return row[0].total;
     }
 
-    async obterParticipanteSala(user, sala){
+    async obterParticipanteSala(user, sala) {
         let sql = "select * from tb_participante where usu_id = ? and sal_id = ? and par_dtsaida is null; ";
         let valores = [user, sala];
         let row = await this.db.ExecutaComando(sql, valores);
         return this.toMap(row[0]);
     }
 
-    async obterEquipeSala(sala){
+    async obterEquipeSala(sala) {
         let sql = `select * from tb_participante p INNER JOIN tb_usuario u ON u.usu_id = p.usu_id where p.sal_id = ? and p.par_dtsaida is null and p.eqp_id IS NOT  null;`;
         let valores = [sala];
         let row = await this.db.ExecutaComando(sql, valores);
         return this.toMap(row);
     }
 
-    async AdicionarNaEquipe(equipe, sala, usuario){
+    async AdicionarNaEquipe(equipe, sala, usuario) {
         const sql = `update  tb_participante set eqp_id = ? where sal_id = ? and usu_id = ? and par_dtsaida is null;`;
         const valores = [equipe, sala, usuario];
         const result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }
 
-    async VerificarEquipeCheia(equipe, sala){
+    async VerificarEquipeCheia(equipe, sala) {
         const sql = `select count(*) as total from tb_participante where sal_id = ? and eqp_id = ? and par_dtsaida is null`;
         const valores = [sala, equipe];
         const row = await this.db.ExecutaComando(sql, valores);
         return row[0].total;
     }
 
-    async ParticipantePreparar(Sala, usuario,atributo){
+    async ParticipantePreparar(Sala, usuario, atributo) {
         const sql = 'update tb_participante set par_pronto = ? where par_dtsaida is null and sal_id = ? and usu_id = ?';
         const valores = [atributo, Sala, usuario];
         const result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
+    }
+
+    async obterParticipantesProntos(Sala) {
+        const sql = 'select count(*) as total from tb_participante where par_dtsaida is null and sal_id = ? and par_pronto = 1';
+        const valores = [Sala];
+        const row = await this.db.ExecutaComando(sql, valores);
+        return row[0].total;
     }
 
     toMap(rows) {
