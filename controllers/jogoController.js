@@ -1,3 +1,4 @@
+import Database from "../db/database.js";
 import JogoEntity from "../entities/jogoEntity.js";
 import jogoRepository from "../repositories/jogoRepository.js";
 
@@ -91,6 +92,43 @@ export default class JogoController {
             }
         } catch (error) {
             res.status(500).json({ message: error.message });
+        }
+    }
+
+    async IniciarJogo(Sala){
+        const Banco = new Database();
+        Banco.AbreTransacao()
+        try{
+            const jogoRepo =  new jogoRepository(Banco);
+            let jogo = jogoRepo.JogoIniciar(Sala);
+            if(jogo){
+                Banco.Commit()
+                return {status: 201};
+            }
+            throw new Error("Erro ao iniciar jogo");
+
+        }catch(ex){
+            Banco.Rollback();
+            console.log(ex);
+            return {status: 500}
+        }
+    }
+
+    async FinalizarJogo(Sala){
+        const Banco = new Database();
+        Banco.AbreTransacao()
+        try{
+            const jogoRepo =  new jogoRepository(Banco);
+            let jogo = jogoRepo.JogoFinalizar(Sala);
+            if(jogo){
+                Banco.Commit()
+                return {status: 200};
+            }
+            throw new Error("Erro ao finalizar jogo");
+        }catch(ex){
+            Banco.Rollback();
+            console.log(ex);
+            return {status: 500}
         }
     }
 }

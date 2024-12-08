@@ -21,7 +21,7 @@ export default class participanteRepository extends BaseRepository {
     }
 
     async ListarPorSala(id) {
-        const sql = `select * from tb_participante as par 
+        const sql = `select par.par_id, par.par_dtentrada, par.par_dtsaida, usu.usu_id, usu.usu_nome, sal.sal_id, sal.sal_nome, eqp.eqp_id, eqp.eqp_descricao from tb_participante as par 
                                 inner join tb_usuario as usu on par.usu_id = usu.usu_id 
                                 inner join tb_sala as sal on par.sal_id = sal.sal_id
                                 inner join tb_equipe as eqp on par.eqp_id = eqp.eqp_id where par.sal_id = ? and par.par_dtsaida is null and par.eqp_id is not null;`;

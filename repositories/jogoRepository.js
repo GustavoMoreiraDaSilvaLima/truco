@@ -55,6 +55,20 @@ export default class jogoRepository extends BaseRepository {
         return result;
     }
 
+    async JogoIniciar(Sala){
+        const sql = `insert into tb_jogo (jog_dtinicio, sal_id) values (NOW(), ?);`;
+        const valores = [Sala];
+        const result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        return result;
+    }
+
+    async JogoFinalizar(Sala){
+        const sql = `update tb_jogo set jog_dtfim = NOW() where sal_id = ? and jog_dtfim is null;`;
+        const valores = [Sala];
+        const result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        return result;
+    }
+
     toMap(rows) {
 
         if (rows && typeof rows.length == "number") {
