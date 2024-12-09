@@ -71,3 +71,15 @@
     border: 2px solid black;
     border-radius: 5px;
 }
+
+.fundoCartas {
+    position: absolute;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}

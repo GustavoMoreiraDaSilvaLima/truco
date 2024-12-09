@@ -40,7 +40,7 @@ export default function Equipe({ funcao, UserAtual, participantes, funcaoPronto 
                 <div className="row justify-content-center">
                     {lista.map((equipe, index) => (
                         <div key={`equipe:` + equipe.eqpId} className="col-12 col-md-5 mb-3">
-                            <div className="card shadow-lg">
+                            <div className="card shadow-lg text-center">
                                 <div className="card-body d-flex flex-column align-items-center justify-content-center">
                                     <div>
                                         <h2 className="mt-2">{equipe.eqpDescricao}</h2>
@@ -53,7 +53,7 @@ export default function Equipe({ funcao, UserAtual, participantes, funcaoPronto 
                                             .map((participante, idx) => (
                                                 <div key={`participante:` + idx}>
                                                     <div className="d-flex m-4 align-items-center">
-                                                        <button disabled={participante.usuario.usuId != UserAtual.usuId} className={participante.pronto == true ? 'btn-sm btn-success mr-2' : 'btn-sm btn-danger mr-2'} onClick={funcaoPronto}>{participante.pronto == true ? 'Pronto' : 'Preparando'}</button>
+                                                        <button disabled={participante.usuario.usuId != UserAtual.usuId} className={participante.pronto == true ? 'btn btn-success mr-2' : 'btn btn-danger mr-2'} onClick={funcaoPronto}>{participante.pronto == true ? 'Pronto' : 'Preparando'}</button>
                                                         <h4 className="ml-3">{participante.usuario.usuId != UserAtual.usuId ? participante.usuario.usuNome : <strong>{participante.usuario.usuNome}</strong>}</h4>
                                                     </div>
                                                 </div>

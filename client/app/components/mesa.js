@@ -34,7 +34,7 @@ export default function Mesa({ Sala, usuario, socket, jogo }) {
             console.log(cartas);
             console.log(cartas.cartas);
             setCartas(cartas.cartas);
-            
+
             Participante.current = cartas.participante;
         }, 1000)
     }
@@ -56,18 +56,33 @@ export default function Mesa({ Sala, usuario, socket, jogo }) {
                 <div className="jogador top">{OrganizarLayout[0][0].usuario.usuNome}</div>
                 <div className="jogador left">{OrganizarLayout[1][0].usuario.usuNome}</div>
                 <div className="jogador right">{OrganizarLayout[1][1].usuario.usuNome}</div>
-                <div className="jogador bottom">
-                    {Cartas?(
+                <div className="fundoCartas bottom">
+                    {Cartas ? (
                         <div>
                             {Cartas.map((value, index) => (
-                                <img key={value.code} src={value.image} height={200} width={150}></img>
+                                <img
+                                    key={value.code}
+                                    src={value.image}
+                                    height={200}
+                                    width={150}
+                                    style={{
+                                        transition: "transform 0.3s ease", // Transição suave
+                                        margin: "0 5px", // Margem entre as cartas
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.target.style.transform = "translateY(-30px)"; // Move a carta para cima
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.target.style.transform = "translateY(0px)"; // Volta ao estado original
+                                    }}
+                                />
                             ))}
                         </div>
-                    ):(
+                    ) : (
                         <>
-                        <img src='https://deckofcardsapi.com/static/img/back.png' height={100} width={75}></img>
-                        <img src='https://deckofcardsapi.com/static/img/back.png' height={100} width={75}></img>
-                        <img src='https://deckofcardsapi.com/static/img/back.png' height={100} width={75}></img>
+                            <img src='https://deckofcardsapi.com/static/img/back.png' height={100} width={75}></img>
+                            <img src='https://deckofcardsapi.com/static/img/back.png' height={100} width={75}></img>
+                            <img src='https://deckofcardsapi.com/static/img/back.png' height={100} width={75}></img>
                         </>
                     )}
                 </div>
