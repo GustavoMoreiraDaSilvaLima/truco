@@ -13,6 +13,7 @@ import Equipe from "@/app/components/Equipe";
 import EquipeService from "@/app/service/equipe.service";
 import Mesa from "@/app/components/mesa";
 import Acoes from "@/app/components/acoes";
+import '@/public/css/mesa.css'
 
 
 export default function Sala({ params }) {

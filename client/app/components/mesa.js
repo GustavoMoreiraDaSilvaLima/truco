@@ -1,7 +1,7 @@
 import '@/public/css/mesa.css'
 import { useEffect, useRef, useState } from 'react'
 import ParticipanteService from '@/app/service/Participante.service';
-
+import '@/public/css/cartas.css'
 
 export default function Mesa({ Sala, usuario, socket, jogo }) {
 
@@ -74,11 +74,11 @@ export default function Mesa({ Sala, usuario, socket, jogo }) {
                 <div className="jogador top">{OrganizarLayout[0][0].usuario.usuNome}</div>
                 <div className="jogador left">{OrganizarLayout[1][0].usuario.usuNome}</div>
                 <div className="jogador right">{OrganizarLayout[1][1].usuario.usuNome}</div>
-                <div className="jogador bottom">
+                <div className="fundoCartas">
                     {Cartas.length > 0 ? (
                         <div>
                             {Cartas.map((value, index) => (
-                                <img onClick={() => { JogarCarta(value) }} key={value.code} src={value.image} height={200} width={150}></img>
+                                <img className="cartas" onClick={() => { JogarCarta(value) }} key={value.code} src={value.image} height={200} width={150}></img>
                             ))}
                         </div>
                     ) : (
