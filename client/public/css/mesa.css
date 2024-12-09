@@ -6,6 +6,7 @@
     height: 100vh;
 }
 
+
 .mesa {
     position: absolute;
     width: 900px;
@@ -34,29 +35,33 @@
     top: 10px;
     left: 50%;
     transform: translateX(-50%);
+    background-color: rgb(9, 255, 17);
 }
 
 .jogador.left {
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
+    background-color: rgba(0, 132, 255, 0.711);
 }
 
 .jogador.right {
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
+    background-color: rgba(0, 132, 255, 0.711);
 }
 
 .jogador.bottom {
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
+    background-color: rgba(9, 255, 17, 0.699);
 }
 
 .mesa-centro {
-    width: 200px;
-    height: 100px;
+    width: 150px;
+    height: 750px;
     margin: auto;
     border-radius: 10px;
     display: flex;

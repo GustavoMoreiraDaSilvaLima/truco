@@ -13,6 +13,8 @@ import Equipe from "@/app/components/Equipe";
 import EquipeService from "@/app/service/equipe.service";
 import Mesa from "@/app/components/mesa";
 import Acoes from "@/app/components/acoes";
+import '@/public/css/mesa.css'
+import '@/public/css/sala.css'
 
 
 export default function Sala({ params }) {
@@ -133,7 +135,7 @@ export default function Sala({ params }) {
                 socket.current.disconnect(); // Desconecta do servidor
                 console.log("Socket desconectado ao sair da página");
             }
-            
+
         };
     }, [])
     return (
@@ -164,7 +166,7 @@ export default function Sala({ params }) {
                     </section>
                 </div>
             ) : (
-                <div>
+                <div style={{ position: 'relative' }}>
                     <section>
                         <Mesa Sala={id} usuario={user} socket={socket.current} jogo={JogoId.current}></Mesa>
                     </section>
@@ -180,7 +182,18 @@ export default function Sala({ params }) {
                     <section>
                         <Acoes></Acoes>
                     </section>
+
+                    <div className="placarEsquerdo">
+                        <div>Equipe 1: <span>10 Pontos</span></div>
+                    </div>
+
+                    <div className="placarDireito">
+                        <div>Equipe 2: <span>15 Pontos</span></div>
+                    </div>
+
+                    <button className="trucar">Trucar +3</button>
                 </div>
+
             )}
         </>
     );
