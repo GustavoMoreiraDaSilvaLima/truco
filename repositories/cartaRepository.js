@@ -61,12 +61,26 @@ export default class cartaRepository extends BaseRepository {
         return result;
     }
 
-    async GravarCarta(Carta, usuario, mao){
+    async GravarCarta(Carta, usuario, mao) {
         const sql = `insert into tb_carta (car_codigo, car_imagem, car_valor, car_naipe, car_vira, par_id, mao_id) values(?, ?, ?, ?, ?, ?, ?)`;
-        const valores = [ Carta.code, Carta.image, Carta.value, Carta.suit, 'N',usuario, mao];
+        const valores = [Carta.code, Carta.image, Carta.value, Carta.suit, 'N', usuario, mao];
         const result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }
+
+    //Altera o vira quando atingir as 12 cartas distribuidas, este metodo valida se alguma das cartas do usuario é vira
+    async GravarVira(Vira, jogo, mao) {
+        const sql = `update tb_carta c
+        INNER JOIN tb_mao m ON c.mao_id = ?
+        INNER JOIN tb_jogo j ON m.jog_id = ?
+        set c.car_vira = 'S' 
+        where c.car_codigo = ?`
+        const valores = [mao, jogo, Vira];
+        const result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        return result;
+    }
+
+
 
     toMap(rows) {
 

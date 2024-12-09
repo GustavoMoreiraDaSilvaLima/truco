@@ -90,6 +90,9 @@ export default function socket(io) {
                         console.log(e)
                     });
             })
+            socket.on('ViraRecebido', (Vira) => {
+                io.to(IdSala).emit('ViraDaRodada', { carta: Vira.carta });
+            })
 
             //Socket quando o usuário é desconectado!
             socket.on('disconnect', () => {
