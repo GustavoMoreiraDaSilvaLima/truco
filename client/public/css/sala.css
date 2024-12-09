@@ -1,0 +1,41 @@
+.trucar {
+    position: absolute;
+    bottom: 70px;
+    right: 70px;
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 20px 40px;
+    border-radius: 8px;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.placarEsquerdo {
+    position: absolute;
+    top: 10px;
+    left: 5%;
+    background-color: rgba(0, 132, 255, 0.711);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 18px;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+}
+
+.placarDireito {
+    position: absolute;
+    top: 10px;
+    right: 5%;
+    background-color: rgb(9, 255, 17);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 18px;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+}
