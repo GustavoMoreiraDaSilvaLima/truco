@@ -74,8 +74,8 @@ export default class cartaRepository extends BaseRepository {
         INNER JOIN tb_mao m ON c.mao_id = ?
         INNER JOIN tb_jogo j ON m.jog_id = ?
         set c.car_vira = 'S' 
-        where c.car_codigo = ?`
-        const valores = [mao, jogo, Vira];
+        where c.car_codigo like '${Vira}%'`;
+        const valores = [mao, jogo];
         const result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }

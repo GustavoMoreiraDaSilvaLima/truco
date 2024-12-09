@@ -36,28 +36,31 @@ export default class CartaController {
                                 //Lógica para pegar o vira e lançar na frente
                                 cartaVira = await Adaptor.PegarCartasVira(Baralho.maoCodigoBaralho);
                                 if (cartaVira) {
-                                    let cartaMania = null;
+                                    //Pegar a carta vira/Mania para dizer no backend qual é como vira para dar update
                                     ViraRecebido = true;
-                                    const cartasDeTruco  = [
-                                        '3S', '3D', '3H', '3C', '2S', '2D', '2H', '2C',
-                                        'AS', 'AD', 'AH', 'AC', 'KS', 'KD', 'KH', 'KC',
-                                        'JS', 'JD', 'JH', 'JC', 'QS', 'QD', 'QH', 'QC',
-                                        '7S', '7D', '7H', '7C', '6S', '6D', '6H', '6C',
-                                        '5S', '5D', '5H', '5C', '4S', '4D', '4H', '4C'
+                                    let cartaViraAtual = cartaVira.cards[0].code.split('');
+                                    let CartaMania = '';
+                                    const cartasDeTruco = [
+                                        '4', '5', '6', '7',
+                                        'Q', 'J', 'K', 'A',
+                                        '2', '3'
                                     ];
-                                    const viraIndex = cartasDeTruco.indexOf(cartaVira.cards[0].code);
-
-                                    // Verificar se existe uma carta após o vira
-                                    if (viraIndex !== -1 && viraIndex + 1 < cartasDeTruco.length) {
-                                        // A próxima carta após o vira
-                                        cartaMania = cartasDeTruco[viraIndex + 1];
+                                    //Este for valida a carta se é a ultima ele retorna a primeira do arrya de truc
+                                    for(let i = 0; i < cartasDeTruco.length; i++) {
+                                        if(cartaViraAtual[0] === cartasDeTruco[i]) {
+                                            CartaMania = cartasDeTruco[i + 1] || cartasDeTruco[0];
+                                            break;
+                                        }
                                     }
-                                    await cartasRepo.GravarVira(cartaMania, jogo, Baralho.maoId);
+                                    
+
+                                    
+                                    await cartasRepo.GravarVira(CartaMania, jogo, Baralho.maoId);
                                 }
                             }
                             //Tudo feito?
                             Banco.Commit();
-                            return res.status(201).json({ msg: "Cartas pegadas com sucesso", cartas: cartas.cards, participante: participante.parId, cartaVira: cartaVira? cartaVira.cards[0]: null, cartaViraRecebida: ViraRecebido });
+                            return res.status(201).json({ msg: "Cartas pegadas com sucesso", cartas: cartas.cards, participante: participante.parId, cartaVira: cartaVira ? cartaVira.cards[0] : null, cartaViraRecebida: ViraRecebido });
                         }
                     }
                 }
