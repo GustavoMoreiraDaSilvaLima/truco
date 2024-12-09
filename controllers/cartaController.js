@@ -29,9 +29,21 @@ export default class CartaController {
                                     throw new Error("Erro ao gravar carta");
                                 }
                             }
+                            let cartaVira = null;
+                            let ViraRecebido = false;
+                            //Verificar se a quantidade total de cartas já foi ultrapassada
+                            if (cartas.remaining <= 28) {
+                                //Lógica para pegar o vira e lançar na frente
+                                cartaVira = await Adaptor.PegarCartasVira(Baralho.maoCodigoBaralho);
+                                if (cartaVira) {
+                                    ViraRecebido = true
+                                    await cartasRepo.GravarVira(cartaVira.cards[0].code, jogo, Baralho.maoId);
+                                }
+
+                            }
                             //Tudo feito?
                             Banco.Commit();
-                            return res.status(201).json({ msg: "Cartas pegadas com sucesso", cartas: cartas.cards, participante: participante.parId });
+                            return res.status(201).json({ msg: "Cartas pegadas com sucesso", cartas: cartas.cards, participante: participante.parId, cartaVira: cartaVira? cartaVira.cards[0]: null, cartaViraRecebida: ViraRecebido });
                         }
                     }
                 }
@@ -40,7 +52,7 @@ export default class CartaController {
             return res.status(400).json({ msg: "Dados inválidos" });
         } catch (ex) {
             Banco.Rollback();
-           return res.status(500).json({ erro: ex.message });
+            return res.status(500).json({ erro: ex.message });
         }
     }
 }

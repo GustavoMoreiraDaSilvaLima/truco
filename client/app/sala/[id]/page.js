@@ -128,12 +128,12 @@ export default function Sala({ params }) {
         BuscarParticipantes();
         socket.current = new HttpSocket();
         entrar();
-
         return () => {
             if (socket.current) {
                 socket.current.disconnect(); // Desconecta do servidor
                 console.log("Socket desconectado ao sair da página");
             }
+            
         };
     }, [])
     return (
@@ -182,7 +182,6 @@ export default function Sala({ params }) {
                     </section>
                 </div>
             )}
-
         </>
     );
 }
