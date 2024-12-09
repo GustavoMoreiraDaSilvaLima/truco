@@ -9,6 +9,7 @@ import routerMao from './routes/maoRoute.js';
 import routerJogo from './routes/jogoRoute.js';
 import routerEquipe from './routes/equipeRoute.js';
 import routerAutenticacao from './routes/autenticacaoRoute.js';
+import routerCarta from './routes/cartaRoute.js';
 import http from 'http'
 import socketInit from './socket/jogoSocket.js'
 import { Server } from 'socket.io';
@@ -49,7 +50,7 @@ app.use("/rodada", routerRodada);
 app.use("/participante", routerParticipante);
 app.use("/movimentacao", routerMovimentacao);
 app.use("/equipe", routerEquipe);
-
+app.use("/carta", routerCarta);
 
 server.listen(4000, function () {
     console.log("socket em funcionamento!");

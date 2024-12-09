@@ -6,10 +6,12 @@ import participanteEntity from '../entities/participanteEntity.js';
 import usuarioEntity from '../entities/usuarioEntity.js';
 import salaEntity from '../entities/salaEntity.js';
 import EquipeController from '../controllers/equipeController.js';
+import CartaController from '../controllers/cartaController.js';
 
 export default function socket(io) {
     try {
         const jogoController = new JogoController();
+        const CartaControl = new CartaController();
         const equipeControl = new EquipeController();
         const participanteControl = new ParticipanteController();
         io.on('connection', (socket) => {
@@ -74,7 +76,7 @@ export default function socket(io) {
                             if (r.jogoPronto) {
                                 jogoController.IniciarJogo(IdSala).then(r => {
                                     if (r.status == 201) {
-                                        io.to(IdSala).emit('JogoPronto', { ok: true });
+                                        io.to(IdSala).emit('JogoPronto', { ok: true, jogo: r.idJogo });
                                     }
                                 }).catch(e => {
                                     console.log(e)

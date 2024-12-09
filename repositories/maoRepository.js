@@ -2,6 +2,8 @@ import maoEntity from '../entities/maoEntity.js';
 import BaseRepository from './baseRepository.js';
 import jogoRepository from './jogoRepository.js';
 import equipeRepository from './equipeRepository.js';
+import JogoEntity from '../entities/jogoEntity.js';
+import equipeEntity from '../entities/equipeEntity.js';
 
 export default class maoRepository extends BaseRepository {
 
@@ -62,6 +64,22 @@ export default class maoRepository extends BaseRepository {
         return result;
     }
 
+    async GravarBaralho(baralho, jogo){
+        const sql = "insert into tb_mao (mao_codigobaralho, jog_id, mao_trucada, mao_valor) values(?, ?, 'N', 1)";
+        const valores = [baralho, jogo];
+        const result = await this.db.ExecutaComandoLastInserted(sql, valores);
+        return result;
+    }
+
+    async obterBaralho(sala, jogo){
+        const sql = `select * from  tb_mao m 
+        inner join tb_jogo j on m.jog_id = j.jog_id
+        where j.sal_id = ? and j.jog_id = ? and eqp_vencedora is null`;
+        const valores = [sala, jogo];
+        const row = await this.db.ExecutaComando(sql, valores);
+        return this.toMap(row[0]);
+    }
+
     toMap(rows) {
 
         if (rows && typeof rows.length == "number") {
@@ -74,12 +92,12 @@ export default class maoRepository extends BaseRepository {
                 mao.maoCodigoBaralho = row["mao_codigobaralho"];
                 mao.maoTrucada = row["mao_trucada"]
                 mao.maoValor = row["mao_valor"];
-                mao.jogo = new jogoRepository();
+                mao.jogo = new JogoEntity();
                 mao.jogo.jogId
                 mao.jogo.jogDtinicio = row["jog_dtinicio"];
                 mao.jogo.jogDtfim = row["jogo_dtfim"];
-                mao.jogo.sala.salId = row["sal_id"];
-                mao.equipe = new equipeRepository();
+                mao.jogo.salId = row["sal_id"];
+                mao.equipe = new equipeEntity();
                 mao.equipe.eqpId = row["eqp_id"];
                 mao.equipe.eqpDescricao = row["eqp_descricao"];
 
@@ -88,18 +106,18 @@ export default class maoRepository extends BaseRepository {
             return lista;
         } else if (rows) {
             let mao = new maoEntity()
-            mao.maoId = row["mao_id"];
-            mao.maoOrdem = row["mao_ordem"];
-            mao.maoCodigoBaralho = row["mao_codigobaralho"];
-            mao.maoTrucada = row["mao_trucada"]
-            mao.maoValor = row["mao_valor"];
-            mao.jogo = new jogoRepository();
-            mao.jogo.jogDtinicio = row["jog_dtinicio"];
-            mao.jogo.jogDtfim = row["jogo_dtfim"];
-            mao.jogo.sala.salId = row["sal_id"];
-            mao.equipe = new equipeRepository();
-            mao.equipe.eqpId = row["eqp_id"];
-            mao.equipe.eqpDescricao = row["eqp_descricao"];
+            mao.maoId = rows["mao_id"];
+            mao.maoOrdem = rows["mao_ordem"];
+            mao.maoCodigoBaralho = rows["mao_codigobaralho"];
+            mao.maoTrucada = rows["mao_trucada"]
+            mao.maoValor = rows["mao_valor"];
+            mao.jogo = new JogoEntity();
+            mao.jogo.jogDtinicio = rows["jog_dtinicio"];
+            mao.jogo.jogDtfim = rows["jogo_dtfim"];
+            mao.jogo.salId = rows["sal_id"];
+            mao.equipe = new equipeEntity();
+            mao.equipe.eqpId = rows["eqp_id"];
+            mao.equipe.eqpDescricao = rows["eqp_descricao"];
 
             return mao;
         } else {

@@ -61,6 +61,13 @@ export default class cartaRepository extends BaseRepository {
         return result;
     }
 
+    async GravarCarta(Carta, usuario, mao){
+        const sql = `insert into tb_carta (car_codigo, car_imagem, car_valor, car_naipe, car_vira, par_id, mao_id) values(?, ?, ?, ?, ?, ?, ?)`;
+        const valores = [ Carta.code, Carta.image, Carta.value, Carta.suit, 'N',usuario, mao];
+        const result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        return result;
+    }
+
     toMap(rows) {
 
         if (rows && typeof rows.length == "number") {
