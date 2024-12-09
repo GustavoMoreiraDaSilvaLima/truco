@@ -17,4 +17,13 @@ export default class Adaptors {
         }
         return false;
     }
+
+    async PegarCartasVira(deck_id) {
+        let cartas = await fetch(`https://deckofcardsapi.com/api/deck/${deck_id}/draw/?count=1`);
+        cartas = await cartas.json();
+        if(cartas.success){
+            return cartas;
+        }
+        return false;
+    }
 }

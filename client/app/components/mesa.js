@@ -6,6 +6,7 @@ import ParticipanteService from '@/app/service/Participante.service';
 export default function Mesa({ Sala, usuario, socket, jogo }) {
 
     const [OrganizarLayout, setOrganizarLayout] = useState([[], []]);
+    const [cartaVira, setCartaVira] = useState(null);
     const [Cartas, setCartas] = useState([]);
     const Participante = useRef(null);
     async function pegarParticipantes() {
@@ -34,21 +35,38 @@ export default function Mesa({ Sala, usuario, socket, jogo }) {
             console.log(cartas);
             console.log(cartas.cartas);
             setCartas(cartas.cartas);
-
             Participante.current = cartas.participante;
+            if (cartas.cartaViraRecebida) {
+                socket.emit('ViraRecebido', { carta: cartas.cartaVira });
+            }
         }, 1000)
+    }
+
+    function JogarCarta(carta) {
+        console.log(carta);
     }
 
     useEffect(() => {
         pegarParticipantes();
         pegarCartas();
+        socket.on('ViraDaRodada', (carta) => {
+            console.log(carta);
+            setCartaVira(carta);
+            console.log(carta);
+        })
 
     }, [])
 
     return (<div className='body'>
         <div className="mesa">
             <div className="mesa-centro">
-                <img src='https://deckofcardsapi.com/static/img/back.png' height={100} width={75}></img>
+                <img src='https://deckofcardsapi.com/static/img/back.png' height={125} width={100}></img>
+                {cartaVira ?
+                    (<>
+                        <img src={cartaVira.carta.image} height={125} width={100}></img>
+                    </>) :
+                    (<>
+                    </>)}
             </div>
         </div>
         {OrganizarLayout[0].length == 1 && OrganizarLayout[1].length == 2 ? (
@@ -56,33 +74,18 @@ export default function Mesa({ Sala, usuario, socket, jogo }) {
                 <div className="jogador top">{OrganizarLayout[0][0].usuario.usuNome}</div>
                 <div className="jogador left">{OrganizarLayout[1][0].usuario.usuNome}</div>
                 <div className="jogador right">{OrganizarLayout[1][1].usuario.usuNome}</div>
-                <div className="fundoCartas bottom">
-                    {Cartas ? (
+                <div className="jogador bottom">
+                    {Cartas.length > 0 ? (
                         <div>
                             {Cartas.map((value, index) => (
-                                <img
-                                    key={value.code}
-                                    src={value.image}
-                                    height={200}
-                                    width={150}
-                                    style={{
-                                        transition: "transform 0.3s ease", // Transição suave
-                                        margin: "0 5px", // Margem entre as cartas
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.target.style.transform = "translateY(-30px)"; // Move a carta para cima
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.target.style.transform = "translateY(0px)"; // Volta ao estado original
-                                    }}
-                                />
+                                <img onClick={() => { JogarCarta(value) }} key={value.code} src={value.image} height={200} width={150}></img>
                             ))}
                         </div>
                     ) : (
                         <>
-                            <img src='https://deckofcardsapi.com/static/img/back.png' height={100} width={75}></img>
-                            <img src='https://deckofcardsapi.com/static/img/back.png' height={100} width={75}></img>
-                            <img src='https://deckofcardsapi.com/static/img/back.png' height={100} width={75}></img>
+                            <img src='https://deckofcardsapi.com/static/img/back.png' height={200} width={150}></img>
+                            <img src='https://deckofcardsapi.com/static/img/back.png' height={200} width={150}></img>
+                            <img src='https://deckofcardsapi.com/static/img/back.png' height={200} width={150}></img>
                         </>
                     )}
                 </div>
