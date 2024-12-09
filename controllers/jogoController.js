@@ -1,6 +1,9 @@
+import Adaptors from "../adaptors/Adaptors.js";
 import Database from "../db/database.js";
 import JogoEntity from "../entities/jogoEntity.js";
 import jogoRepository from "../repositories/jogoRepository.js";
+import maoRepository from "../repositories/maoRepository.js";
+import rodadaRepository from "../repositories/rodadaRepository.js";
 
 export default class JogoController {
     async listar(req, res) {
@@ -100,10 +103,25 @@ export default class JogoController {
         Banco.AbreTransacao()
         try{
             const jogoRepo =  new jogoRepository(Banco);
-            let jogo = jogoRepo.JogoIniciar(Sala);
+            let jogo = await jogoRepo.JogoIniciar(Sala);
             if(jogo){
-                Banco.Commit()
-                return {status: 201};
+                //Jogo valido temos que criar o Baralho
+                const baralhoAdaptor = new Adaptors();
+                const baralho = await baralhoAdaptor.CriarBaralho();
+                if(baralho){
+                    //Vamos gravar o baralho no banco agora, o primeiro! A primeira Mao do jogo
+                    const baralhoRepo = new maoRepository(Banco);
+                    let mao = await baralhoRepo.GravarBaralho(baralho.deck_id, jogo);
+                    if(mao>0){
+                        //Se mao for valido, gravamos a rodada
+                        let rodadaRepo = new rodadaRepository();
+                        let result = await rodadaRepo.GravarRodada(mao);
+                        if(result){
+                            Banco.Commit();
+                            return {status: 201, idJogo: jogo};
+                        }
+                    }
+                }
             }
             throw new Error("Erro ao iniciar jogo");
 

@@ -18,6 +18,7 @@ import Acoes from "@/app/components/acoes";
 export default function Sala({ params }) {
 
     const socket = useRef();
+    const JogoId = useRef(0);
     const route = useRouter();
 
     const { id } = React.use(params)
@@ -84,6 +85,7 @@ export default function Sala({ params }) {
             })
             socket.current.on('JogoPronto', (dado) => {
                 if (dado.ok) {
+                    JogoId.current = dado.jogo;
                     setLoading(true);
                     setMensagemSaida(`Carregando Partida!`);
                     setChat(["Partida Iniciada!"]);
@@ -91,7 +93,6 @@ export default function Sala({ params }) {
                         setLoading(false);
                         setPartida(true);
                     }, 1500)
-
                 }
             })
         } else {
@@ -165,7 +166,7 @@ export default function Sala({ params }) {
             ) : (
                 <div>
                     <section>
-                        <Mesa Sala={id} usuario={user}></Mesa>
+                        <Mesa Sala={id} usuario={user} socket={socket.current} jogo={JogoId.current}></Mesa>
                     </section>
                     <section className="col-md-3 col-sm-4">
                         <Chat dados={chat}></Chat>

@@ -16,6 +16,8 @@ CREATE TABLE `tb_carta` (
   CONSTRAINT `fk_carta_participante` FOREIGN KEY (`par_id`) REFERENCES `tb_participante` (`par_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+ALTER TABLE tb_carta MODIFY car_valor  VARCHAR(6);
+
 CREATE TABLE `tb_equipe` (
   `eqp_id` int NOT NULL AUTO_INCREMENT,
   `eqp_descricao` varchar(50) DEFAULT NULL,

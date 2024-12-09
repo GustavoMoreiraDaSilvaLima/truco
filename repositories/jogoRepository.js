@@ -58,7 +58,7 @@ export default class jogoRepository extends BaseRepository {
     async JogoIniciar(Sala){
         const sql = `insert into tb_jogo (jog_dtinicio, sal_id) values (NOW(), ?);`;
         const valores = [Sala];
-        const result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        const result = await this.db.ExecutaComandoLastInserted(sql, valores);
         return result;
     }
 
@@ -89,13 +89,13 @@ export default class jogoRepository extends BaseRepository {
             return lista;
         } else if (rows) {
             let jogo = new jogoEntity();
-            jogo.jogId = row["jog_id"];
-            jogo.jogDtinicio = row["jog_dtinicio"];
-            jogo.jogDtfim = row["jog_dtfim"];
+            jogo.jogId = rows["jog_id"];
+            jogo.jogDtinicio = rows["jog_dtinicio"];
+            jogo.jogDtfim = rows["jog_dtfim"];
             jogo.sala = new salaRepository();
-            jogo.sala.salId = row["sal_id"];
-            jogo.sala.salNome = row["sal_nome"];
-            jogo.sala.usuario.usuId = row["usu_id"];
+            jogo.sala.salId = rows["sal_id"];
+            jogo.sala.salNome = rows["sal_nome"];
+            jogo.sala.usuario.usuId = rows["usu_id"];
 
             return jogo;
         } else {
