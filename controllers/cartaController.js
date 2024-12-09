@@ -36,10 +36,24 @@ export default class CartaController {
                                 //Lógica para pegar o vira e lançar na frente
                                 cartaVira = await Adaptor.PegarCartasVira(Baralho.maoCodigoBaralho);
                                 if (cartaVira) {
-                                    ViraRecebido = true
-                                    await cartasRepo.GravarVira(cartaVira.cards[0].code, jogo, Baralho.maoId);
-                                }
+                                    let cartaMania = null;
+                                    ViraRecebido = true;
+                                    const cartasDeTruco  = [
+                                        '3S', '3D', '3H', '3C', '2S', '2D', '2H', '2C',
+                                        'AS', 'AD', 'AH', 'AC', 'KS', 'KD', 'KH', 'KC',
+                                        'JS', 'JD', 'JH', 'JC', 'QS', 'QD', 'QH', 'QC',
+                                        '7S', '7D', '7H', '7C', '6S', '6D', '6H', '6C',
+                                        '5S', '5D', '5H', '5C', '4S', '4D', '4H', '4C'
+                                    ];
+                                    const viraIndex = cartasDeTruco.indexOf(cartaVira.cards[0].code);
 
+                                    // Verificar se existe uma carta após o vira
+                                    if (viraIndex !== -1 && viraIndex + 1 < cartasDeTruco.length) {
+                                        // A próxima carta após o vira
+                                        cartaMania = cartasDeTruco[viraIndex + 1];
+                                    }
+                                    await cartasRepo.GravarVira(cartaMania, jogo, Baralho.maoId);
+                                }
                             }
                             //Tudo feito?
                             Banco.Commit();
