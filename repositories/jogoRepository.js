@@ -62,6 +62,13 @@ export default class jogoRepository extends BaseRepository {
         return result;
     }
 
+    async obterUmaMao(Jogo){
+        const sql = `select * from tb mao where jog_id = ? order by mao_id desc limit 1`;
+        const valores = [Jogo];
+        const row = await this.db.ExecutaComando(sql, valores);
+        return this.toMap(row[0]);
+    }
+
     async JogoFinalizar(Sala){
         const sql = `update tb_jogo set jog_dtfim = NOW() where sal_id = ? and jog_dtfim is null;`;
         const valores = [Sala];

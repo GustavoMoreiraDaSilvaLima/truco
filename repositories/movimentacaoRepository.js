@@ -62,6 +62,13 @@ export default class movimentacaoRepository extends BaseRepository {
         return result;
     }
 
+    async InserirMovimentoParticipante(participante, ordem, rodada){
+        const sql = `insert into tb_movimentacao (rod_id, par_id, mov_ordem) values (?, ?, ?)`;
+        const valores = [rodada, participante, ordem];
+        const result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        return result;
+    }
+
     toMap(rows) {
 
         if (rows && typeof rows.length == "number") {

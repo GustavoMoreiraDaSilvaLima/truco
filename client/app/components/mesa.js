@@ -2,8 +2,9 @@ import '@/public/css/mesa.css'
 import { useEffect, useRef, useState } from 'react'
 import ParticipanteService from '@/app/service/Participante.service';
 import '@/public/css/cartas.css'
+import JogoService from '../service/jogo.service';
 
-export default function Mesa({ Sala, usuario, socket, jogo }) {
+export default function Mesa({ Sala, usuario, socket, jogo, rodada, equipeUser, participante, mao }) {
 
     const [OrganizarLayout, setOrganizarLayout] = useState([[], []]);
     const [cartaVira, setCartaVira] = useState(null);
@@ -12,37 +13,34 @@ export default function Mesa({ Sala, usuario, socket, jogo }) {
     async function pegarParticipantes() {
         const sParticipante = new ParticipanteService();
         let participantes = await sParticipante.ListarParticipantesSala(Sala);
-        console.log(participantes);
         organizar(participantes);
     }
 
     //Função para reorganizar a lógica de manipulação visual do local
     function organizar(lista) {
         const equipeUsuario = lista.filter(participante => participante.usuario.usuId == usuario.usuId);
-        console.log(equipeUsuario[0]);
-        let equipeUser = equipeUsuario[0].equipe.eqpId;
+
+        equipeUser = equipeUsuario[0].equipe.eqpId;
         let equipe1 = lista.filter(participante => participante.equipe.eqpId == equipeUser && participante.usuario.usuId != usuario.usuId);
         let equipe2 = lista.filter(participante => participante.equipe.eqpId != equipeUser);
-        console.log(equipe1, equipe2);
         setOrganizarLayout([equipe1, equipe2]);
-        console.log(OrganizarLayout);
     }
 
     async function pegarCartas() {
         setTimeout(async () => {
             const sParticipante = new ParticipanteService();
             let cartas = await sParticipante.PegarCartas(Sala, usuario.usuId, jogo);
-            console.log(cartas);
-            console.log(cartas.cartas);
             setCartas(cartas.cartas);
             Participante.current = cartas.participante;
             if (cartas.cartaViraRecebida) {
-                socket.emit('ViraRecebido', { carta: cartas.cartaVira });
+                socket.emit('ViraRecebido', { carta: cartas.cartaVira, equipe: equipeUser, sala: Sala, usuario: usuario, rodada: rodada, jogo: jogo });
             }
         }, 1000)
     }
 
-    function JogarCarta(carta) {
+    async function JogarCarta(carta) {
+        const sJogo = new JogoService();
+        let jogo = await sJogo.JogarCarta(carta, jogo, Participante.current, rodada);
         console.log(carta);
     }
 
@@ -50,9 +48,7 @@ export default function Mesa({ Sala, usuario, socket, jogo }) {
         pegarParticipantes();
         pegarCartas();
         socket.on('ViraDaRodada', (carta) => {
-            console.log(carta);
             setCartaVira(carta);
-            console.log(carta);
         })
 
     }, [])

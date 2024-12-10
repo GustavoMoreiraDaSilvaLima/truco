@@ -90,11 +90,14 @@ export default class participanteRepository extends BaseRepository {
         return row[0].total;
     }
 
-    async obterParticipanteSala(user, sala) {
-        let sql = "select * from tb_participante where usu_id = ? and sal_id = ? and par_dtsaida is null; ";
-        let valores = [user, sala];
+    async obterParticipanteSala(jogo, sala) {
+        let sql = `select * from tb_participante p
+        INNER JOIN tb_sala s ON s.sal_id = ?
+        INNER JOIN tb_jogo j ON j.jog_id = ?
+        where p.par_dtsaida is null;`;
+        let valores = [sala, jogo];
         let row = await this.db.ExecutaComando(sql, valores);
-        return this.toMap(row[0]);
+        return this.toMap(row);
     }
 
     async obterEquipeSala(sala) {
@@ -130,6 +133,13 @@ export default class participanteRepository extends BaseRepository {
         const valores = [Sala];
         const row = await this.db.ExecutaComando(sql, valores);
         return row[0].total;
+    }
+
+    async verEquipe(participante){
+        const sql = 'select eqp_id from tb_participante where par_id = ?';
+        const valores = [participante];
+        const row = await this.db.ExecutaComando(sql, valores);
+        return row[0].eqp_id;
     }
 
     toMap(rows) {

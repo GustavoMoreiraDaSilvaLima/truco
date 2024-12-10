@@ -752,6 +752,43 @@
         }
       }
     },
+    "/jogo/sala/rodada": {
+      "post": {
+        "tags": [
+          "Jogo"
+        ],
+        "summary": "Cadastra um jogo",
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "carta": {
+                    "example": "any"
+                  },
+                  "jogo": {
+                    "example": "any"
+                  },
+                  "participante": {
+                    "example": "any"
+                  },
+                  "rodada": {
+                    "example": "any"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/rodada/": {
       "get": {
         "tags": [

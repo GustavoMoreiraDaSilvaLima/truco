@@ -22,6 +22,10 @@ export default function Sala({ params }) {
     const socket = useRef();
     const JogoId = useRef(0);
     const route = useRouter();
+    const participante = useRef(null);
+    const equipe = useRef(0);
+    const rodada = useRef(0);
+    const mao = useRef(0);
 
     const { id } = React.use(params)
     const { user } = useContext(UserContext);
@@ -52,6 +56,7 @@ export default function Sala({ params }) {
                 if (dados.ok) {
                     setLoading(false);
                     setChat(chat => [...chat, `Sistema: ${dados.Nome} ${dados.msg}`]);
+                    participante.current = dados.participante;
                 } else {
                     setMensagemSaida(`Sala cheia, não é possivel entrar!`);
                     setTimeout(() => {
@@ -75,7 +80,6 @@ export default function Sala({ params }) {
             })
             socket.current.on('EnviarMensagem', (dados) => {
                 if (dados.ok) {
-                    console.log(dados);
                     setChat(chat => [...chat, `${dados.Nome}: ${dados.msg}`]);
                 }
             })
@@ -85,9 +89,21 @@ export default function Sala({ params }) {
                     BuscarParticipantes();
                 }
             })
+            socket.current.on('Truco', (dado) =>{
+                alert(dado.msg);
+                if(dado.ok){
+                    setChat(chat => [...chat, `Sistema:${dado.msg}`]);
+                    //dado.equipe
+                    //equipe tenho a equipe que trucou
+
+                }   
+            })
             socket.current.on('JogoPronto', (dado) => {
                 if (dado.ok) {
+                    console.log(dado);
                     JogoId.current = dado.jogo;
+                    mao.current = dado.mao;
+                    rodada.current = dado.rodada;
                     setLoading(true);
                     setMensagemSaida(`Carregando Partida!`);
                     setChat(["Partida Iniciada!"]);
@@ -123,6 +139,10 @@ export default function Sala({ params }) {
     function ParticipantePronto() {
         Pronto.current = !Pronto.current;
         socket.current.emit('Pronto', { atributo: Pronto.current });
+    }
+
+    function Trucar(){
+        socket.current.emit('Truco',{participante: participante.current});
     }
 
 
@@ -168,7 +188,7 @@ export default function Sala({ params }) {
             ) : (
                 <div style={{ position: 'relative' }}>
                     <section>
-                        <Mesa Sala={id} usuario={user} socket={socket.current} jogo={JogoId.current}></Mesa>
+                        <Mesa Sala={id} usuario={user} socket={socket.current} jogo={JogoId.current} rodada ={rodada.current} equipeUser={equipe.current} participante={participante.current} mao={mao.current}></Mesa>
                     </section>
                     <section className="col-md-3 col-sm-4">
                         <Chat dados={chat}></Chat>
@@ -191,7 +211,7 @@ export default function Sala({ params }) {
                         <div>Equipe 2: <span>15 Pontos</span></div>
                     </div>
 
-                    <button className="trucar">Trucar +3</button>
+                    <button onClick={Trucar} className="trucar">Trucar +3</button>
                 </div>
 
             )}

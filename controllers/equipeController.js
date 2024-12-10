@@ -152,7 +152,7 @@ export default class EquipeController {
             let retorno = await participanteRepo.VerificarEquipeCheia(equipe, Objeto.Sala);
             if (retorno < 2) {
                 //Verificar se já não está na equipe selecionada            
-                retorno = await participanteRepo.AdicionarNaEquipe(equipe, Objeto.Sala, Objeto.IdUsuario);
+                retorno = await participanteRepo.   AdicionarNaEquipe(equipe, Objeto.Sala, Objeto.IdUsuario);
                 if (retorno) {
                     retorno = await participanteRepo.ParticipantePreparar(Objeto.Sala, Objeto.IdUsuario, false);
                     if (retorno) {
@@ -175,6 +175,21 @@ export default class EquipeController {
             db.Rollback();
             console.log(ex.message);
             return 500;
+        }
+    }
+
+    async obterParticipante(participante){
+        const banco = new Database();
+        try{
+            let participanteRepo = new participanteRepository(banco);
+            let participanteEntidade = await participanteRepo.verEquipe(participante);
+            if(participanteEntidade){
+                return {status: 200, participante: participanteEntidade};
+            }
+            return {status: 404};
+        }catch(ex){
+            console.log(ex.message);
+            return {status: 500};
         }
     }
 }

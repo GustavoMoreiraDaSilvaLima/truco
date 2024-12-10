@@ -8,7 +8,7 @@ export default class Adaptors {
         }
         return false;
     }
-
+    
     async PegarCartas(deck_id) {
         let cartas = await fetch(`https://deckofcardsapi.com/api/deck/${deck_id}/draw/?count=3`);
         cartas = await cartas.json();
