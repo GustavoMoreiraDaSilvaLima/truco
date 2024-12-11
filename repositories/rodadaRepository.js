@@ -61,7 +61,7 @@ export default class rodadaRepository extends BaseRepository {
     async GravarRodada(maoId){
         let sql = 'insert into tb_rodada (mao_id) values (?);';
         let valores = [maoId];
-        let result = await this.db.ExecutaComandoNonQuery(sql, valores);
+        let result = await this.db.ExecutaComandoLastInserted(sql, valores);
         return result;
     }
 

@@ -65,7 +65,7 @@ export default class maoRepository extends BaseRepository {
     }
 
     async GravarBaralho(baralho, jogo){
-        const sql = "insert into tb_mao (mao_codigobaralho, jog_id, mao_trucada, mao_valor) values(?, ?, 'N', 1)";
+        const sql = "insert into tb_mao (mao_codigobaralho, jog_id, mao_trucada, mao_valor, mao_ordem) values(?, ?, 'N', 1, 1);";
         const valores = [baralho, jogo];
         const result = await this.db.ExecutaComandoLastInserted(sql, valores);
         return result;

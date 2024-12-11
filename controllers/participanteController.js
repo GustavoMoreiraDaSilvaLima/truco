@@ -149,20 +149,20 @@ export default class ParticipanteController {
             let participante = new participanteRepository();
             let result = await participante.obterQuantidadePorSala(Objeto.Sala);
             if (result < 4) {
-                if (!(await participante.obterParticipanteSala(Objeto.IdUsuario, Objeto.Sala))) {
+                let result = await participante.obterParticipanteSala(Objeto.IdUsuario, Objeto.Sala);
+                if (!result) {
                     let participanteEntidade = new participanteEntity(0, 0, 0, new usuarioEntity(Objeto.IdUsuario), new salaEntity(Objeto.Sala), 0);
                     let result = await participante.gravar(participanteEntidade);
                     if (result) {
-                        return 201;
+                        return {status:201, participante: result};
                     }
-
                 }
-                return 200;
+                return {status:200, participante: result};
    
             }
         } catch (error) {
             console.log(error.msg);
-            return 500;
+            return {status:500, partiicpante: null};
         }
     }
 

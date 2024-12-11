@@ -74,12 +74,18 @@ export default class cartaRepository extends BaseRepository {
         INNER JOIN tb_mao m ON c.mao_id = ?
         INNER JOIN tb_jogo j ON m.jog_id = ?
         set c.car_vira = 'S' 
-        where c.car_codigo = ?`
-        const valores = [mao, jogo, Vira];
+        where c.car_codigo like '${Vira}%'`;
+        const valores = [mao, jogo];
         const result = await this.db.ExecutaComandoNonQuery(sql, valores);
         return result;
     }
 
+    async obterCarta(carta, participante) {
+        let sql = "select * from tb_carta where car_codigo = ? and par_id = ?";
+        let valores = [carta, participante];
+        let row = await this.db.ExecutaComando(sql, valores);
+        return this.toMap(row[0]);
+    }
 
 
     toMap(rows) {
@@ -89,12 +95,12 @@ export default class cartaRepository extends BaseRepository {
             for (let i = 0; i < rows.length; i++) {
                 let row = rows[i];
                 let carta = new cartaEntity()
-                carta.carId = row["sal_id"];
-                carta.carCodigo = row["sal_nome"];
-                carta.carImagem = row["sal_id"];
-                carta.carValor = row["sal_nome"];
-                carta.carNaipe = row["sal_id"];
-                carta.carVira = row["sal_nome"];
+                carta.carId = row["car_id"];
+                carta.carCodigo = row["car_codigo"];
+                carta.carImagem = row["car_imagem"];
+                carta.carValor = row["car_valor"];
+                carta.carNaipe = row["car_naipe"];
+                carta.carVira = row["car_vira"];
                 carta.participante = new participanteRepository();
                 carta.participante.parId = row["par_id"];
                 carta.participante.dtEntrada = row["par_dtentrada"];
@@ -112,22 +118,22 @@ export default class cartaRepository extends BaseRepository {
             return lista;
         } else if (rows) {
             let carta = new cartaEntity()
-            carta.carId = row["sal_id"];
-            carta.carCodigo = row["sal_nome"];
-            carta.carImagem = row["sal_id"];
-            carta.carValor = row["sal_nome"];
-            carta.carNaipe = row["sal_id"];
-            carta.carVira = row["sal_nome"];
+            carta.carId = rows["car_id"];
+            carta.carCodigo = rows["car_codigo"];
+            carta.carImagem = rows["car_imagem"];
+            carta.carValor = rows["car_valor"];
+            carta.carNaipe = rows["car_naipe"];
+            carta.carVira = rows["car_vira"];
             carta.participante = new participanteRepository();
-            carta.participante.parId = row["par_id"];
-            carta.participante.dtEntrada = row["par_dtentrada"];
-            carta.participante.dtSaida = row["par_dtsaida"];
+            carta.participante.parId = rows["par_id"];
+            carta.participante.dtEntrada = rows["par_dtentrada"];
+            carta.participante.dtSaida = rows["par_dtsaida"];
             carta.mao = new maoRepository();
-            carta.mao.maoId = row["mao_id"];
-            carta.mao.maoOrdem = row["mao_ordem"];
-            carta.mao.maoCodigoBaralho = row["mao_codigobaralho"];
-            carta.mao.maoTrucada = row["mao_trucada"];
-            carta.mao.maoValor = row["mao_valor"];
+            carta.mao.maoId = rows["mao_id"];
+            carta.mao.maoOrdem = rows["mao_ordem"];
+            carta.mao.maoCodigoBaralho = rows["mao_codigobaralho"];
+            carta.mao.maoTrucada = rows["mao_trucada"];
+            carta.mao.maoValor = rows["mao_valor"];
 
             return carta;
         } else {

@@ -2,57 +2,76 @@ import '@/public/css/mesa.css'
 import { useEffect, useRef, useState } from 'react'
 import ParticipanteService from '@/app/service/Participante.service';
 import '@/public/css/cartas.css'
+import JogoService from '../service/jogo.service';
 
-export default function Mesa({ Sala, usuario, socket, jogo }) {
+export default function Mesa({ Sala, usuario, socket, jogo, rodada, equipeUser, participante, mao, chat, SetChat }) {
 
     const [OrganizarLayout, setOrganizarLayout] = useState([[], []]);
     const [cartaVira, setCartaVira] = useState(null);
     const [Cartas, setCartas] = useState([]);
+    const [CartasMesa, setCartasMesa] = useState([]);
     const Participante = useRef(null);
     async function pegarParticipantes() {
         const sParticipante = new ParticipanteService();
         let participantes = await sParticipante.ListarParticipantesSala(Sala);
-        console.log(participantes);
         organizar(participantes);
     }
 
     //Função para reorganizar a lógica de manipulação visual do local
     function organizar(lista) {
         const equipeUsuario = lista.filter(participante => participante.usuario.usuId == usuario.usuId);
-        console.log(equipeUsuario[0]);
-        let equipeUser = equipeUsuario[0].equipe.eqpId;
+
+        equipeUser = equipeUsuario[0].equipe.eqpId;
         let equipe1 = lista.filter(participante => participante.equipe.eqpId == equipeUser && participante.usuario.usuId != usuario.usuId);
         let equipe2 = lista.filter(participante => participante.equipe.eqpId != equipeUser);
-        console.log(equipe1, equipe2);
         setOrganizarLayout([equipe1, equipe2]);
-        console.log(OrganizarLayout);
     }
 
     async function pegarCartas() {
         setTimeout(async () => {
             const sParticipante = new ParticipanteService();
             let cartas = await sParticipante.PegarCartas(Sala, usuario.usuId, jogo);
-            console.log(cartas);
-            console.log(cartas.cartas);
             setCartas(cartas.cartas);
             Participante.current = cartas.participante;
             if (cartas.cartaViraRecebida) {
-                socket.emit('ViraRecebido', { carta: cartas.cartaVira });
+                socket.emit('ViraRecebido', { carta: cartas.cartaVira, equipe: equipeUser, sala: Sala, usuario: usuario, rodada: rodada, jogo: jogo });
             }
         }, 1000)
     }
 
-    function JogarCarta(carta) {
-        console.log(carta);
+    async function PegarCarasNovas() {
+        const sParticipante = new ParticipanteService();
+        console.log(participante)
+        let cartasNova = await sParticipante.PegarCarasNovas(usuario.usuId, Sala, jogo, rodada);
+        setCartas(cartasNova.cartas);
+    }
+
+
+    async function JogarCarta(carta) {
+        //const sJogo = new JogoService();
+        //let Resposta = await sJogo.JogarCarta(carta, jogo, Participante.current, rodada);
+        if (Resposta.status == 200) {
+            //await PegarCarasNovas()
+            socket.emit('CartaJogada', { carta: carta, equipe: equipeUser, rodada: rodada, jogo: jogo });
+        } else if (Resposta.status == 400) {
+            console.log(Resposta);
+            alert(Resposta.r.mensagem);
+        } else if (Resposta.status == 500) {
+            //Erro interno
+            alert(Resposta.r.mensagem);
+        }
     }
 
     useEffect(() => {
         pegarParticipantes();
         pegarCartas();
         socket.on('ViraDaRodada', (carta) => {
-            console.log(carta);
             setCartaVira(carta);
-            console.log(carta);
+        })
+        socket.on('CartaJogada', (dados) => {
+            SetChat(chat => [...chat, `Sistema:${dados.msg}`]);
+            setCartasMesa(CartasMesa => [...CartasMesa, dados.carta]);
+
         })
 
     }, [])
@@ -67,6 +86,15 @@ export default function Mesa({ Sala, usuario, socket, jogo }) {
                     </>) :
                     (<>
                     </>)}
+                {CartasMesa.length > 0 ? (
+                    <div>
+                        {CartasMesa.map((value, index) => (
+                            <img className="cartas" onClick={() => JogarCarta(value)} key={value.code || value.carValor} src={value.image || value.carImagem} height={125} width={100}></img>
+                        ))}
+                    </div>
+                ) : (
+                    <></>
+                )}
             </div>
         </div>
         {OrganizarLayout[0].length == 1 && OrganizarLayout[1].length == 2 ? (
@@ -78,7 +106,7 @@ export default function Mesa({ Sala, usuario, socket, jogo }) {
                     {Cartas.length > 0 ? (
                         <div>
                             {Cartas.map((value, index) => (
-                                <img className="cartas" onClick={() => { JogarCarta(value) }} key={value.code} src={value.image} height={200} width={150}></img>
+                                <img className="cartas" onClick={() => JogarCarta(value)} key={index || value.code || value.carValor} src={value.image || value.carImagem} height={200} width={150}></img>
                             ))}
                         </div>
                     ) : (
@@ -91,7 +119,8 @@ export default function Mesa({ Sala, usuario, socket, jogo }) {
                 </div>
                 <div className="jogador bottom">{usuario.usuNome}</div>
             </>
-        ) : (<></>)}
+        ) : (<></>)
+        }
 
-    </div>)
+    </div >)
 }

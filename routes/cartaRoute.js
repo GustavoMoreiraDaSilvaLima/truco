@@ -13,4 +13,10 @@ router.get('/participante/sala/:sala/usuario/:usuario/jogo/:jogo', (req, res) =>
     ctrl.PegarCarta(req, res);
 });
 
+router.get('/novas/sala/:sala/usuario/:usuario/jogo/:jogo/rodada/:rodada', (req, res) => {
+    // #swagger.tags = ['Carta']
+    // #swagger.summary = 'Retorna Cartas restantes para determinado participante'
+    ctrl.PegarCartasNovas(req, res);
+})
+
 export default router;

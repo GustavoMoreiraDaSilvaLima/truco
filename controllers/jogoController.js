@@ -1,8 +1,11 @@
 import Adaptors from "../adaptors/Adaptors.js";
 import Database from "../db/database.js";
 import JogoEntity from "../entities/jogoEntity.js";
+import cartaRepository from "../repositories/cartaRepository.js";
 import jogoRepository from "../repositories/jogoRepository.js";
 import maoRepository from "../repositories/maoRepository.js";
+import movimentacaoRepository from "../repositories/movimentacaoRepository.js";
+import participanteRepository from "../repositories/participanteRepository.js";
 import rodadaRepository from "../repositories/rodadaRepository.js";
 
 export default class JogoController {
@@ -98,55 +101,158 @@ export default class JogoController {
         }
     }
 
-    async IniciarJogo(Sala){
+    async IniciarJogo(Sala, usuario) {
         const Banco = new Database();
         Banco.AbreTransacao()
-        try{
-            const jogoRepo =  new jogoRepository(Banco);
+        try {
+            const jogoRepo = new jogoRepository(Banco);
             let jogo = await jogoRepo.JogoIniciar(Sala);
-            if(jogo){
+            if (jogo) {
                 //Jogo valido temos que criar o Baralho
                 const baralhoAdaptor = new Adaptors();
                 const baralho = await baralhoAdaptor.CriarBaralho();
-                if(baralho){
+                if (baralho) {
                     //Vamos gravar o baralho no banco agora, o primeiro! A primeira Mao do jogo
                     const baralhoRepo = new maoRepository(Banco);
                     let mao = await baralhoRepo.GravarBaralho(baralho.deck_id, jogo);
-                    if(mao>0){
+                    if (mao > 0) {
                         //Se mao for valido, gravamos a rodada
                         let rodadaRepo = new rodadaRepository();
-                        let result = await rodadaRepo.GravarRodada(mao);
-                        if(result){
-                            Banco.Commit();
-                            return {status: 201, idJogo: jogo};
+                        let Rodada = await rodadaRepo.GravarRodada(mao);
+                        if (Rodada) {
+                            const participanteRepo = new participanteRepository(Banco);
+                            //tenho mao, rodada e jogo mas quero os participantes deste jogo, tenho a sala
+                            const participante = await participanteRepo.obterParticipanteSalaPorJogoESala(jogo, Sala);
+                            if (participante) {
+                                //Agora eu crio a movimentação!
+
+                                if (await this.IniciarNovaMovimentacao(participante, Rodada, Banco)) {
+                                    Banco.Commit();
+                                    return { status: 201, idJogo: jogo, rodada: Rodada, mao: mao };
+                                } else {
+                                    throw new Error("Erro desconhecido ao iniciar a mão");
+                                }
+                            }
                         }
                     }
                 }
             }
             throw new Error("Erro ao iniciar jogo");
-
-        }catch(ex){
+        } catch (ex) {
             Banco.Rollback();
             console.log(ex);
-            return {status: 500}
+            return { status: 500 }
         }
     }
 
-    async FinalizarJogo(Sala){
+    async IniciarNovaMao(Jogo) {
+
+    }
+
+    async IniciarNovaRodada(Mao) {
+
+    }
+
+    //Participante IsArray
+    async IniciarNovaMovimentacao(Participante, Rodada, Banco) {
+        const movimentacaoRepo = new movimentacaoRepository(Banco);
+        let ordem = 1;
+        const FiltroEquipe1 = Participante.filter(part => part.equipe.eqpId % 2 == 0);
+        const FiltroEquipe2 = Participante.filter(part => part.equipe.eqpId % 2 == 1);
+        let l = 0;
+        for (let i = 0; i < FiltroEquipe1.length; i++) {
+            await movimentacaoRepo.InserirMovimentoParticipante(FiltroEquipe1[i].parId, ordem, Rodada);
+            ordem++
+            await movimentacaoRepo.InserirMovimentoParticipante(FiltroEquipe2[l].parId, ordem, Rodada);
+            ordem++
+            l++;
+        }
+        if (ordem == 5)
+            return true;
+        else {
+            return false;
+        }
+    }
+
+    async FinalizarJogo(Sala) {
         const Banco = new Database();
         Banco.AbreTransacao()
-        try{
-            const jogoRepo =  new jogoRepository(Banco);
+        try {
+            const jogoRepo = new jogoRepository(Banco);
             let jogo = jogoRepo.JogoFinalizar(Sala);
-            if(jogo){
+            if (jogo) {
                 Banco.Commit()
-                return {status: 200};
+                return { status: 200 };
             }
             throw new Error("Erro ao finalizar jogo");
-        }catch(ex){
+        } catch (ex) {
             Banco.Rollback();
             console.log(ex);
-            return {status: 500}
+            return { status: 500 }
+        }
+    }
+
+    async JogarCarta(req, res) {
+        const Banco = new Database();
+        Banco.AbreTransacao();
+        try {
+            const { carta, jogo, participante, rodada } = req.body;
+            //Verificar se é sua vez!
+            const movimentacaoRepo = new movimentacaoRepository(Banco);
+            let movimentacao = await movimentacaoRepo.VerificarMovimento(rodada);
+            if (movimentacao == participante) {
+                //Busca o ID de sua carta e após insere
+                const cartaRepo = new cartaRepository(Banco);
+                let cartas = await cartaRepo.obterCarta(carta.code || carta.carCodigo, participante);
+                //se for a vez do jogador a gente vai colocar a carta que ele jogou!
+                let result = await movimentacaoRepo.InserirJogadaParticipante(participante, cartas.carId, rodada);
+                if (result) {
+                    Banco.Commit();
+                    return res.status(200).json({ mensagem: "Carta jogada com sucesso!" });
+                } else{
+                    throw new Error("Erro ao jogar carta");
+                }
+            }else{
+                Banco.Rollback();
+                return res.status(400).json({ mensagem: "Nao e sua vez!" });
+            }
+        }
+        catch (ex) {
+            Banco.Rollback();
+            console.log(ex);
+            res.status(500).json({ mensagem: ex.message });
+        }
+    }
+
+    //equipe: equipeUser, sala: Sala, usuario: usuario, rodada: rodada
+    async PrimeiraJogada(objeto) {
+        const Banco = new Database();
+        Banco.AbreTransacao();
+        try {
+            const { equipe, sala, usuario, rodada, jogo } = objeto;
+            //jogo
+            const jogoRepo = new jogoRepository(Banco);
+            let jogoId = await jogoRepo.obter(jogo);
+            if (jogoId) {
+                //mao
+                let mao = await jogoRepo.obterUmaMao(jogoId);
+                if (mao) {
+                    //se a mao for valida faço um outro select mas na tb_movimentacao com a rodada e a mao, caso não de resultado então ele participa primeiro, é o primeiro a jogar! se ele for o primeiro a jogar vai ser inserido na tb_movimentacao mas sem a mov ordem preenchida
+                    const movimentacaoRepo = new movimentacaoRepository(Banco);
+                    let result = movimentacaoRepo.tentarSelecionarMovimento(mao, rodada);
+                    if (!result) {
+                        //Insiro uma movimentação no id desse usuario
+
+                    }
+                }
+            }
+            //mao
+
+            //rodada
+
+        } catch {
+            Banco.Rollback();
+            return { status: 500 };
         }
     }
 }

@@ -22,6 +22,12 @@ router.post('/', (req, res) => {
     ctrl.criar(req, res);
 });
 
+router.post('/sala/rodada', (req, res) => {
+    // #swagger.tags = ['Jogo']
+    // #swagger.summary = 'Cadastra um jogo'
+    ctrl.JogarCarta(req, res);
+})
+
 router.put('/', (req, res) => {
     // #swagger.tags = ['Jogo']
     // #swagger.summary = 'Altera um jogo'
