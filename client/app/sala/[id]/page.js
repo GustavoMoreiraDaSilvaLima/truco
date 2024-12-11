@@ -188,7 +188,7 @@ export default function Sala({ params }) {
             ) : (
                 <div style={{ position: 'relative' }}>
                     <section>
-                        <Mesa Sala={id} usuario={user} socket={socket.current} jogo={JogoId.current} rodada ={rodada.current} equipeUser={equipe.current} participante={participante.current} mao={mao.current}></Mesa>
+                        <Mesa Sala={id} usuario={user} socket={socket.current} jogo={JogoId.current} rodada ={rodada.current} equipeUser={equipe.current} participante={participante} mao={mao.current} chat={chat} SetChat={setChat}></Mesa>
                     </section>
                     <section className="col-md-3 col-sm-4">
                         <Chat dados={chat}></Chat>

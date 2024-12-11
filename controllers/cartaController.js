@@ -2,6 +2,7 @@ import Adaptors from "../adaptors/Adaptors.js";
 import Database from "../db/database.js";
 import cartaRepository from "../repositories/cartaRepository.js";
 import maoRepository from "../repositories/maoRepository.js";
+import movimentacaoRepository from "../repositories/movimentacaoRepository.js";
 import participanteRepository from "../repositories/participanteRepository.js";
 export default class CartaController {
     async PegarCarta(req, res) {
@@ -68,6 +69,28 @@ export default class CartaController {
             Banco.Rollback();
             return res.status(400).json({ msg: "Dados inválidos" });
         } catch (ex) {
+            Banco.Rollback();
+            return res.status(500).json({ erro: ex.message });
+        }
+    }
+
+    async PegarCartasNovas(req,res){
+        const Banco = new Database();        
+        Banco.AbreTransacao();
+        try {
+            const { sala, usuario, jogo, rodada } = req.params;
+            if (sala && usuario && jogo) {
+                //Pegar o ID do participante e validar a sala já, 2 coelhos em uma matada só, não esquecer de enviar ao Front-end e colocar no useRef()
+                const participanteRepo = new participanteRepository(Banco);
+                let participante = await participanteRepo.obterParticipanteSala(usuario, sala);
+                const movimentoRepo = new movimentacaoRepository(Banco);
+                let cartasNovas = await movimentoRepo.PegarCartasNovas(participante.parId);
+                if (cartasNovas) {
+                    Banco.Commit();
+                    return res.status(201).json({ msg: "Cartas pegadas com sucesso", cartas: cartasNovas });
+                }
+            }
+        }catch (ex) {
             Banco.Rollback();
             return res.status(500).json({ erro: ex.message });
         }

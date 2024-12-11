@@ -31,4 +31,18 @@ export default class ParticipanteService {
             console.error(e);
         }
     }
+
+    async PegarCarasNovas(usuario, sala, jogo, rodada){
+        try {
+            let http = new HttpClient();
+            let response = await http.get(`/carta/novas/sala/${sala}/usuario/${usuario}/jogo/${jogo}/rodada/${rodada}`);
+            if (response.status === 200|| response.status === 201) {
+                return response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
 }

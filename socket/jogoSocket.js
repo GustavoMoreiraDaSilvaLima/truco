@@ -95,15 +95,19 @@ export default function socket(io) {
                 io.to(IdSala).emit('ViraDaRodada', { carta: dados.carta });
             })
 
+            socket.on('CartaJogada', (dados) => {
+                io.to(IdSala).emit('CartaJogada', { carta: dados.carta, imgCarta: dados.carta.image || dados.carta.carImagem, msg: `${NomeUsuario} Jogou um ${dados.carta.value} de ${dados.carta.suit}` });
+            })
+
             socket.on('Truco', (dados) => {//Logica quando apertarem o botao Truco
-                
+
                 //pegar a equipe do participante para enviar ao truco!
                 equipeControl.obterParticipante(dados.participante).then(r => {
                     if (r.status == 200) {
                         io.to(IdSala).emit('Truco', { ok: true, msg: `${NomeUsuario} Chamou no Truco!!!`, equipe: r.eqp_id });
-                    }else if(r.status == 404){
+                    } else if (r.status == 404) {
                         io.to(IdSala).emit('Truco', { ok: false, msg: 'Participante não encontrado!' });
-                    }else{
+                    } else {
                         io.to(IdSala).emit('Truco', { ok: false, msg: 'Ocorreu um erro interno' });
                     }
                 }).catch(e => {

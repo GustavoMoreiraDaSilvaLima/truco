@@ -760,8 +760,14 @@
         "summary": "Cadastra um jogo",
         "description": "",
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         },
         "requestBody": {
@@ -1489,6 +1495,57 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/carta/novas/sala/{sala}/usuario/{usuario}/jogo/{jogo}/rodada/{rodada}": {
+      "get": {
+        "tags": [
+          "Carta"
+        ],
+        "summary": "Retorna Cartas restantes para determinado participante",
+        "description": "",
+        "parameters": [
+          {
+            "name": "sala",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "usuario",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "jogo",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "rodada",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
           },
           "500": {
             "description": "Internal Server Error"

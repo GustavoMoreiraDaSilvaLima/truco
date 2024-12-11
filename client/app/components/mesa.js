@@ -4,11 +4,12 @@ import ParticipanteService from '@/app/service/Participante.service';
 import '@/public/css/cartas.css'
 import JogoService from '../service/jogo.service';
 
-export default function Mesa({ Sala, usuario, socket, jogo, rodada, equipeUser, participante, mao }) {
+export default function Mesa({ Sala, usuario, socket, jogo, rodada, equipeUser, participante, mao, chat, SetChat }) {
 
     const [OrganizarLayout, setOrganizarLayout] = useState([[], []]);
     const [cartaVira, setCartaVira] = useState(null);
     const [Cartas, setCartas] = useState([]);
+    const [CartasMesa, setCartasMesa] = useState([]);
     const Participante = useRef(null);
     async function pegarParticipantes() {
         const sParticipante = new ParticipanteService();
@@ -38,10 +39,27 @@ export default function Mesa({ Sala, usuario, socket, jogo, rodada, equipeUser, 
         }, 1000)
     }
 
+    async function PegarCarasNovas() {
+        const sParticipante = new ParticipanteService();
+        console.log(participante)
+        let cartasNova = await sParticipante.PegarCarasNovas(usuario.usuId, Sala, jogo, rodada);
+        setCartas(cartasNova.cartas);
+    }
+
+
     async function JogarCarta(carta) {
-        const sJogo = new JogoService();
-        let jogo = await sJogo.JogarCarta(carta, jogo, Participante.current, rodada);
-        console.log(carta);
+        //const sJogo = new JogoService();
+        //let Resposta = await sJogo.JogarCarta(carta, jogo, Participante.current, rodada);
+        if (Resposta.status == 200) {
+            //await PegarCarasNovas()
+            socket.emit('CartaJogada', { carta: carta, equipe: equipeUser, rodada: rodada, jogo: jogo });
+        } else if (Resposta.status == 400) {
+            console.log(Resposta);
+            alert(Resposta.r.mensagem);
+        } else if (Resposta.status == 500) {
+            //Erro interno
+            alert(Resposta.r.mensagem);
+        }
     }
 
     useEffect(() => {
@@ -49,6 +67,11 @@ export default function Mesa({ Sala, usuario, socket, jogo, rodada, equipeUser, 
         pegarCartas();
         socket.on('ViraDaRodada', (carta) => {
             setCartaVira(carta);
+        })
+        socket.on('CartaJogada', (dados) => {
+            SetChat(chat => [...chat, `Sistema:${dados.msg}`]);
+            setCartasMesa(CartasMesa => [...CartasMesa, dados.carta]);
+
         })
 
     }, [])
@@ -63,6 +86,15 @@ export default function Mesa({ Sala, usuario, socket, jogo, rodada, equipeUser, 
                     </>) :
                     (<>
                     </>)}
+                {CartasMesa.length > 0 ? (
+                    <div>
+                        {CartasMesa.map((value, index) => (
+                            <img className="cartas" onClick={() => JogarCarta(value)} key={value.code || value.carValor} src={value.image || value.carImagem} height={125} width={100}></img>
+                        ))}
+                    </div>
+                ) : (
+                    <></>
+                )}
             </div>
         </div>
         {OrganizarLayout[0].length == 1 && OrganizarLayout[1].length == 2 ? (
@@ -74,7 +106,7 @@ export default function Mesa({ Sala, usuario, socket, jogo, rodada, equipeUser, 
                     {Cartas.length > 0 ? (
                         <div>
                             {Cartas.map((value, index) => (
-                                <img className="cartas" onClick={() => { JogarCarta(value) }} key={value.code} src={value.image} height={200} width={150}></img>
+                                <img className="cartas" onClick={() => JogarCarta(value)} key={index || value.code || value.carValor} src={value.image || value.carImagem} height={200} width={150}></img>
                             ))}
                         </div>
                     ) : (
@@ -87,7 +119,8 @@ export default function Mesa({ Sala, usuario, socket, jogo, rodada, equipeUser, 
                 </div>
                 <div className="jogador bottom">{usuario.usuNome}</div>
             </>
-        ) : (<></>)}
+        ) : (<></>)
+        }
 
-    </div>)
+    </div >)
 }

@@ -1,6 +1,7 @@
 import Adaptors from "../adaptors/Adaptors.js";
 import Database from "../db/database.js";
 import JogoEntity from "../entities/jogoEntity.js";
+import cartaRepository from "../repositories/cartaRepository.js";
 import jogoRepository from "../repositories/jogoRepository.js";
 import maoRepository from "../repositories/maoRepository.js";
 import movimentacaoRepository from "../repositories/movimentacaoRepository.js";
@@ -128,7 +129,7 @@ export default class JogoController {
                                 if (await this.IniciarNovaMovimentacao(participante, Rodada, Banco)) {
                                     Banco.Commit();
                                     return { status: 201, idJogo: jogo, rodada: Rodada, mao: mao };
-                                }else{
+                                } else {
                                     throw new Error("Erro desconhecido ao iniciar a mão");
                                 }
                             }
@@ -196,15 +197,32 @@ export default class JogoController {
         Banco.AbreTransacao();
         try {
             const { carta, jogo, participante, rodada } = req.body;
-
-
-        } catch {
-
-
+            //Verificar se é sua vez!
+            const movimentacaoRepo = new movimentacaoRepository(Banco);
+            let movimentacao = await movimentacaoRepo.VerificarMovimento(rodada);
+            if (movimentacao == participante) {
+                //Busca o ID de sua carta e após insere
+                const cartaRepo = new cartaRepository(Banco);
+                let cartas = await cartaRepo.obterCarta(carta.code || carta.carCodigo, participante);
+                //se for a vez do jogador a gente vai colocar a carta que ele jogou!
+                let result = await movimentacaoRepo.InserirJogadaParticipante(participante, cartas.carId, rodada);
+                if (result) {
+                    Banco.Commit();
+                    return res.status(200).json({ mensagem: "Carta jogada com sucesso!" });
+                } else{
+                    throw new Error("Erro ao jogar carta");
+                }
+            }else{
+                Banco.Rollback();
+                return res.status(400).json({ mensagem: "Nao e sua vez!" });
+            }
         }
-
+        catch (ex) {
+            Banco.Rollback();
+            console.log(ex);
+            res.status(500).json({ mensagem: ex.message });
+        }
     }
-
 
     //equipe: equipeUser, sala: Sala, usuario: usuario, rodada: rodada
     async PrimeiraJogada(objeto) {
