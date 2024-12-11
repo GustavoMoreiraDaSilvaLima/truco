@@ -121,46 +121,55 @@ export default class JogoController {
                         if (Rodada) {
                             const participanteRepo = new participanteRepository(Banco);
                             //tenho mao, rodada e jogo mas quero os participantes deste jogo, tenho a sala
-                            const participante = await participanteRepo.obterParticipanteSala(jogo, Sala);
+                            const participante = await participanteRepo.obterParticipanteSalaPorJogoESala(jogo, Sala);
                             if (participante) {
                                 //Agora eu crio a movimentação!
-                                const movimentacaoRepo = new movimentacaoRepository(Banco);
-                                let guarda = 1;
-                                let Tamanho = participante.length * 4;
-                                let numero = 0;
-                                let ordem = 1;
-                                for (let i = 0; i < Tamanho; i++) {
-                                    //Agora eu insiro os participantes                              
-                                    if (participante[numero].equipe.eqpId % 2 == guarda) {
-                                        if (guarda == 0) {
-                                            guarda = 1;
-                                        } else {
-                                            guarda = 0;
-                                        }
-                                        let participanteInserido = await movimentacaoRepo.InserirMovimentoParticipante(participante[numero].parId,ordem, Rodada);
-                                        ordem++;
-                                        if(!participanteInserido){
-                                            throw new Error("Erro ao inserir participante na movimentacao")
-                                        }
-                                    }
-                                    numero++;
-                                    if (numero == 3) {
-                                        numero = 0;
-                                    }
+
+                                if (await this.IniciarNovaMovimentacao(participante, Rodada, Banco)) {
+                                    Banco.Commit();
+                                    return { status: 201, idJogo: jogo, rodada: Rodada, mao: mao };
+                                }else{
+                                    throw new Error("Erro desconhecido ao iniciar a mão");
                                 }
-                                Banco.Commit();
-                                return { status: 201, idJogo: jogo, rodada: Rodada, mao: mao };
                             }
                         }
                     }
                 }
             }
             throw new Error("Erro ao iniciar jogo");
-
         } catch (ex) {
             Banco.Rollback();
             console.log(ex);
             return { status: 500 }
+        }
+    }
+
+    async IniciarNovaMao(Jogo) {
+
+    }
+
+    async IniciarNovaRodada(Mao) {
+
+    }
+
+    //Participante IsArray
+    async IniciarNovaMovimentacao(Participante, Rodada, Banco) {
+        const movimentacaoRepo = new movimentacaoRepository(Banco);
+        let ordem = 1;
+        const FiltroEquipe1 = Participante.filter(part => part.equipe.eqpId % 2 == 0);
+        const FiltroEquipe2 = Participante.filter(part => part.equipe.eqpId % 2 == 1);
+        let l = 0;
+        for (let i = 0; i < FiltroEquipe1.length; i++) {
+            await movimentacaoRepo.InserirMovimentoParticipante(FiltroEquipe1[i].parId, ordem, Rodada);
+            ordem++
+            await movimentacaoRepo.InserirMovimentoParticipante(FiltroEquipe2[l].parId, ordem, Rodada);
+            ordem++
+            l++;
+        }
+        if (ordem == 5)
+            return true;
+        else {
+            return false;
         }
     }
 
