@@ -26,4 +26,25 @@ export default class Adaptors {
         }
         return false;
     }
+
+    async devolverDeck(deck_id) {
+        let cartas = await fetch(`https://deckofcardsapi.com/api/deck/${deck_id}/return/`);
+        cartas = await cartas.json();
+        if(cartas.sucess) {
+            return cartas;
+        }
+        return false;
+    }
+    
+    async embaralharDeck(deck_id) {
+        let cartas = await fetch(`https://deckofcardsapi.com/api/deck/${deck_id}/shuffle/`);
+        cartas = await cartas.json();
+        if(cartas.sucess) {
+            return cartas;
+        }
+        return false;
+    }
+
+
+
 }
