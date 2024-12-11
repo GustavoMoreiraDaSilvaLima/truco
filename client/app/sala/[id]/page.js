@@ -83,6 +83,7 @@ export default function Sala({ params }) {
                    
                 }
             })
+            
             socket.current.on('RespostaEntrarEquipe', (dados) => {
                 if (dados.ok) {
                     setChat(chat => [...chat, `Sistema: ${dados.Nome} ${dados.msg}`]);
