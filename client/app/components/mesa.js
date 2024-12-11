@@ -48,8 +48,8 @@ export default function Mesa({ Sala, usuario, socket, jogo, rodada, equipeUser, 
 
 
     async function JogarCarta(carta) {
-        //const sJogo = new JogoService();
-        //let Resposta = await sJogo.JogarCarta(carta, jogo, Participante.current, rodada);
+        const sJogo = new JogoService();
+        let Resposta = await sJogo.JogarCarta(carta, jogo, Participante.current, rodada);
         if (Resposta.status == 200) {
             //await PegarCarasNovas()
             socket.emit('CartaJogada', { carta: carta, equipe: equipeUser, rodada: rodada, jogo: jogo });

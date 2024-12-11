@@ -37,6 +37,7 @@ export default function Sala({ params }) {
     const [participantes, setParticipantes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [partida, setPartida] = useState(false);
+    const pt = useRef(false)
     const [chat, setChat] = useState([]);
 
     const [MensagemSaida, setMensagemSaida] = useState("Carregando");
@@ -68,9 +69,21 @@ export default function Sala({ params }) {
             socket.current.on('RespostaSair', (dados) => {
                 if (dados.ok) {
                     setChat(chat => [...chat, `Sistema: ${dados.Nome} ${dados.msg}`]);
-                    BuscarParticipantes();
+                    if(pt.current){
+                        setLoading(true);
+                        setMensagemSaida(`O participante ${dados.Nome} saiu da sala!\n por tanto a partida será finalizada!`);
+                        socket.current.disconnect();
+                        setTimeout(() => {
+
+                            route.push('/sala')
+                        },3000);
+                    }else{
+                        BuscarParticipantes();
+                    }
+                   
                 }
             })
+            
             socket.current.on('RespostaEntrarEquipe', (dados) => {
                 if (dados.ok) {
                     setChat(chat => [...chat, `Sistema: ${dados.Nome} ${dados.msg}`]);
@@ -104,6 +117,7 @@ export default function Sala({ params }) {
                     JogoId.current = dado.jogo;
                     mao.current = dado.mao;
                     rodada.current = dado.rodada;
+                    pt.current = true;
                     setLoading(true);
                     setMensagemSaida(`Carregando Partida!`);
                     setChat(["Partida Iniciada!"]);
