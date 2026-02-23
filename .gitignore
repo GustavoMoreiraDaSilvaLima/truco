@@ -1,6 +1,6 @@
 # Dependências do Node.js
 node_modules/
-db/
+.env
 
 # Logs
 logs

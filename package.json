@@ -14,12 +14,13 @@
   "dependencies": {
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "dotenv": "^17.3.1",
     "express": "^4.21.1",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.3",
     "socket.io": "^4.8.1",
-    "swagger-autogen": "^2.23.7",
+    "swagger-autogen": "^2.9.2",
     "swagger-ui-express": "^5.0.1"
   }
 }

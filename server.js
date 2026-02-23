@@ -14,11 +14,12 @@ import http from 'http'
 import socketInit from './socket/jogoSocket.js'
 import { Server } from 'socket.io';
 
-
-
 import cookieParser from 'cookie-parser';
 import { createRequire } from "module";
 import cors from 'cors';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const require = createRequire(import.meta.url);
 const outputJson = require("./swagger-output.json");
