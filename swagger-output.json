@@ -5,11 +5,14 @@
     "description": "API criada utilizando o padrão REST na disciplina de Programação Fullstack 2",
     "version": "1.0.0"
   },
-  "servers": [
-    {
-      "url": "http://localhost:5000/"
-    }
+  "host": "localhost:5000",
+  "basePath": "/",
+  "tags": [],
+  "schemes": [
+    "http"
   ],
+  "consumes": [],
+  "produces": [],
   "paths": {
     "/usuarios/": {
       "get": {
@@ -18,14 +21,8 @@
         ],
         "summary": "Endpoint para retornar todos os usuários",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "post": {
         "tags": [
@@ -33,37 +30,8 @@
         ],
         "summary": "Cadastra um usuário",
         "description": "",
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "nome": {
-                    "example": "any"
-                  },
-                  "email": {
-                    "example": "any"
-                  },
-                  "senha": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "put": {
         "tags": [
@@ -71,43 +39,8 @@
         ],
         "summary": "Altera um usuário",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "example": "any"
-                  },
-                  "nome": {
-                    "example": "any"
-                  },
-                  "email": {
-                    "example": "any"
-                  },
-                  "senha": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "patch": {
         "tags": [
@@ -115,37 +48,8 @@
         ],
         "summary": "Realiza a alteração parcial do usuário",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "example": "any"
-                  },
-                  "nome": {
-                    "example": "any"
-                  },
-                  "email": {
-                    "example": "any"
-                  },
-                  "senha": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/usuarios/{id}": {
@@ -160,22 +64,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       },
       "get": {
         "tags": [
@@ -188,22 +80,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       }
     },
     "/sala/": {
@@ -213,14 +93,8 @@
         ],
         "summary": "Endpoint para retornar todos os salas",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "post": {
         "tags": [
@@ -228,27 +102,8 @@
         ],
         "summary": "Cadastra um sala",
         "description": "",
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/salaModel"
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "put": {
         "tags": [
@@ -256,30 +111,8 @@
         ],
         "summary": "Altera um sala",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/salaModel"
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "patch": {
         "tags": [
@@ -287,24 +120,8 @@
         ],
         "summary": "Realiza a alteração parcial do sala",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/salaModel"
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/sala/{id}": {
@@ -319,22 +136,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       },
       "get": {
         "tags": [
@@ -347,22 +152,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       }
     },
     "/login/": {
@@ -371,37 +164,8 @@
           "Autenticacao"
         ],
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "email": {
-                    "example": "any"
-                  },
-                  "senha": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/login/logout": {
@@ -410,14 +174,8 @@
           "Autenticacao"
         ],
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/mao/": {
@@ -427,14 +185,8 @@
         ],
         "summary": "Endpoint para retornar todas as mãos",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "post": {
         "tags": [
@@ -442,46 +194,8 @@
         ],
         "summary": "Cadastra uma mão",
         "description": "",
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "maoOrdem": {
-                    "example": "any"
-                  },
-                  "maoCodigoBaralho": {
-                    "example": "any"
-                  },
-                  "maoTrucada": {
-                    "example": "any"
-                  },
-                  "maoValor": {
-                    "example": "any"
-                  },
-                  "jogoId": {
-                    "example": "any"
-                  },
-                  "equipeId": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "put": {
         "tags": [
@@ -489,52 +203,8 @@
         ],
         "summary": "Altera uma mão",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "example": "any"
-                  },
-                  "maoOrdem": {
-                    "example": "any"
-                  },
-                  "maoCodigoBaralho": {
-                    "example": "any"
-                  },
-                  "maoTrucada": {
-                    "example": "any"
-                  },
-                  "maoValor": {
-                    "example": "any"
-                  },
-                  "jogoId": {
-                    "example": "any"
-                  },
-                  "equipeId": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/mao/{id}": {
@@ -549,25 +219,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       },
       "delete": {
         "tags": [
@@ -580,16 +235,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
+        "responses": {}
       }
     },
     "/jogo/": {
@@ -599,17 +248,8 @@
         ],
         "summary": "Endpoint para retornar todos os jogos",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "post": {
         "tags": [
@@ -617,37 +257,8 @@
         ],
         "summary": "Cadastra um jogo",
         "description": "",
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "jogDtinicio": {
-                    "example": "any"
-                  },
-                  "jogDtfim": {
-                    "example": "any"
-                  },
-                  "sala": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "put": {
         "tags": [
@@ -655,40 +266,8 @@
         ],
         "summary": "Altera um jogo",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "jogId": {
-                    "example": "any"
-                  },
-                  "jogDtinicio": {
-                    "example": "any"
-                  },
-                  "jogDtfim": {
-                    "example": "any"
-                  },
-                  "sala": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/jogo/{id}": {
@@ -703,25 +282,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       },
       "delete": {
         "tags": [
@@ -734,22 +298,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       }
     },
     "/jogo/sala/rodada": {
@@ -759,40 +311,8 @@
         ],
         "summary": "Cadastra um jogo",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "carta": {
-                    "example": "any"
-                  },
-                  "jogo": {
-                    "example": "any"
-                  },
-                  "participante": {
-                    "example": "any"
-                  },
-                  "rodada": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/rodada/": {
@@ -802,14 +322,8 @@
         ],
         "summary": "Endpoint para retornar todos os rodadas",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "post": {
         "tags": [
@@ -817,11 +331,8 @@
         ],
         "summary": "Cadastra um rodada",
         "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "put": {
         "tags": [
@@ -829,40 +340,8 @@
         ],
         "summary": "Altera um rodada",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "rodId": {
-                    "example": "any"
-                  },
-                  "mao": {
-                    "example": "any"
-                  },
-                  "equipe": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/rodada/{id}": {
@@ -877,22 +356,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       },
       "delete": {
         "tags": [
@@ -905,22 +372,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       }
     },
     "/participante/": {
@@ -930,14 +385,8 @@
         ],
         "summary": "Endpoint para retornar todos os participantes",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "post": {
         "tags": [
@@ -945,27 +394,8 @@
         ],
         "summary": "Cadastra um participante",
         "description": "",
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/participanteModel"
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "put": {
         "tags": [
@@ -973,30 +403,8 @@
         ],
         "summary": "Altera um participante",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/participanteModel"
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "patch": {
         "tags": [
@@ -1004,24 +412,8 @@
         ],
         "summary": "Realiza a alteração parcial do participante",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/participanteModel"
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/participante/{id}": {
@@ -1036,22 +428,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       },
       "delete": {
         "tags": [
@@ -1064,22 +444,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       }
     },
     "/participante/sala/{id}": {
@@ -1094,19 +462,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       }
     },
     "/movimentacao/": {
@@ -1116,14 +475,8 @@
         ],
         "summary": "Endpoint para retornar todos os movimentações",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "post": {
         "tags": [
@@ -1131,11 +484,8 @@
         ],
         "summary": "Cadastra um movimentacao",
         "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "put": {
         "tags": [
@@ -1143,52 +493,8 @@
         ],
         "summary": "Altera um movimentacao",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "movId": {
-                    "example": "any"
-                  },
-                  "movOrdem": {
-                    "example": "any"
-                  },
-                  "movCorreu": {
-                    "example": "any"
-                  },
-                  "movTrucou": {
-                    "example": "any"
-                  },
-                  "carta": {
-                    "example": "any"
-                  },
-                  "rodada": {
-                    "example": "any"
-                  },
-                  "participante": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/movimentacao/{id}": {
@@ -1203,22 +509,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       },
       "delete": {
         "tags": [
@@ -1231,22 +525,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       }
     },
     "/equipe/": {
@@ -1256,14 +538,8 @@
         ],
         "summary": "Endpoint para retornar todos os equipes",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "post": {
         "tags": [
@@ -1271,31 +547,8 @@
         ],
         "summary": "Cadastra um equipe",
         "description": "",
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "descricao": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "put": {
         "tags": [
@@ -1303,37 +556,8 @@
         ],
         "summary": "Altera um equipe",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "example": "any"
-                  },
-                  "descricao": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       },
       "patch": {
         "tags": [
@@ -1341,31 +565,8 @@
         ],
         "summary": "Realiza a alteração parcial do equipe",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "id": {
-                    "example": "any"
-                  },
-                  "descricao": {
-                    "example": "any"
-                  }
-                }
-              }
-            }
-          }
-        }
+        "parameters": [],
+        "responses": {}
       }
     },
     "/equipe/{id}": {
@@ -1380,22 +581,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       },
       "get": {
         "tags": [
@@ -1408,22 +597,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       }
     },
     "/equipe/sala/{id}": {
@@ -1438,22 +615,10 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "404": {
-            "description": "Not Found"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       }
     },
     "/carta/participante/sala/{sala}/usuario/{usuario}/jogo/{jogo}": {
@@ -1468,38 +633,22 @@
             "name": "sala",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "usuario",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "jogo",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       }
     },
     "/carta/novas/sala/{sala}/usuario/{usuario}/jogo/{jogo}/rodada/{rodada}": {
@@ -1514,48 +663,54 @@
             "name": "sala",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "usuario",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "jogo",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           },
           {
             "name": "rodada",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "type": "string"
           }
         ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
+        "responses": {}
       }
     }
   },
+  "definitions": {},
   "components": {
     "schemas": {
+      "salaModel": {
+        "salId": 0,
+        "salNome": "Sala 1",
+        "usuario": {
+          "usuId": 1
+        }
+      },
+      "participanteModel": {
+        "parId": 0,
+        "dtEntrada": "",
+        "dtSaida": "",
+        "usuario": {
+          "usuId": 1
+        },
+        "sala": {
+          "salId": 1
+        }
+      }
+    },
+    "@schemas": {
       "salaModel": {
         "type": "object",
         "properties": {

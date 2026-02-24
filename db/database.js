@@ -10,7 +10,7 @@ export default class Database {
 
         this.#conexao = mysql.createPool({
             host: 'localhost', //endereço do nosso banco de dados na nuvem
-            database: 'db_aula', //a database de cada um de vocês possui a nomenclatura DB_(RA)
+            database: 'truco_fofo', //a database de cada um de vocês possui a nomenclatura DB_(RA)
             user: 'root', // usuario e senha de cada um de vocês é o RA
             connectionLimit: 20, // Limite máximo de conexões na pool
             queueLimit: 0 ,// Fila ilimitada de requisições
